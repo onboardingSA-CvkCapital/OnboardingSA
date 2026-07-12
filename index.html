@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnboardingSA — South African jobs, all in one place</title>
-<meta name="description" content="Find real South African public-sector and parastatal jobs. Apply directly on the employer's official site.">
+<meta name="description" content="Find real South African jobs, all in one place. Apply directly on the employer's official site.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect x='20' y='20' width='200' height='200' rx='46' fill='%2312294D'/%3E%3Cpath d='M120 56 L160 112 L133 112 L133 168 L107 168 L107 112 L80 112 Z' fill='%23E8A33D'/%3E%3Crect x='76' y='176' width='88' height='14' rx='7' fill='%23E8A33D'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,9 +32,6 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .nav{display:flex;align-items:center;gap:22px}
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}
 .nav a:hover{color:var(--navy)}
-.btn-alert{font-family:Poppins;font-weight:600;font-size:14px;background:var(--navy);color:#fff;
-  padding:9px 16px;border-radius:999px;text-decoration:none}
-.btn-alert:hover{background:var(--navy-700)}
 
 /* Search band */
 .search-band{background:linear-gradient(180deg,#EAF0FA 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
@@ -109,12 +106,6 @@ main{padding:20px 0 60px}
 .section ul{margin:0;padding-left:18px}
 .section li{font-size:14.5px;color:var(--text);margin-bottom:6px}
 .d-foot{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:18px;flex-wrap:wrap}
-.alertbox{background:var(--tint);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:22px}
-.alertbox h4{font-family:Poppins;font-weight:600;color:var(--navy);margin:0 0 6px;font-size:15px}
-.alertbox p{margin:0 0 12px;font-size:13.5px;color:var(--muted)}
-.alertbox a{display:inline-block;font-family:Poppins;font-weight:600;font-size:14px;text-decoration:none;
-  padding:10px 18px;border-radius:8px;background:var(--navy);color:#fff}
-.alertbox a:hover{background:var(--navy-700)}
 
 /* states */
 .empty,.loading{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
@@ -155,7 +146,6 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     </a>
     <nav class="nav">
       <a href="about.html">About</a>
-      <a href="#alerts" class="btn-alert">Get job alerts</a>
     </nav>
   </div>
 </header>
@@ -189,7 +179,6 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
 
 <main>
   <div class="wrap">
-    <div id="notice"></div>
     <p class="count" id="count"></p>
     <div class="board" id="board">
       <div class="list" id="list">
@@ -210,7 +199,6 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
 <script>
 /* ---- CONFIG ---- */
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?output=csv";
-const ALERTS_URL = "#";      // paste your Google Form / WhatsApp channel link here
 /* ---------------- */
 
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -348,11 +336,6 @@ function showDetail(j){
       ${j.reference_no?`<span>Ref: ${esc(j.reference_no)}</span>`:'<span></span>'}
       ${j.posted_date?`<span>Posted ${esc(fmtDate(j.posted_date))}</span>`:''}
     </div>
-    <div class="alertbox" id="alerts">
-      <h4>Never miss a job like this</h4>
-      <p>Get new ${esc(j.category||'')} jobs sent to your WhatsApp the moment they’re posted.</p>
-      <a href="${ALERTS_URL}" ${ALERTS_URL==='#'?'':'target="_blank" rel="noopener"'}>Get job alerts</a>
-    </div>
   </div>`;
   const back=document.getElementById('backBtn');
   if(back) back.addEventListener('click',()=>document.getElementById('board').classList.remove('showing-detail'));
@@ -361,8 +344,8 @@ function showDetail(j){
 function boot(rows){
   JOBS=rows.map(norm).filter(j=>j.job_title && j.status==='live');
   if(!JOBS.length){
-    document.getElementById('list').innerHTML=`<div class="empty"><h3>No jobs yet</h3><p>Once a job in the Google Sheet has its <b>status</b> set to <b>live</b>, it appears here automatically.</p></div>`;
-    document.getElementById('count').innerHTML='<b>0</b> jobs found';
+    document.getElementById('list').innerHTML='';
+    document.getElementById('count').innerHTML='';
     document.getElementById('detailWrap').innerHTML='';
     return;
   }
