@@ -24,7 +24,6 @@ body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--b
 a{color:inherit}
 .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
 
-/* Header */
 header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
 .site .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center;gap:0;text-decoration:none}
@@ -33,7 +32,6 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}
 .nav a:hover{color:var(--navy)}
 
-/* Search band */
 .search-band{background:linear-gradient(180deg,#EAF0FA 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
 .search-band .wrap{padding-top:22px;padding-bottom:18px}
 .tagline{font-family:Poppins;font-weight:600;color:var(--navy);font-size:22px;margin:0 0 14px}
@@ -66,13 +64,11 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .clear-link{font-size:14px;color:var(--navy);background:none;border:0;cursor:pointer;font-weight:600;padding:9px 4px}
 .clear-link:hover{text-decoration:underline}
 
-/* Layout */
 main{padding:20px 0 60px}
 .count{font-size:14px;color:var(--muted);margin:0 0 12px}
 .count b{color:var(--text)}
 .board{display:grid;grid-template-columns:minmax(320px,420px) 1fr;gap:20px;align-items:start}
 
-/* List */
 .list{display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 200px);overflow-y:auto;padding-right:4px}
 .list::-webkit-scrollbar{width:8px}
 .list::-webkit-scrollbar-thumb{background:#D5DEEC;border-radius:8px}
@@ -91,13 +87,11 @@ main{padding:20px 0 60px}
   border-radius:6px;padding:4px 9px;white-space:nowrap}
 .close-soon{color:#B23B3B;font-weight:600}
 
-/* avatar */
 .avatar{width:44px;height:44px;border-radius:10px;background:var(--navy);color:#fff;font-family:Poppins;
   font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none;overflow:hidden}
 .avatar.gold{background:var(--gold);color:var(--navy)}
 .avatar img{width:100%;height:100%;object-fit:contain;background:#fff}
 
-/* Detail */
 .detail{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   padding:26px 28px;position:sticky;top:88px;max-height:calc(100vh - 108px);overflow-y:auto}
 .detail::-webkit-scrollbar{width:8px}
@@ -119,7 +113,6 @@ main{padding:20px 0 60px}
 .section li{font-size:14.5px;color:var(--text);margin-bottom:6px}
 .d-foot{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:18px;flex-wrap:wrap}
 
-/* states */
 .empty,.loading{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
   padding:48px 28px;text-align:center;color:var(--muted)}
 .empty h3{font-family:Poppins;color:var(--navy);margin:0 0 8px}
@@ -127,7 +120,6 @@ main{padding:20px 0 60px}
   border-radius:10px;padding:10px 14px;margin-bottom:14px}
 .back-btn{display:none}
 
-/* Mobile */
 @media(max-width:900px){
   .board{grid-template-columns:1fr}
   .list{max-height:none;overflow:visible}
@@ -219,15 +211,12 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
 </footer>
 
 <script>
-/* ---- CONFIG ---- */
+
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?output=csv";
-// Publish your Companies tab and paste its CSV link here to show company logos:
 const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
-/* ---------------- */
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* Jobs come only from the Google Sheet — nothing is hardcoded here. */
 let selectedId = null;
 
 function norm(row){
@@ -266,7 +255,6 @@ function loadFilters(){
   const types=[...new Set(JOBS.map(j=>j.employment_type).filter(Boolean))].sort();
   const fill=(id,arr)=>{const s=document.getElementById(id);arr.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});};
   fill('fCategory',cats); fill('fProvince',provs); fill('fType',types);
-  // suggestion data for custom autocomplete
   window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer)].filter(Boolean))].sort();
   window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
 }
@@ -288,7 +276,6 @@ function apply(){
     const da=new Date(a.closing_date||'2999'),db=new Date(b.closing_date||'2999');
     return da-db;
   });
-  // featured first
   out.sort((a,b)=>(b.featured==='yes')-(a.featured==='yes'));
   render(out);
 }
@@ -395,7 +382,6 @@ function boot(rows){
   loadFilters(); apply();
 }
 
-/* ---- Custom autocomplete (Indeed-style) ---- */
 function acEscape(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function acHighlight(text,q){
   const i=text.toLowerCase().indexOf(q.toLowerCase());
