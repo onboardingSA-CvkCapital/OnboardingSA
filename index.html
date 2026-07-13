@@ -238,13 +238,16 @@ function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(is
 function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 const LOGO_BASE = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/logos/";
-function slug(name){ return (name||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+function slug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function avatarHTML(j){
   const gold=j.featured==='yes'?' gold':'';
   const ini=esc(initials(j.employer));
   const candidates=[];
-  const s=slug(j.employer);
-  if(s){ candidates.push(LOGO_BASE+s+'.png', LOGO_BASE+s+'.jpg', LOGO_BASE+s+'.svg'); }
+  const base=slug(j.employer);
+  if(base){
+    const names=[...new Set([base, base.toLowerCase()])];
+    for(const nm of names){ candidates.push(LOGO_BASE+nm+'.png', LOGO_BASE+nm+'.jpg', LOGO_BASE+nm+'.svg'); }
+  }
   if(j.logo_url && /^https?:\/\//i.test(j.logo_url)) candidates.push(j.logo_url);
   if(window.COMPANY_LOGOS){ const c=window.COMPANY_LOGOS[(j.employer||'').toLowerCase().trim()]; if(c) candidates.push(c); }
   if(!candidates.length){ return `<div class="avatar${gold}">${ini}</div>`; }
