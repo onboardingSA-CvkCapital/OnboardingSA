@@ -39,10 +39,21 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .tagline{font-family:Poppins;font-weight:600;color:var(--navy);font-size:22px;margin:0 0 14px}
 .searchbar{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;
   padding:6px 6px 6px 8px;box-shadow:var(--shadow);align-items:center;flex-wrap:wrap}
-.field{display:flex;align-items:center;gap:8px;flex:1;min-width:180px;padding:8px 12px}
+.field{display:flex;align-items:center;gap:8px;flex:1;min-width:180px;padding:8px 12px;position:relative}
 .field svg{width:18px;height:18px;flex:none;color:var(--muted)}
 .field input{border:0;outline:0;font-size:15px;font-family:Inter;width:100%;background:transparent;color:var(--text)}
 .field.divider{border-left:1px solid var(--line)}
+.ac{position:absolute;top:calc(100% + 8px);left:-4px;right:-4px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;box-shadow:0 12px 34px rgba(18,41,77,.14);padding:6px;z-index:60;max-height:340px;
+  overflow-y:auto;display:none}
+.ac.open{display:block}
+.ac-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:9px;cursor:pointer;
+  font-size:14.5px;color:var(--muted)}
+.ac-item:hover,.ac-item.sel{background:var(--tint)}
+.ac-item svg{width:16px;height:16px;flex:none;color:var(--muted)}
+.ac-item span{color:var(--muted)}
+.ac-item b{color:var(--navy);font-weight:700}
+.ac::-webkit-scrollbar{width:8px}.ac::-webkit-scrollbar-thumb{background:#D5DEEC;border-radius:8px}
 .btn-search{font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);
   border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
 .btn-search:hover{background:var(--gold-600);color:#fff}
@@ -82,8 +93,9 @@ main{padding:20px 0 60px}
 
 /* avatar */
 .avatar{width:44px;height:44px;border-radius:10px;background:var(--navy);color:#fff;font-family:Poppins;
-  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none;overflow:hidden}
 .avatar.gold{background:var(--gold);color:var(--navy)}
+.avatar img{width:100%;height:100%;object-fit:contain;background:#fff}
 
 /* Detail */
 .detail{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
@@ -164,13 +176,13 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <div class="searchbar" role="search">
       <div class="field">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-        <input id="q" type="text" list="qHints" placeholder="Job title, keyword, or employer" aria-label="Search jobs" autocomplete="off">
-        <datalist id="qHints"></datalist>
+        <input id="q" type="text" placeholder="Job title, keyword, or employer" aria-label="Search jobs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="qAc">
+        <div class="ac" id="qAc" role="listbox"></div>
       </div>
       <div class="field divider">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.2 7-11a7 7 0 10-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-        <input id="qloc" type="text" list="locHints" placeholder="Province or town" aria-label="Location" autocomplete="off">
-        <datalist id="locHints"></datalist>
+        <input id="qloc" type="text" placeholder="Province or town" aria-label="Location" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="locAc">
+        <div class="ac" id="locAc" role="listbox"></div>
       </div>
       <button class="btn-search" id="searchBtn">Find jobs</button>
     </div>
@@ -226,6 +238,7 @@ function norm(row){
     reference_no: g('reference_no'), about_role: g('about_role'),
     responsibilities: g('responsibilities'), requirements: g('requirements'),
     official_apply_url: g('official_apply_url'), featured: g('featured').toLowerCase(),
+    logo_url: g('logo_url'),
     status: g('status').toLowerCase()
   };
 }
@@ -233,6 +246,13 @@ function norm(row){
 function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(isNaN(ms)) return null; return Math.ceil(ms/86400000); }
 function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function avatarHTML(j){
+  const gold=j.featured==='yes'?' gold':'';
+  if(j.logo_url && /^https?:\/\//i.test(j.logo_url)){
+    return `<div class="avatar${gold}"><img src="${esc(j.logo_url)}" alt="${esc(j.employer)} logo" loading="lazy" onerror="this.parentNode.textContent='${esc(initials(j.employer))}'"></div>`;
+  }
+  return `<div class="avatar${gold}">${esc(initials(j.employer))}</div>`;
+}
 function toList(text){ return (text||'').split(/;|\n|•/).map(s=>s.trim()).filter(Boolean); }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -242,11 +262,9 @@ function loadFilters(){
   const types=[...new Set(JOBS.map(j=>j.employment_type).filter(Boolean))].sort();
   const fill=(id,arr)=>{const s=document.getElementById(id);arr.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});};
   fill('fCategory',cats); fill('fProvince',provs); fill('fType',types);
-  // autocomplete suggestions from real data
-  const kw=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer)].filter(Boolean))].sort();
-  const locs=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
-  const dl=(id,arr)=>{const d=document.getElementById(id);d.innerHTML=arr.map(v=>`<option value="${v.replace(/"/g,'&quot;')}">`).join('');};
-  dl('qHints',kw); dl('locHints',locs);
+  // suggestion data for custom autocomplete
+  window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer)].filter(Boolean))].sort();
+  window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
 }
 
 function apply(){
@@ -328,7 +346,7 @@ function showDetail(j){
   document.getElementById('detailWrap').innerHTML=`<div class="detail">
     <button class="back-btn" id="backBtn">← All jobs</button>
     <div class="d-head">
-      <div class="avatar ${j.featured==='yes'?'gold':''}">${esc(initials(j.employer))}</div>
+      ${avatarHTML(j)}
       <div>
         <h1>${esc(j.job_title)}</h1>
         <div class="d-emp">${esc(j.employer)}</div>
@@ -367,7 +385,54 @@ function boot(rows){
   loadFilters(); apply();
 }
 
-['q','qloc'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')apply();}));
+/* ---- Custom autocomplete (Indeed-style) ---- */
+function acEscape(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function acHighlight(text,q){
+  const i=text.toLowerCase().indexOf(q.toLowerCase());
+  if(i<0||!q) return `<span>${acEscape(text)}</span>`;
+  return `<span>${acEscape(text.slice(0,i))}<b>${acEscape(text.slice(i,i+q.length))}</b>${acEscape(text.slice(i+q.length))}</span>`;
+}
+const SEARCH_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>';
+
+function setupAC(inputId,panelId,getData){
+  const input=document.getElementById(inputId), panel=document.getElementById(panelId);
+  let items=[], sel=-1;
+  const close=()=>{panel.classList.remove('open');input.setAttribute('aria-expanded','false');sel=-1;};
+  const open=()=>{if(panel.children.length){panel.classList.add('open');input.setAttribute('aria-expanded','true');}};
+  function build(){
+    const q=input.value.trim();
+    const data=getData();
+    let matches;
+    if(!q){ matches=data.slice(0,8); }
+    else{
+      const ql=q.toLowerCase();
+      const starts=data.filter(v=>v.toLowerCase().startsWith(ql));
+      const incl=data.filter(v=>!v.toLowerCase().startsWith(ql)&&v.toLowerCase().includes(ql));
+      matches=[...starts,...incl].slice(0,8);
+    }
+    items=matches; sel=-1;
+    if(!matches.length){ panel.innerHTML=''; close(); return; }
+    panel.innerHTML=matches.map((v,i)=>`<div class="ac-item" role="option" data-i="${i}">${SEARCH_ICON}${acHighlight(v,q)}</div>`).join('');
+    panel.querySelectorAll('.ac-item').forEach(el=>{
+      el.addEventListener('mousedown',e=>{e.preventDefault();choose(+el.dataset.i);});
+    });
+    open();
+  }
+  function choose(i){ input.value=items[i]; close(); apply(); }
+  function mark(){ panel.querySelectorAll('.ac-item').forEach((el,i)=>el.classList.toggle('sel',i===sel)); }
+  input.addEventListener('input',build);
+  input.addEventListener('focus',build);
+  input.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){e.preventDefault();if(items.length){sel=(sel+1)%items.length;mark();}}
+    else if(e.key==='ArrowUp'){e.preventDefault();if(items.length){sel=(sel-1+items.length)%items.length;mark();}}
+    else if(e.key==='Enter'){ if(sel>=0){e.preventDefault();choose(sel);} else {close();apply();} }
+    else if(e.key==='Escape'){ close(); }
+  });
+  input.addEventListener('blur',()=>setTimeout(close,120));
+}
+setupAC('q','qAc',()=>window.KW||[]);
+setupAC('qloc','locAc',()=>window.LOC||[]);
+
 document.getElementById('searchBtn').addEventListener('click',apply);
 ['fCategory','fProvince','fType','fSort'].forEach(id=>document.getElementById(id).addEventListener('change',apply));
 document.getElementById('clearBtn').addEventListener('click',()=>{
