@@ -221,6 +221,8 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
 <script>
 /* ---- CONFIG ---- */
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?output=csv";
+// Publish your Companies tab and paste its CSV link here to show company logos:
+const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
 /* ---------------- */
 
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -248,8 +250,10 @@ function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return 
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 function avatarHTML(j){
   const gold=j.featured==='yes'?' gold':'';
-  if(j.logo_url && /^https?:\/\//i.test(j.logo_url)){
-    return `<div class="avatar${gold}"><img src="${esc(j.logo_url)}" alt="${esc(j.employer)} logo" loading="lazy" onerror="this.parentNode.textContent='${esc(initials(j.employer))}'"></div>`;
+  let logo = (j.logo_url && /^https?:\/\//i.test(j.logo_url)) ? j.logo_url : '';
+  if(!logo && window.COMPANY_LOGOS){ logo = window.COMPANY_LOGOS[(j.employer||'').toLowerCase().trim()] || ''; }
+  if(logo && /^https?:\/\//i.test(logo)){
+    return `<div class="avatar${gold}"><img src="${esc(logo)}" alt="${esc(j.employer)} logo" loading="lazy" onerror="this.parentNode.textContent='${esc(initials(j.employer))}'"></div>`;
   }
   return `<div class="avatar${gold}">${esc(initials(j.employer))}</div>`;
 }
@@ -447,15 +451,31 @@ document.getElementById('clearBtn').addEventListener('click',()=>{
   document.getElementById('fSort').value='closing'; selectedId=null; apply();
 });
 
+window.COMPANY_LOGOS={};
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
-try{
-  if(typeof Papa==='undefined'){ safeBoot([]); }
-  else Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
-    complete:r=>safeBoot(r.data||[]), error:()=>safeBoot([]) });
-}catch(e){ safeBoot([]); }
-// safety net: never leave the page stuck on "Loading"
-setTimeout(()=>safeBoot([]),7000);
+
+function loadJobs(){
+  try{
+    if(typeof Papa==='undefined'){ safeBoot([]); return; }
+    Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
+      complete:r=>safeBoot(r.data||[]), error:()=>safeBoot([]) });
+  }catch(e){ safeBoot([]); }
+}
+function loadCompanies(done){
+  if(!COMPANIES_CSV_URL || typeof Papa==='undefined'){ done(); return; }
+  try{
+    Papa.parse(COMPANIES_CSV_URL,{download:true,header:true,skipEmptyLines:true,
+      complete:r=>{ (r.data||[]).forEach(row=>{
+          const g=k=>(row[k]??'').toString().trim();
+          const name=g('employer').toLowerCase(), logo=g('logo_url');
+          if(name && logo) window.COMPANY_LOGOS[name]=logo;
+        }); done(); },
+      error:()=>done() });
+  }catch(e){ done(); }
+}
+loadCompanies(loadJobs);
+setTimeout(()=>safeBoot([]),9000);
 </script>
 </body>
 </html>
