@@ -237,7 +237,7 @@ function norm(row){
 function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(isNaN(ms)) return null; return Math.ceil(ms/86400000); }
 function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
-const LOGO_BASE = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/logos/";
+const LOGO_BASE = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/";
 function slug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function avatarHTML(j){
   const gold=j.featured==='yes'?' gold':'';
