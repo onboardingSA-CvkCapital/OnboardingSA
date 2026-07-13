@@ -237,14 +237,19 @@ function norm(row){
 function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(isNaN(ms)) return null; return Math.ceil(ms/86400000); }
 function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+const LOGO_BASE = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/logos/";
+function slug(name){ return (name||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function avatarHTML(j){
   const gold=j.featured==='yes'?' gold':'';
-  let logo = (j.logo_url && /^https?:\/\//i.test(j.logo_url)) ? j.logo_url : '';
-  if(!logo && window.COMPANY_LOGOS){ logo = window.COMPANY_LOGOS[(j.employer||'').toLowerCase().trim()] || ''; }
-  if(logo && /^https?:\/\//i.test(logo)){
-    return `<div class="avatar${gold}"><img src="${esc(logo)}" alt="${esc(j.employer)} logo" loading="lazy" onerror="this.parentNode.textContent='${esc(initials(j.employer))}'"></div>`;
-  }
-  return `<div class="avatar${gold}">${esc(initials(j.employer))}</div>`;
+  const ini=esc(initials(j.employer));
+  const candidates=[];
+  const s=slug(j.employer);
+  if(s){ candidates.push(LOGO_BASE+s+'.png', LOGO_BASE+s+'.jpg', LOGO_BASE+s+'.svg'); }
+  if(j.logo_url && /^https?:\/\//i.test(j.logo_url)) candidates.push(j.logo_url);
+  if(window.COMPANY_LOGOS){ const c=window.COMPANY_LOGOS[(j.employer||'').toLowerCase().trim()]; if(c) candidates.push(c); }
+  if(!candidates.length){ return `<div class="avatar${gold}">${ini}</div>`; }
+  const list=candidates.map(u=>esc(u)).join('|');
+  return `<div class="avatar${gold}"><img src="${esc(candidates[0])}" alt="${esc(j.employer)} logo" loading="lazy" data-fallbacks="${list}" data-i="0" data-ini="${ini}" onerror="(function(el){const f=el.getAttribute('data-fallbacks').split('|');let i=+el.getAttribute('data-i')+1;if(i<f.length){el.setAttribute('data-i',i);el.src=f[i];}else{el.parentNode.textContent=el.getAttribute('data-ini');}})(this)"></div>`;
 }
 function toList(text){ return (text||'').split(/;|\n|•/).map(s=>s.trim()).filter(Boolean); }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
