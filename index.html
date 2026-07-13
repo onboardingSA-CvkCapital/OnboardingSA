@@ -374,8 +374,14 @@ function showDetail(j){
   if(back) back.addEventListener('click',()=>document.getElementById('board').classList.remove('showing-detail'));
 }
 
+function isExpired(d){
+  if(!d) return false;                 // no date = never auto-expires
+  const end=new Date(d); if(isNaN(end)) return false;
+  end.setHours(23,59,59,999);          // valid through the whole closing day
+  return end < new Date();
+}
 function boot(rows){
-  JOBS=rows.map(norm).filter(j=>j.job_title && j.status==='live');
+  JOBS=rows.map(norm).filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date));
   if(!JOBS.length){
     document.getElementById('list').innerHTML='';
     document.getElementById('count').innerHTML='';
