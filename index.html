@@ -134,7 +134,10 @@ main{padding:20px 0 60px}
   .field{width:100%;min-width:0;padding:12px 14px}
   .field.divider{border-left:0;border-top:1px solid var(--line)}
   .btn-search{width:100%;border-radius:12px;margin-top:6px;padding:14px}
-  .filters{margin-top:16px}
+  .filters{margin-top:16px;gap:8px}
+  .filters select{flex:1 1 calc(50% - 4px);min-width:0;max-width:100%;
+    overflow:hidden;text-overflow:ellipsis}
+  .filters .clear-link{flex:1 1 100%;text-align:left}
   .tagline{font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
