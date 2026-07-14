@@ -214,14 +214,14 @@ function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return 
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 const LOGO_BASE="https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/";
+function logoSlug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function avatarHTML(j){
   const gold=j.featured==='yes'?' gold':'';
   const ini=esc(initials(j.employer));
   const candidates=[];
-  const base=slugify(j.employer);
-  if(base){ for(const nm of [...new Set([base, base.toLowerCase()])]) candidates.push(LOGO_BASE+nm+'.png',LOGO_BASE+nm+'.jpg',LOGO_BASE+nm+'.svg'); }
+  const base=logoSlug(j.employer);
+  if(base){ for(const nm of [...new Set([base, base.toLowerCase()])]){ candidates.push(LOGO_BASE+nm+'.png',LOGO_BASE+nm+'.jpg',LOGO_BASE+nm+'.svg'); } }
   if(j.logo_url && /^https?:\/\//i.test(j.logo_url)) candidates.push(j.logo_url);
-  if(window.COMPANY_LOGOS){ const c=window.COMPANY_LOGOS[(j.employer||'').toLowerCase().trim()]; if(c) candidates.push(c); }
   if(!candidates.length) return `<div class="avatar${gold}">${ini}</div>`;
   const list=candidates.map(u=>esc(u)).join('|');
   return `<div class="avatar${gold}"><img src="${esc(candidates[0])}" alt="${esc(j.employer)} logo" loading="lazy" data-fallbacks="${list}" data-i="0" data-ini="${ini}" onerror="(function(el){const f=el.getAttribute('data-fallbacks').split('|');let i=+el.getAttribute('data-i')+1;if(i<f.length){el.setAttribute('data-i',i);el.src=f[i];}else{el.parentNode.textContent=el.getAttribute('data-ini');}})(this)"></div>`;
@@ -359,7 +359,6 @@ document.getElementById('clearBtn').addEventListener('click',()=>{
   document.getElementById('fSort').value='closing'; apply();
 });
 
-window.COMPANY_LOGOS={};
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
 function loadJobs(){
@@ -369,19 +368,7 @@ function loadJobs(){
       complete:r=>safeBoot(r.data||[]), error:()=>safeBoot([]) });
   }catch(e){ safeBoot([]); }
 }
-function loadCompanies(done){
-  if(!COMPANIES_CSV_URL || typeof Papa==='undefined'){ done(); return; }
-  try{
-    Papa.parse(COMPANIES_CSV_URL,{download:true,header:true,skipEmptyLines:true,
-      complete:r=>{ (r.data||[]).forEach(row=>{
-          const g=k=>(row[k]??'').toString().trim();
-          const name=g('employer').toLowerCase(), logo=g('logo_url');
-          if(name && logo) window.COMPANY_LOGOS[name]=logo;
-        }); done(); },
-      error:()=>done() });
-  }catch(e){ done(); }
-}
-loadCompanies(loadJobs);
+loadJobs();
 setTimeout(()=>safeBoot([]),9000);
 </script>
 </body>
