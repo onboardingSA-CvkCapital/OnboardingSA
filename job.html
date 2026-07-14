@@ -148,12 +148,13 @@ function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>
 function toList(text){ return (text||'').split(/;|\n|•/).map(s=>s.trim()).filter(Boolean); }
 
 const LOGO_BASE="https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/";
+function logoSlug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function avatarHTML(j){
   const gold=j.featured==='yes'?' gold':'';
   const ini=esc(initials(j.employer));
   const candidates=[];
-  const base=slugify(j.employer);
-  if(base) candidates.push(LOGO_BASE+base+'.png',LOGO_BASE+base+'.jpg',LOGO_BASE+base+'.svg');
+  const base=logoSlug(j.employer);
+  if(base){ for(const nm of [...new Set([base, base.toLowerCase()])]) candidates.push(LOGO_BASE+nm+'.png',LOGO_BASE+nm+'.jpg',LOGO_BASE+nm+'.svg'); }
   if(j.logo_url && /^https?:\/\//i.test(j.logo_url)) candidates.push(j.logo_url);
   if(!candidates.length) return `<div class="avatar${gold}">${ini}</div>`;
   const list=candidates.map(u=>esc(u)).join('|');
