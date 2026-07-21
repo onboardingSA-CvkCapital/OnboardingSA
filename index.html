@@ -23,7 +23,6 @@ html,body{margin:0;padding:0;overflow-x:hidden}
 body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.5}
 a{color:inherit}
 .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
-
 header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
 .site .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center;gap:0;text-decoration:none}
@@ -31,7 +30,6 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .nav{display:flex;align-items:center;gap:22px}
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}
 .nav a:hover{color:var(--navy)}
-
 .search-band{background:linear-gradient(180deg,#EAF0FA 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
 .search-band .wrap{padding-top:22px;padding-bottom:18px}
 .tagline{font-family:Poppins;font-weight:600;color:var(--navy);font-size:22px;margin:0 0 14px}
@@ -64,12 +62,10 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .filters select:focus{outline:2px solid var(--gold);border-color:transparent}
 .clear-link{font-size:14px;color:var(--navy);background:none;border:0;cursor:pointer;font-weight:600;padding:9px 4px}
 .clear-link:hover{text-decoration:underline}
-
 main{padding:20px 0 60px}
 .count{font-size:14px;color:var(--muted);margin:0 0 12px}
 .count b{color:var(--text)}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-
 .jobcard{background:var(--card);border:1px solid var(--line);border-left:3px solid transparent;
   border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:box-shadow .15s,border-color .15s;
   position:relative;display:block;text-decoration:none;color:inherit}
@@ -90,11 +86,9 @@ main{padding:20px 0 60px}
 .chip{font-size:12px;color:var(--text);background:var(--tint);border:1px solid var(--line-2);
   border-radius:6px;padding:4px 9px;white-space:nowrap}
 .close-soon{color:#B23B3B;font-weight:600}
-
 .empty,.loading{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
   padding:48px 28px;text-align:center;color:var(--muted)}
 .empty h3{font-family:Poppins;color:var(--navy);margin:0 0 8px}
-
 @media(max-width:640px){
   .searchbar{flex-direction:column;align-items:stretch;border-radius:16px;padding:6px;gap:0}
   .field{width:100%;min-width:0;padding:12px 14px}
@@ -130,7 +124,6 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     </nav>
   </div>
 </header>
-
 <section class="search-band">
   <div class="wrap">
     <h1 class="tagline">Find your next job.</h1>
@@ -159,7 +152,6 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     </div>
   </div>
 </section>
-
 <main>
   <div class="wrap">
     <p class="count" id="count"></p>
@@ -168,23 +160,18 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     </div>
   </div>
 </main>
-
 <footer class="site">
   <div class="wrap">
     <span>© <span id="yr"></span> OnboardingSA · onboardingsa.co.za</span>
     <span><a href="about.html">About</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy</a></span>
   </div>
 </footer>
-
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?output=csv";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
 const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
-
 document.getElementById('yr').textContent = new Date().getFullYear();
 let JOBS=[];
-
 function slugify(s){ return (s||'').toString().toLowerCase().trim().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
-
 function makeJobId(row, seen){
   let base = (row.id||'').toString().trim();
   if(!base){ base = slugify((row.job_title||'') + '-' + (row.employer||'')); }
@@ -194,7 +181,6 @@ function makeJobId(row, seen){
   seen.add(id);
   return id;
 }
-
 function norm(row){
   const g = k => (row[k] ?? row[k?.toUpperCase?.()] ?? '').toString().trim();
   return {
@@ -208,7 +194,6 @@ function norm(row){
     logo_url: g('logo_url'), status: g('status').toLowerCase()
   };
 }
-
 function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(isNaN(ms)) return null; return Math.ceil(ms/86400000); }
 function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -226,7 +211,6 @@ function avatarHTML(j){
   const list=candidates.map(u=>esc(u)).join('|');
   return `<div class="avatar${gold}"><img src="${esc(candidates[0])}" alt="${esc(j.employer)} logo" loading="lazy" data-fallbacks="${list}" data-i="0" data-ini="${ini}" onerror="(function(el){const f=el.getAttribute('data-fallbacks').split('|');let i=+el.getAttribute('data-i')+1;if(i<f.length){el.setAttribute('data-i',i);el.src=f[i];}else{el.parentNode.textContent=el.getAttribute('data-ini');}})(this)"></div>`;
 }
-
 function loadFilters(){
   const cats=[...new Set(JOBS.map(j=>j.category).filter(Boolean))].sort();
   const provs=[...new Set(JOBS.map(j=>j.province).filter(Boolean))].sort();
@@ -236,7 +220,6 @@ function loadFilters(){
   window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer)].filter(Boolean))].sort();
   window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
 }
-
 function apply(){
   const q=document.getElementById('q').value.toLowerCase().trim();
   const ql=document.getElementById('qloc').value.toLowerCase().trim();
@@ -257,7 +240,6 @@ function apply(){
   out.sort((a,b)=>(b.featured==='yes')-(a.featured==='yes'));
   render(out);
 }
-
 function render(list){
   const el=document.getElementById('list');
   document.getElementById('count').innerHTML=`<b>${list.length}</b> job${list.length!==1?'s':''} found`;
@@ -284,7 +266,6 @@ function render(list){
     </a>`;
   }).join('');
 }
-
 function isExpired(d){
   if(!d) return false;
   const end=new Date(d); if(isNaN(end)) return false;
@@ -303,7 +284,6 @@ function boot(rows){
   }
   loadFilters(); apply();
 }
-
 function acEscape(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function acHighlight(text,q){
   const i=text.toLowerCase().indexOf(q.toLowerCase());
@@ -311,7 +291,6 @@ function acHighlight(text,q){
   return `<span>${acEscape(text.slice(0,i))}<b>${acEscape(text.slice(i,i+q.length))}</b>${acEscape(text.slice(i+q.length))}</span>`;
 }
 const SEARCH_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>';
-
 function setupAC(inputId,panelId,getData){
   const input=document.getElementById(inputId), panel=document.getElementById(panelId);
   let items=[], sel=-1;
@@ -350,7 +329,6 @@ function setupAC(inputId,panelId,getData){
 }
 setupAC('q','qAc',()=>window.KW||[]);
 setupAC('qloc','locAc',()=>window.LOC||[]);
-
 document.getElementById('searchBtn').addEventListener('click',apply);
 ['fCategory','fProvince','fType','fSort'].forEach(id=>document.getElementById(id).addEventListener('change',apply));
 document.getElementById('clearBtn').addEventListener('click',()=>{
@@ -358,7 +336,6 @@ document.getElementById('clearBtn').addEventListener('click',()=>{
   ['fCategory','fProvince','fType'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fSort').value='closing'; apply();
 });
-
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
 function loadJobs(){
