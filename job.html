@@ -23,18 +23,15 @@ html,body{margin:0;padding:0;overflow-x:hidden}
 body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.5}
 a{color:inherit}
 .wrap{max-width:820px;margin:0 auto;padding:0 20px}
-
 header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
 .site .wrap{max-width:1160px;display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand svg{height:34px;width:auto;display:block}
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}
 .nav a:hover{color:var(--navy)}
-
 main{padding:22px 0 60px}
 .back-link{display:inline-flex;align-items:center;gap:6px;font-family:Poppins;font-weight:600;font-size:14px;
   color:var(--navy);text-decoration:none;margin-bottom:16px}
 .back-link:hover{text-decoration:underline}
-
 .detail{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 30px}
 .d-head{display:flex;gap:14px;align-items:flex-start}
 .avatar{width:52px;height:52px;border-radius:12px;background:var(--navy);color:#fff;font-family:Poppins;
@@ -65,12 +62,10 @@ main{padding:22px 0 60px}
 .section ul{margin:0;padding-left:18px}
 .section li{font-size:14.5px;color:var(--text);margin-bottom:6px}
 .d-foot{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:20px;flex-wrap:wrap}
-
 .state{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
   padding:48px 28px;text-align:center;color:var(--muted)}
 .state h2{font-family:Poppins;color:var(--navy);margin:0 0 8px}
 .state a{color:var(--navy);font-weight:600}
-
 @media(max-width:640px){
   .detail{padding:22px 18px}
   .d-head h1{font-size:22px}
@@ -97,27 +92,22 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <nav class="nav"><a href="about.html">About</a></nav>
   </div>
 </header>
-
 <main>
   <div class="wrap">
     <a class="back-link" href="index.html">← All jobs</a>
     <div id="content"><div class="state"><h2>Loading…</h2></div></div>
   </div>
 </main>
-
 <footer class="site">
   <div class="wrap">
     <span>© <span id="yr"></span> OnboardingSA · onboardingsa.co.za</span>
     <span><a href="about.html">About</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy</a></span>
   </div>
 </footer>
-
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?output=csv";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
 document.getElementById('yr').textContent = new Date().getFullYear();
-
 const JOB_ID = new URLSearchParams(location.search).get('id') || '';
-
 function slugify(s){ return (s||'').toString().toLowerCase().trim().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function makeJobId(row, seen){
   let base=(row.id||'').toString().trim();
@@ -146,7 +136,6 @@ function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return 
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function toList(text){ return (text||'').split(/;|\n|•/).map(s=>s.trim()).filter(Boolean); }
-
 const LOGO_BASE="https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/";
 function logoSlug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function avatarHTML(j){
@@ -160,14 +149,12 @@ function avatarHTML(j){
   const list=candidates.map(u=>esc(u)).join('|');
   return `<div class="avatar${gold}"><img src="${esc(candidates[0])}" alt="${esc(j.employer)} logo" loading="lazy" data-fallbacks="${list}" data-i="0" data-ini="${ini}" onerror="(function(el){const f=el.getAttribute('data-fallbacks').split('|');let i=+el.getAttribute('data-i')+1;if(i<f.length){el.setAttribute('data-i',i);el.src=f[i];}else{el.parentNode.textContent=el.getAttribute('data-ini');}})(this)"></div>`;
 }
-
 function isExpired(d){
   if(!d) return false;
   const end=new Date(d); if(isNaN(end)) return false;
   end.setHours(23,59,59,999);
   return end < new Date();
 }
-
 function schema(j){
   const data={"@context":"https://schema.org/","@type":"JobPosting",title:j.job_title,
     description:(j.about_role||'')+' '+(j.requirements||''),
@@ -178,7 +165,6 @@ function schema(j){
     directApply:false};
   const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(data); document.head.appendChild(s);
 }
-
 function renderJob(j){
   document.title = `${j.job_title} — ${j.employer} | OnboardingSA`;
   schema(j);
@@ -217,7 +203,6 @@ function renderJob(j){
       ${j.posted_date?`<span>Posted ${esc(fmtDate(j.posted_date))}</span>`:''}
     </div>
   </div>`;
-
   const btn=document.getElementById('shareBtn');
   btn.addEventListener('click',async()=>{
     const url=location.href;
@@ -229,7 +214,6 @@ function renderJob(j){
     setTimeout(()=>{ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; },2000);
   });
 }
-
 function notFound(){
   document.getElementById('content').innerHTML=`<div class="state">
     <h2>Job not found</h2>
@@ -237,7 +221,6 @@ function notFound(){
     <p><a href="index.html">← Browse all open jobs</a></p>
   </div>`;
 }
-
 function boot(rows){
   if(!JOB_ID){ notFound(); return; }
   const seen=new Set();
@@ -247,7 +230,6 @@ function boot(rows){
   const job=jobs.find(j=>j.id===JOB_ID);
   if(job) renderJob(job); else notFound();
 }
-
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
 try{
