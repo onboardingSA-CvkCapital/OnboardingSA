@@ -1,14 +1,15 @@
 import re, sys, time, html, json
+from datetime import datetime, timedelta, timezone
 import requests
 import sheet_writer
 
-# Your Cloudflare Worker relay URL (set after deploying worker.js).
-# Example: https://puff-relay.YOURNAME.workers.dev
+# Your Cloudflare Worker relay URL.
 RELAY = "https://puffandpass.onboardingsa2.workers.dev"
 
 API = "https://www.puffandpass.co.za/wp-json/wp/v2/posts"
 PER_PAGE = 100
 MAX_PAGES = 100
+RECENT_DAYS = 45
 
 COLUMNS = sheet_writer.COLUMNS
 HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"}
@@ -101,9 +102,10 @@ def category_of(post):
 
 def scrape():
     total=0
+    after = (datetime.now(timezone.utc) - timedelta(days=RECENT_DAYS)).strftime("%Y-%m-%dT%H:%M:%S")
     with requests.Session() as s:
         for pg in range(1, MAX_PAGES+1):
-            url = f"{API}?per_page={PER_PAGE}&page={pg}&orderby=date&order=desc"
+            url = f"{API}?per_page={PER_PAGE}&page={pg}&orderby=date&order=desc&after={after}"
             posts = fetch(s, url)
             if posts is None:
                 print(f"page {pg}: all relays failed - stopping.", file=sys.stderr); break
