@@ -89,6 +89,13 @@ main{padding:20px 0 60px}
 .empty,.loading{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
   padding:48px 28px;text-align:center;color:var(--muted)}
 .empty h3{font-family:Poppins;color:var(--navy);margin:0 0 8px}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px 0 0;flex-wrap:wrap}
+.pager button{font-family:Inter;font-weight:600;font-size:14px;color:var(--navy);background:#fff;
+  border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
+.pager button:hover:not(:disabled){border-color:var(--gold);color:var(--gold-600)}
+.pager button:disabled{color:#9AA8BF;cursor:default}
+.pager .pinfo{font-size:14px;color:var(--muted)}
+.pager .pinfo b{color:var(--text)}
 @media(max-width:640px){
   .searchbar{flex-direction:column;align-items:stretch;border-radius:16px;padding:6px;gap:0}
   .field{width:100%;min-width:0;padding:12px 14px}
@@ -159,6 +166,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <div class="list" id="list">
       <div class="loading">Loading jobs…</div>
     </div>
+    <div class="pager" id="pager"></div>
   </div>
 </main>
 <footer class="site">
@@ -172,13 +180,16 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOl
 const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
 document.getElementById('yr').textContent = new Date().getFullYear();
 let JOBS=[];
+const PER_PAGE=12;
+let PAGE=1;
+let LAST=[];
 function slugify(s){ return (s||'').toString().toLowerCase().trim().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function makeJobId(row, seen){
   let base = (row.id||'').toString().trim();
   if(!base){ base = slugify((row.job_title||'') + '-' + (row.employer||'')); }
   if(!base){ base = 'job'; }
   let id = base, n = 2;
-  while(seen.has(id)){ id = base + '-' + n; n++; }   // keep every id unique
+  while(seen.has(id)){ id = base + '-' + n; n++; }
   seen.add(id);
   return id;
 }
@@ -222,6 +233,7 @@ function loadFilters(){
   window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
 }
 function apply(){
+  PAGE=1;
   const q=document.getElementById('q').value.toLowerCase().trim();
   const ql=document.getElementById('qloc').value.toLowerCase().trim();
   const c=document.getElementById('fCategory').value;
@@ -242,10 +254,21 @@ function apply(){
   render(out);
 }
 function render(list){
+  LAST=list;
+  const total=list.length;
+  const pages=Math.max(1,Math.ceil(total/PER_PAGE));
+  if(PAGE>pages) PAGE=pages;
+  if(PAGE<1) PAGE=1;
+  const start=(PAGE-1)*PER_PAGE;
+  const slice=list.slice(start,start+PER_PAGE);
   const el=document.getElementById('list');
-  document.getElementById('count').innerHTML=`<b>${list.length}</b> job${list.length!==1?'s':''} found`;
-  if(!list.length){ el.innerHTML=`<div class="empty"><h3>No jobs match that</h3><p>Try clearing filters or searching a broader term.</p></div>`; return; }
-  el.innerHTML=list.map(j=>{
+  document.getElementById('count').innerHTML=`<b>${total}</b> job${total!==1?'s':''} found`;
+  if(!total){
+    el.innerHTML=`<div class="empty"><h3>No jobs match that</h3><p>Try clearing filters or searching a broader term.</p></div>`;
+    document.getElementById('pager').innerHTML='';
+    return;
+  }
+  el.innerHTML=slice.map(j=>{
     const dl=daysLeft(j.closing_date);
     const soon=dl!==null&&dl<=7;
     const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl+' days left'}`:''}`:'';
@@ -266,6 +289,18 @@ function render(list){
       </div>
     </a>`;
   }).join('');
+  renderPager(pages);
+}
+function renderPager(pages){
+  const bar=document.getElementById('pager');
+  if(pages<=1){ bar.innerHTML=''; return; }
+  bar.innerHTML=
+    `<button id="pgPrev" ${PAGE<=1?'disabled':''}>‹ Previous</button>`+
+    `<span class="pinfo">Page <b>${PAGE}</b> of ${pages}</span>`+
+    `<button id="pgNext" ${PAGE>=pages?'disabled':''}>Next ›</button>`;
+  const prev=document.getElementById('pgPrev'), next=document.getElementById('pgNext');
+  if(prev) prev.addEventListener('click',()=>{ if(PAGE>1){ PAGE--; render(LAST); window.scrollTo({top:0,behavior:'smooth'}); } });
+  if(next) next.addEventListener('click',()=>{ if(PAGE<pages){ PAGE++; render(LAST); window.scrollTo({top:0,behavior:'smooth'}); } });
 }
 function isExpired(d){
   if(!d) return false;
@@ -279,8 +314,9 @@ function boot(rows){
     .filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date))
     .map(j=>{ j.id=makeJobId({id:j._rawid,job_title:j.job_title,employer:j.employer},seen); return j; });
   if(!JOBS.length){
-    document.getElementById('list').innerHTML='';
+    document.getElementById('list').innerHTML=`<div class="empty"><h3>No jobs right now</h3><p>Please check back soon.</p></div>`;
     document.getElementById('count').innerHTML='';
+    document.getElementById('pager').innerHTML='';
     return;
   }
   loadFilters(); apply();
@@ -339,15 +375,32 @@ document.getElementById('clearBtn').addEventListener('click',()=>{
 });
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
-function loadJobs(){
+function loadJobs(attempt){
+  attempt = attempt || 1;
   try{
-    if(typeof Papa==='undefined'){ safeBoot([]); return; }
+    if(typeof Papa==='undefined'){
+      if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
+      else { safeBoot([]); }
+      return;
+    }
     Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
-      complete:r=>safeBoot(r.data||[]), error:()=>safeBoot([]) });
-  }catch(e){ safeBoot([]); }
+      complete:r=>{
+        const rows=(r&&r.data)||[];
+        if(rows.length){ safeBoot(rows); }
+        else if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
+        else { safeBoot([]); }
+      },
+      error:()=>{
+        if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
+        else { safeBoot([]); }
+      }
+    });
+  }catch(e){
+    if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
+    else { safeBoot([]); }
+  }
 }
 loadJobs();
-setTimeout(()=>safeBoot([]),9000);
 </script>
 </body>
 </html>
