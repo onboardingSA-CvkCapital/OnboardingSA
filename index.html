@@ -176,6 +176,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
   </div>
 </footer>
 <script>
+const JSON_URL = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/jobs.json";
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
 const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -375,30 +376,36 @@ document.getElementById('clearBtn').addEventListener('click',()=>{
 });
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
-function loadJobs(attempt){
+function loadFromCSV(attempt){
   attempt = attempt || 1;
   try{
     if(typeof Papa==='undefined'){
-      if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
-      else { safeBoot([]); }
+      if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { safeBoot([]); }
       return;
     }
     Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
       complete:r=>{
         const rows=(r&&r.data)||[];
         if(rows.length){ safeBoot(rows); }
-        else if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
+        else if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); }
         else { safeBoot([]); }
       },
       error:()=>{
-        if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
-        else { safeBoot([]); }
+        if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { safeBoot([]); }
       }
     });
   }catch(e){
-    if(attempt<=4){ setTimeout(()=>loadJobs(attempt+1),1500); }
-    else { safeBoot([]); }
+    if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { safeBoot([]); }
   }
+}
+function loadJobs(){
+  fetch(JSON_URL,{cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error("no json"); return r.json(); })
+    .then(rows=>{
+      if(Array.isArray(rows) && rows.length){ safeBoot(rows); }
+      else { loadFromCSV(1); }
+    })
+    .catch(()=>{ loadFromCSV(1); });
 }
 loadJobs();
 </script>
