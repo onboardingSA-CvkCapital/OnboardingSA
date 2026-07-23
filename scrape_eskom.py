@@ -64,7 +64,7 @@ def build_row(data, title, url, ref):
     })
     return row
 
-def scrape(existing):
+def scrape():
     rows=[]
     with sync_playwright() as p:
         b=p.chromium.launch(headless=HEADLESS)
@@ -129,11 +129,8 @@ def scrape(existing):
                         ref="eskom_"+idm.group(1)
                     else:
                         ref="eskom_"+re.sub(r'[^a-z0-9]+','-', l["title"].lower()).strip('-')[:60]
-                if ref and ref.lower() in existing:
-                    print(f"  [{n}/{len(uniq)}] have {ref} - skip", file=sys.stderr); continue
-                existing.add(ref.lower())
                 rows.append(build_row(data, l["title"], l["url"], ref))
-                print(f"  [{n}/{len(uniq)}] NEW: {l['title'][:45]}", file=sys.stderr)
+                print(f"  [{n}/{len(uniq)}] {l['title'][:45]}", file=sys.stderr)
                 time.sleep(0.4)
             except Exception as e:
                 print(f"  [{n}/{len(uniq)}] skipped ({e})", file=sys.stderr)
@@ -141,12 +138,10 @@ def scrape(existing):
     return rows
 
 def main():
-    print("Reading sheet...", file=sys.stderr)
-    existing=sheet_writer.existing_refs()
-    print(f"Sheet has {len(existing)} jobs - skipping those.", file=sys.stderr)
-    rows=scrape(existing)
+    print("Scraping Eskom...", file=sys.stderr)
+    rows=scrape()
     n=sheet_writer.append_jobs(rows)
-    print(f"\nDone: wrote {n} new Eskom jobs directly to the sheet.", file=sys.stderr)
+    print(f"\nDone: found {len(rows)} jobs, wrote {n} new to the sheet.", file=sys.stderr)
 
 if __name__=="__main__":
     main()

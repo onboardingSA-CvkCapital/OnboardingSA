@@ -123,8 +123,6 @@ def closing_from_segs(segs):
     return ""
 
 def scrape():
-    existing=sheet_writer.existing_refs()
-    print(f"Sheet has {len(existing)} jobs - skipping those.", file=sys.stderr)
     total=0; skipped_foreign=0; seen=set()
     with sync_playwright() as p:
         b=p.chromium.launch(headless=HEADLESS)
@@ -161,8 +159,8 @@ def scrape():
 
             rows=[]
             for t in tiles:
-                ref=t["id"] or t["url"]
-                if not ref or ref.lower() in existing or ref in seen: continue
+                ref="sasol_"+str(t["id"]) if t["id"] else "sasol_"+(t["url"].strip("/").split("/")[-1] if t["url"] else t["title"])
+                if not ref or ref in seen: continue
                 seen.add(ref)
                 full=BASE + t["url"] if t["url"].startswith("/") else t["url"]
                 d=get_detail(detail, full)
