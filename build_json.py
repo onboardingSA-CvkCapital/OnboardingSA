@@ -2,7 +2,15 @@ import json, sys, datetime
 import sheet_writer
 
 LIST_FIELDS = ["id","job_title","employer","category","province","location",
-               "employment_type","salary","posted_date","closing_date","featured","status"]
+               "employment_type","salary","posted_date","closing_date","featured","status","reference_no"]
+
+def stable_id(ref, title, employer):
+    r = (ref or "").strip()
+    if r:
+        return r
+    base = (title or "") + "-" + (employer or "")
+    import re
+    return "job-" + re.sub(r'[^a-z0-9]+','-', base.lower()).strip('-')[:60]
 
 def today():
     return datetime.date.today().isoformat()
@@ -36,6 +44,7 @@ def main():
         if not title or status != "live" or is_expired(closing):
             continue
         rec = {k: g(row,k) for k in LIST_FIELDS}
+        rec["id"] = stable_id(g(row,"reference_no"), g(row,"job_title"), g(row,"employer"))
         out.append(rec)
     with open("jobs.json","w",encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",",":"))
