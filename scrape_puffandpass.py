@@ -1,4 +1,4 @@
-import re, sys, time, html
+import re, sys, time, html, json
 import requests
 import sheet_writer
 
@@ -6,8 +6,37 @@ API = "https://www.puffandpass.co.za/wp-json/wp/v2/posts"
 PER_PAGE = 100
 MAX_PAGES = 100
 
+# Relays fetch the URL server-side from their own IP, bypassing the GitHub IP block.
+RELAYS = [
+    lambda u: "https://api.allorigins.win/raw?url=" + requests.utils.quote(u, safe=""),
+    lambda u: "https://corsproxy.io/?url=" + requests.utils.quote(u, safe=""),
+    lambda u: "https://thingproxy.freeboard.io/fetch/" + u,
+    lambda u: u,
+]
+
 COLUMNS = sheet_writer.COLUMNS
-HEADERS = {"User-Agent":"Mozilla/5.0 (compatible; OnboardingSA/1.0)"}
+HEADERS = {
+    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept":"application/json, text/plain, */*",
+    "Accept-Language":"en-US,en;q=0.9",
+    "Referer":"https://www.puffandpass.co.za/",
+}
+
+def fetch(session, url):
+    for build in RELAYS:
+        target = build(url)
+        try:
+            r = session.get(target, headers=HEADERS, timeout=60)
+            if r.status_code == 200 and r.text.strip().startswith("["):
+                return r.json()
+            if r.status_code == 200:
+                try:
+                    return json.loads(r.text)
+                except Exception:
+                    continue
+        except Exception:
+            continue
+    return None
 
 MONTHS = {m[:3].lower():i for i,m in enumerate(
     ["January","February","March","April","May","June","July","August",
@@ -85,17 +114,13 @@ def category_of(post):
 def scrape():
     total=0
     with requests.Session() as s:
-        s.headers.update(HEADERS)
         for pg in range(1, MAX_PAGES+1):
-            try:
-                r=s.get(API, params={"per_page":PER_PAGE,"page":pg,"orderby":"date","order":"desc"}, timeout=45)
-            except Exception as e:
-                print(f"page {pg} error: {e}", file=sys.stderr); break
-            if r.status_code==400: break
-            if r.status_code!=200:
-                print(f"page {pg} HTTP {r.status_code} - stopping.", file=sys.stderr); break
-            posts=r.json()
-            if not posts: break
+            url = f"{API}?per_page={PER_PAGE}&page={pg}&orderby=date&order=desc"
+            posts = fetch(s, url)
+            if posts is None:
+                print(f"page {pg}: all relays failed - stopping.", file=sys.stderr); break
+            if not posts:
+                break
             print(f"Page {pg}: {len(posts)} posts", file=sys.stderr)
             rows=[]
             for post in posts:
