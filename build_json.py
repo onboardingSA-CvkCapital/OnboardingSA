@@ -1,56 +1,39 @@
-import json, sys, datetime
-import sheet_writer
+import json, sys, csv, io, datetime, urllib.request
 
-ALL_FIELDS = ["id","job_title","employer","category","province","location",
-              "employment_type","salary","posted_date","closing_date","reference_no",
-              "about_role","responsibilities","requirements","official_apply_url",
-              "source_url","featured","status","logo_url"]
-
-def stable_id(ref, title, employer):
-    r = (ref or "").strip()
-    if r:
-        return r
-    base = (title or "") + "-" + (employer or "")
-    import re
-    return "job-" + re.sub(r'[^a-z0-9]+','-', base.lower()).strip('-')[:60]
+CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv"
 
 def today():
     return datetime.date.today().isoformat()
 
-def is_expired(closing):
-    c = (closing or "").strip()
-    if not c:
-        return False
-    try:
-        return c < today()
-    except Exception:
-        return False
+def is_expired(c):
+    c=(c or "").strip()
+    if not c: return False
+    try: return c < today()
+    except Exception: return False
+
+def stable_id(ref, title, employer):
+    import re
+    r=(ref or "").strip()
+    if r: return r
+    base=(title or "")+"-"+(employer or "")
+    return "job-"+re.sub(r'[^a-z0-9]+','-',base.lower()).strip('-')[:60]
 
 def main():
-    ws = sheet_writer._sheet()
-    vals = ws.get_all_values()
-    if not vals:
-        print("Sheet empty.", file=sys.stderr)
-        json.dump([], open("jobs.json","w"))
-        return
-    header = [h.strip() for h in vals[0]]
-    idx = {h:i for i,h in enumerate(header)}
-    def g(row, key):
-        i = idx.get(key, -1)
-        return row[i].strip() if 0 <= i < len(row) else ""
-    out = []
-    for row in vals[1:]:
-        status = g(row,"status").lower()
-        title = g(row,"job_title")
-        closing = g(row,"closing_date")
-        if not title or status != "live" or is_expired(closing):
+    req=urllib.request.Request(CSV_URL, headers={"User-Agent":"Mozilla/5.0"})
+    raw=urllib.request.urlopen(req, timeout=60).read().decode("utf-8", "replace")
+    reader=csv.DictReader(io.StringIO(raw))
+    out=[]
+    for row in reader:
+        r={(k or "").strip(): (v or "").strip() for k,v in row.items()}
+        title=r.get("job_title","")
+        status=r.get("status","").lower()
+        if not title or status!="live" or is_expired(r.get("closing_date","")):
             continue
-        rec = {k: g(row,k) for k in ALL_FIELDS}
-        rec["id"] = stable_id(g(row,"reference_no"), g(row,"job_title"), g(row,"employer"))
-        out.append(rec)
+        r["id"]=stable_id(r.get("reference_no",""), title, r.get("employer",""))
+        out.append(r)
     with open("jobs.json","w",encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",",":"))
-    print(f"Wrote jobs.json with {len(out)} live jobs.", file=sys.stderr)
+    print(f"Wrote jobs.json with {len(out)} live jobs (from CSV).", file=sys.stderr)
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
