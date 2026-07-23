@@ -1,0 +1,47 @@
+name: Daily job scrape
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright gspread google-auth requests
+          python -m playwright install --with-deps chromium
+
+      - name: Write credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+
+      - name: Eskom
+        run: python scrape_eskom.py
+        continue-on-error: true
+
+      - name: Puff and Pass
+        run: python scrape_puffandpass.py
+        continue-on-error: true
+
+      - name: Sasol
+        run: python scrape_sasol.py
+        continue-on-error: true
+
+      - name: Delete expired
+        run: python delete_expired.py
+        continue-on-error: true
+
+      - name: Clean up credentials
+        if: always()
+        run: rm -f credentials.json
