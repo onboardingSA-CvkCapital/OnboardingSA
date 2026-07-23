@@ -2,40 +2,28 @@ import re, sys, time, html, json
 import requests
 import sheet_writer
 
+# Your Cloudflare Worker relay URL (set after deploying worker.js).
+# Example: https://puff-relay.YOURNAME.workers.dev
+RELAY = "https://puffandpass.onboardingsa2.workers.dev"
+
 API = "https://www.puffandpass.co.za/wp-json/wp/v2/posts"
 PER_PAGE = 100
 MAX_PAGES = 100
 
-# Relays fetch the URL server-side from their own IP, bypassing the GitHub IP block.
-RELAYS = [
-    lambda u: "https://api.allorigins.win/raw?url=" + requests.utils.quote(u, safe=""),
-    lambda u: "https://corsproxy.io/?url=" + requests.utils.quote(u, safe=""),
-    lambda u: "https://thingproxy.freeboard.io/fetch/" + u,
-    lambda u: u,
-]
-
 COLUMNS = sheet_writer.COLUMNS
-HEADERS = {
-    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept":"application/json, text/plain, */*",
-    "Accept-Language":"en-US,en;q=0.9",
-    "Referer":"https://www.puffandpass.co.za/",
-}
+HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"}
 
 def fetch(session, url):
-    for build in RELAYS:
-        target = build(url)
+    relay_url = RELAY + "/?url=" + requests.utils.quote(url, safe="")
+    for attempt in range(3):
         try:
-            r = session.get(target, headers=HEADERS, timeout=60)
+            r = session.get(relay_url, headers=HEADERS, timeout=60)
             if r.status_code == 200 and r.text.strip().startswith("["):
                 return r.json()
-            if r.status_code == 200:
-                try:
-                    return json.loads(r.text)
-                except Exception:
-                    continue
+            if r.status_code == 400:
+                return []
         except Exception:
-            continue
+            time.sleep(2)
     return None
 
 MONTHS = {m[:3].lower():i for i,m in enumerate(
