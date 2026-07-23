@@ -224,21 +224,42 @@ function notFound(){
 }
 function boot(rows){
   if(!JOB_ID){ notFound(); return; }
-  const seen=new Set();
   const jobs=rows.map(norm)
-    .filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date))
-    .map(j=>{ j.id=makeJobId({id:j._rawid,job_title:j.job_title,employer:j.employer},seen); return j; });
-  const job=jobs.find(j=>j.id===JOB_ID);
+    .filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date));
+  let job=jobs.find(j=>(j.reference_no||'').trim()===JOB_ID);
+  if(!job) job=jobs.find(j=>(j._rawid||'').trim()===JOB_ID);
+  if(!job){
+    const seen=new Set();
+    jobs.forEach(j=>{ j._gen=makeJobId({job_title:j.job_title,employer:j.employer},seen); });
+    job=jobs.find(j=>j._gen===JOB_ID);
+  }
   if(job) renderJob(job); else notFound();
 }
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
-try{
-  if(typeof Papa==='undefined'){ notFound(); }
-  else Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
-    complete:r=>safeBoot(r.data||[]), error:()=>{ booted=true; notFound(); } });
-}catch(e){ notFound(); }
-setTimeout(()=>{ if(!booted){ booted=true; notFound(); } },9000);
+function loadDetail(attempt){
+  attempt = attempt || 1;
+  try{
+    if(typeof Papa==='undefined'){
+      if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); } else { booted=true; notFound(); }
+      return;
+    }
+    Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
+      complete:r=>{
+        const rows=(r&&r.data)||[];
+        if(rows.length){ safeBoot(rows); }
+        else if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); }
+        else { booted=true; notFound(); }
+      },
+      error:()=>{
+        if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); } else { booted=true; notFound(); }
+      }
+    });
+  }catch(e){
+    if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); } else { booted=true; notFound(); }
+  }
+}
+loadDetail();
 </script>
 </body>
 </html>
