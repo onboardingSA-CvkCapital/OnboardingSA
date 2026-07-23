@@ -121,9 +121,17 @@ def scrape(existing):
                             applyby:grab(/Apply by:\s*([^\n]+)/), remun:grab(/Remuneration:\s*([^\n]+)/), cards};
                 }""")
                 ref_m=re.search(r'(eskom_\d+)', l["url"], re.I)
-                ref=ref_m.group(1) if ref_m else ""
+                if ref_m:
+                    ref=ref_m.group(1).lower()
+                else:
+                    idm=re.search(r'[?&]id=(\d+)', l["url"], re.I)
+                    if idm:
+                        ref="eskom_"+idm.group(1)
+                    else:
+                        ref="eskom_"+re.sub(r'[^a-z0-9]+','-', l["title"].lower()).strip('-')[:60]
                 if ref and ref.lower() in existing:
                     print(f"  [{n}/{len(uniq)}] have {ref} - skip", file=sys.stderr); continue
+                existing.add(ref.lower())
                 rows.append(build_row(data, l["title"], l["url"], ref))
                 print(f"  [{n}/{len(uniq)}] NEW: {l['title'][:45]}", file=sys.stderr)
                 time.sleep(0.4)
