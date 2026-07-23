@@ -313,7 +313,14 @@ function boot(rows){
   const seen=new Set();
   JOBS=rows.map(norm)
     .filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date))
-    .map(j=>{ j.id=makeJobId({id:j._rawid,job_title:j.job_title,employer:j.employer},seen); return j; });
+    .map(j=>{
+      const ref=(j.reference_no||'').trim();
+      const preset=(j._rawid||'').trim();
+      if(ref){ j.id=ref; seen.add(ref); }
+      else if(preset){ j.id=preset; seen.add(preset); }
+      else { j.id=makeJobId({job_title:j.job_title,employer:j.employer},seen); }
+      return j;
+    });
   if(!JOBS.length){
     document.getElementById('list').innerHTML=`<div class="empty"><h3>No jobs right now</h3><p>Please check back soon.</p></div>`;
     document.getElementById('count').innerHTML='';
