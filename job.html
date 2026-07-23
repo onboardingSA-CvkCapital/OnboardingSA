@@ -106,6 +106,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
   </div>
 </footer>
 <script>
+const JSON_URL = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/jobs.json";
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
 document.getElementById('yr').textContent = new Date().getFullYear();
 const JOB_ID = new URLSearchParams(location.search).get('id') || '';
@@ -237,27 +238,36 @@ function boot(rows){
 }
 let booted=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
-function loadDetail(attempt){
+function loadFromCSV(attempt){
   attempt = attempt || 1;
   try{
     if(typeof Papa==='undefined'){
-      if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); } else { booted=true; notFound(); }
+      if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { booted=true; notFound(); }
       return;
     }
     Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
       complete:r=>{
         const rows=(r&&r.data)||[];
         if(rows.length){ safeBoot(rows); }
-        else if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); }
+        else if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); }
         else { booted=true; notFound(); }
       },
       error:()=>{
-        if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); } else { booted=true; notFound(); }
+        if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { booted=true; notFound(); }
       }
     });
   }catch(e){
-    if(attempt<=4){ setTimeout(()=>loadDetail(attempt+1),1500); } else { booted=true; notFound(); }
+    if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { booted=true; notFound(); }
   }
+}
+function loadDetail(){
+  fetch(JSON_URL,{cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error("no json"); return r.json(); })
+    .then(rows=>{
+      if(Array.isArray(rows) && rows.length){ safeBoot(rows); }
+      else { loadFromCSV(1); }
+    })
+    .catch(()=>{ loadFromCSV(1); });
 }
 loadDetail();
 </script>

@@ -1,8 +1,10 @@
 import json, sys, datetime
 import sheet_writer
 
-LIST_FIELDS = ["id","job_title","employer","category","province","location",
-               "employment_type","salary","posted_date","closing_date","featured","status","reference_no"]
+ALL_FIELDS = ["id","job_title","employer","category","province","location",
+              "employment_type","salary","posted_date","closing_date","reference_no",
+              "about_role","responsibilities","requirements","official_apply_url",
+              "source_url","featured","status","logo_url"]
 
 def stable_id(ref, title, employer):
     r = (ref or "").strip()
@@ -43,7 +45,7 @@ def main():
         closing = g(row,"closing_date")
         if not title or status != "live" or is_expired(closing):
             continue
-        rec = {k: g(row,k) for k in LIST_FIELDS}
+        rec = {k: g(row,k) for k in ALL_FIELDS}
         rec["id"] = stable_id(g(row,"reference_no"), g(row,"job_title"), g(row,"employer"))
         out.append(rec)
     with open("jobs.json","w",encoding="utf-8") as f:
