@@ -8,7 +8,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,6 +36,10 @@ jobs:
 
       - name: Sasol
         run: python scrape_sasol.py
+        continue-on-error: true
+
+      - name: Careers24
+        run: python scrape_careers24.py
         continue-on-error: true
 
       - name: Delete expired
