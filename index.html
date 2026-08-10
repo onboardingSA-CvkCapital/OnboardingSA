@@ -273,7 +273,7 @@ function render(list){
     const dl=daysLeft(j.closing_date);
     const soon=dl!==null&&dl<=7;
     const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl+' days left'}`:''}`:'';
-    return `<a class="jobcard" href="job.html?id=${encodeURIComponent(j.id)}" aria-label="${esc(j.job_title)} at ${esc(j.employer)}">
+    return `<a class="jobcard" href="jobs/${encodeURIComponent(j.id)}.html" aria-label="${esc(j.job_title)} at ${esc(j.employer)}">
       ${j.featured==='yes'?'<span class="badge">★ Featured</span>':''}
       <div class="card-head">
         ${avatarHTML(j)}
