@@ -252,7 +252,10 @@ def main():
         urls.append(f"{SITE}/{OUT_DIR}/{safe}.html")
     print(f"Wrote {len(urls)} static job pages.", file=sys.stderr)
     # sitemap with main pages + all job pages
-    main_pages=["/","/index.html","/about.html","/contact.html","/privacy.html","/terms.html"]
+    main_pages=["/","/index.html","/about.html","/contact.html","/privacy.html","/terms.html",
+               "/guide-index.html","/guide-ats-friendly-cv.html","/guide-z83-form-explained.html",
+               "/guide-learnerships.html","/guide-bursaries.html","/guide-job-scams.html",
+               "/guide-first-interview.html"]
     sm=['<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for p in main_pages:
