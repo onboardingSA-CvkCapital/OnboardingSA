@@ -89,6 +89,10 @@ main{{padding:22px 0 60px}}
 .apply{{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);border-radius:10px;padding:13px 24px;text-decoration:none}}
 .apply:hover{{background:var(--gold-600);color:#fff}}
 .apply svg{{width:16px;height:16px}}
+.share{{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:10px;padding:13px 20px;cursor:pointer}}
+.share:hover{{border-color:var(--navy)}}
+.share svg{{width:16px;height:16px}}
+.share.copied{{background:var(--tint);border-color:var(--gold)}}
 .handoff{{font-size:12.5px;color:var(--muted);margin:2px 0 20px}}
 .section{{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}}
 .section h2{{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 8px}}
@@ -134,6 +138,21 @@ FOOT = """    </div>
     <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+(function(){{
+  var btn=document.getElementById('shareBtn');
+  if(!btn) return;
+  btn.addEventListener('click',async function(){{
+    var url=location.href;
+    var data={{title:document.title,text:document.title,url:url}};
+    if(navigator.share){{ try{{ await navigator.share(data); return; }}catch(e){{}} }}
+    try{{ await navigator.clipboard.writeText(url); }}catch(e){{}}
+    btn.classList.add('copied');
+    document.getElementById('shareLabel').textContent='Link copied!';
+    setTimeout(function(){{ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; }},2000);
+  }});
+}})();
+</script>
 </body>
 </html>
 """
@@ -225,7 +244,7 @@ def render(j):
         </div>
       </div>
       <div class="chips">{chips}</div>
-      <div class="actions">{apply}</div>
+      <div class="actions">{apply}<button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       {handoff}
       {sections}
       <div class="d-foot">{foot_meta}</div>
