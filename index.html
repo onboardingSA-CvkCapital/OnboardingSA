@@ -3,70 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Career Guides for South African Job Seekers — OnboardingSA</title>
-<meta name="description" content="Free, practical career guides for South African job seekers: ATS-friendly CVs, the Z83 form, learnerships, bursaries, avoiding job scams, and acing interviews.">
-<link rel="canonical" href="https://www.onboardingsa.co.za/guides/index.html">
+<title>OnboardingSA — Find your next job</title>
+<meta name="description" content="Find your next job. Real vacancies, with a direct link to apply on the employer's official site.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect x='20' y='20' width='200' height='200' rx='46' fill='%2312294D'/%3E%3Cpath d='M120 56 L160 112 L133 112 L133 168 L107 168 L107 112 L80 112 Z' fill='%23E8A33D'/%3E%3Crect x='76' y='176' width='88' height='14' rx='7' fill='%23E8A33D'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
-:root{--navy:#12294D;--gold:#E8A33D;--gold-600:#C9891F;--bg:#F4F6FA;--card:#FFFFFF;--line:#E4E9F1;--line-2:#EEF2F8;--text:#16213A;--muted:#5B6B85;--tint:#F0F4FB;--radius:14px;}
+:root{
+  --navy:#12294D; --navy-700:#1B3A6B; --gold:#E8A33D; --gold-600:#C9891F;
+  --bg:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1; --line-2:#EEF2F8;
+  --text:#16213A; --muted:#5B6B85; --tint:#F0F4FB;
+  --shadow:0 1px 2px rgba(18,41,77,.06),0 6px 20px rgba(18,41,77,.06);
+  --radius:14px;
+}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;overflow-x:hidden}
-body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65}
-a{color:var(--navy)}
-.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.5}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
 header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
-.site .wrap{max-width:1160px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.site .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:0;text-decoration:none}
 .brand svg{height:34px;width:auto;display:block}
-.nav{display:flex;gap:22px}
+.nav{display:flex;align-items:center;gap:22px}
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}
 .nav a:hover{color:var(--navy)}
-main{padding:26px 0 60px}
-.back-link{display:inline-flex;align-items:center;gap:6px;font-family:Poppins;font-weight:600;font-size:14px;color:var(--navy);text-decoration:none;margin-bottom:18px}
-.back-link:hover{text-decoration:underline}
-article{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px 40px}
-article h1{font-family:Poppins;font-weight:700;font-size:30px;color:var(--navy);margin:0 0 6px;line-height:1.2}
-.lede{font-size:17px;color:var(--muted);margin:0 0 8px}
-.meta{font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
-article h2{font-family:Poppins;font-weight:600;font-size:20px;color:var(--navy);margin:30px 0 10px}
-article h3{font-family:Poppins;font-weight:600;font-size:16px;color:var(--navy);margin:22px 0 6px}
-article p{font-size:16px;margin:0 0 14px}
-article ul,article ol{margin:0 0 16px;padding-left:22px}
-article li{font-size:16px;margin-bottom:8px}
-article strong{color:var(--navy)}
-.callout{background:var(--tint);border:1px solid var(--line-2);border-left:3px solid var(--gold);border-radius:10px;padding:16px 18px;margin:20px 0;font-size:15.5px}
-.callout b{color:var(--navy)}
-.tick li{list-style:none;position:relative;padding-left:6px}
-.tick li::before{content:"\2713";color:var(--gold-600);font-weight:700;position:absolute;left:-18px}
-.cross li{list-style:none;position:relative;padding-left:6px}
-.cross li::before{content:"\2715";color:#B23B3B;font-weight:700;position:absolute;left:-18px}
-.cta{background:var(--navy);border-radius:12px;padding:22px 24px;margin:28px 0 4px;color:#fff}
-.cta h3{color:#fff;margin:0 0 6px}
-.cta p{color:#D8E0EE;margin:0 0 14px;font-size:15px}
-.cta a{display:inline-block;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);text-decoration:none;border-radius:999px;padding:11px 22px}
-.cta a:hover{background:#fff}
-.related{margin-top:26px}
-.related h2{margin-bottom:10px}
-.related a{display:block;font-weight:500;padding:8px 0;border-bottom:1px solid var(--line-2);text-decoration:none;color:var(--navy)}
-@media(max-width:640px){article{padding:24px 20px}article h1{font-size:24px}}
+.search-band{background:linear-gradient(180deg,#EAF0FA 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
+.search-band .wrap{padding-top:22px;padding-bottom:18px}
+.tagline{font-family:Poppins;font-weight:600;color:var(--navy);font-size:22px;margin:0 0 14px}
+.searchbar{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:6px 6px 6px 8px;box-shadow:var(--shadow);align-items:center;flex-wrap:wrap}
+.field{display:flex;align-items:center;gap:8px;flex:1;min-width:180px;padding:8px 12px;position:relative}
+.field svg{width:18px;height:18px;flex:none;color:var(--muted)}
+.field input{border:0;outline:0;font-size:15px;font-family:Inter;width:100%;background:transparent;color:var(--text)}
+.field.divider{border-left:1px solid var(--line)}
+.ac{position:absolute;top:calc(100% + 8px);left:-4px;right:-4px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;box-shadow:0 12px 34px rgba(18,41,77,.14);padding:6px;z-index:60;max-height:340px;
+  overflow-y:auto;display:none}
+.ac.open{display:block}
+.ac-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:9px;cursor:pointer;
+  font-size:14.5px;color:var(--muted)}
+.ac-item:hover,.ac-item.sel{background:var(--tint)}
+.ac-item svg{width:16px;height:16px;flex:none;color:var(--muted)}
+.ac-item span{color:var(--muted)}
+.ac-item b{color:var(--navy);font-weight:700}
+.ac::-webkit-scrollbar{width:8px}.ac::-webkit-scrollbar-thumb{background:#D5DEEC;border-radius:8px}
+.btn-search{font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);
+  border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
+.btn-search:hover{background:var(--gold-600);color:#fff}
+.filters{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.filters select{font-family:Inter;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:9px 34px 9px 15px;cursor:pointer;appearance:none;
+  min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%235B6B85' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center}
+.filters select:focus{outline:2px solid var(--gold);border-color:transparent}
+.clear-link{font-size:14px;color:var(--navy);background:none;border:0;cursor:pointer;font-weight:600;padding:9px 4px}
+.clear-link:hover{text-decoration:underline}
+main{padding:20px 0 60px}
+.count{font-size:14px;color:var(--muted);margin:0 0 12px}
+.count b{color:var(--text)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.jobcard{background:var(--card);border:1px solid var(--line);border-left:3px solid transparent;
+  border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:box-shadow .15s,border-color .15s;
+  position:relative;display:block;text-decoration:none;color:inherit}
+.jobcard:hover{box-shadow:var(--shadow);border-left-color:var(--gold)}
+.jobcard:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.jobcard .badge{display:inline-block;font-size:11px;font-weight:600;font-family:Poppins;color:var(--gold-600);
+  background:#FBF1DD;border-radius:6px;padding:3px 8px;margin-bottom:8px;letter-spacing:.02em}
+.card-head{display:flex;gap:12px;align-items:flex-start}
+.card-head-txt{min-width:0}
+.avatar{width:44px;height:44px;border-radius:10px;background:var(--navy);color:#fff;font-family:Poppins;
+  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none;overflow:hidden}
+.avatar.gold{background:var(--gold);color:var(--navy)}
+.avatar img{width:100%;height:100%;object-fit:contain;background:#fff}
+.jobcard h3{font-family:Poppins;font-weight:600;font-size:17px;color:var(--navy);margin:0 0 4px}
+.jobcard .emp{font-size:14px;color:var(--text);font-weight:500}
+.jobcard .loc{font-size:13px;color:var(--muted);margin-top:2px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-size:12px;color:var(--text);background:var(--tint);border:1px solid var(--line-2);
+  border-radius:6px;padding:4px 9px;white-space:nowrap}
+.close-soon{color:#B23B3B;font-weight:600}
+.empty,.loading{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
+  padding:48px 28px;text-align:center;color:var(--muted)}
+.empty h3{font-family:Poppins;color:var(--navy);margin:0 0 8px}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px 0 0;flex-wrap:wrap}
+.pager button{font-family:Inter;font-weight:600;font-size:14px;color:var(--navy);background:#fff;
+  border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
+.pager button:hover:not(:disabled){border-color:var(--gold);color:var(--gold-600)}
+.pager button:disabled{color:#9AA8BF;cursor:default}
+.pager .pinfo{font-size:14px;color:var(--muted)}
+.pager .pinfo b{color:var(--text)}
+@media(max-width:640px){
+  .searchbar{flex-direction:column;align-items:stretch;border-radius:16px;padding:6px;gap:0}
+  .field{width:100%;min-width:0;padding:12px 14px}
+  .field.divider{border-left:0;border-top:1px solid var(--line)}
+  .btn-search{width:100%;border-radius:12px;margin-top:6px;padding:14px}
+  .filters{margin-top:16px;gap:8px;display:grid;grid-template-columns:1fr 1fr}
+  .filters select{width:100%}
+  .filters .clear-link{grid-column:1 / -1;text-align:left}
+  .tagline{font-size:20px}
+  .list{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 footer.site{border-top:1px solid var(--line);background:#fff;padding:24px 0;font-size:13px;color:var(--muted)}
-footer.site .wrap{max-width:1160px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
-.gcard{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;text-decoration:none;color:inherit;transition:box-shadow .15s,border-color .15s}
-.gcard:hover{border-left:3px solid var(--gold);box-shadow:0 6px 20px rgba(18,41,77,.06)}
-.gcard h2{font-family:Poppins;font-weight:600;font-size:18px;color:var(--navy);margin:0 0 4px}
-.gcard p{font-size:14.5px;color:var(--muted);margin:0}
-.ghead{font-family:Poppins;font-weight:700;font-size:28px;color:var(--navy);margin:0 0 6px}
-.gsub{font-size:16px;color:var(--muted);margin:0 0 22px}
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5134977183220630" crossorigin="anonymous"></script>
 </head>
 <body>
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="../index.html" aria-label="OnboardingSA home">
+    <a class="brand" href="index.html" aria-label="OnboardingSA home">
       <svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
         <svg viewBox="0 0 240 240" x="8" y="20" width="120" height="120">
           <rect x="20" y="20" width="200" height="200" rx="46" fill="#12294D"/>
@@ -76,28 +127,295 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
         <text x="150" y="101" font-family="Poppins,Arial,sans-serif" font-size="60" font-weight="600" letter-spacing="-0.5"><tspan fill="#12294D">Onboarding</tspan><tspan fill="#E8A33D">SA</tspan></text>
       </svg>
     </a>
-    <nav class="nav"><a href="index.html">Guides</a><a href="../about.html">About</a></nav>
+    <nav class="nav">
+      <a href="guides/index.html">Guides</a>
+      <a href="about.html">About</a>
+    </nav>
   </div>
 </header>
+<section class="search-band">
+  <div class="wrap">
+    <h1 class="tagline">Find your next job.</h1>
+    <div class="searchbar" role="search">
+      <div class="field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="q" type="text" placeholder="Job title, keyword, or employer" aria-label="Search jobs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="qAc">
+        <div class="ac" id="qAc" role="listbox"></div>
+      </div>
+      <div class="field divider">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.2 7-11a7 7 0 10-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <input id="qloc" type="text" placeholder="Province or town" aria-label="Location" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="locAc">
+        <div class="ac" id="locAc" role="listbox"></div>
+      </div>
+      <button class="btn-search" id="searchBtn">Find jobs</button>
+    </div>
+    <div class="filters">
+      <select id="fCategory" aria-label="Filter by category"><option value="">All categories</option></select>
+      <select id="fProvince" aria-label="Filter by province"><option value="">All provinces</option></select>
+      <select id="fType" aria-label="Filter by employment type"><option value="">All types</option></select>
+      <select id="fSort" aria-label="Sort jobs">
+        <option value="closing">Closing soonest</option>
+        <option value="newest">Newest first</option>
+      </select>
+      <button class="clear-link" id="clearBtn">Clear</button>
+    </div>
+  </div>
+</section>
 <main>
   <div class="wrap">
-    <a class="back-link" href="../index.html">← Back to jobs</a>
-    <h1 class="ghead">Career Guides</h1>
-    <p class="gsub">Practical, free advice for South African job seekers. Written to actually help you get hired.</p>
-        <a class="gcard" href="ats-friendly-cv.html"><h2>How to Pass the ATS Every Time</h2><p>Most CVs are rejected by software before a human sees them. Build one that gets through.</p></a>
-    <a class="gcard" href="z83-form-explained.html"><h2>The Z83 Form Explained</h2><p>Applying for a government job? Fill in the compulsory Z83 form correctly — or get disqualified.</p></a>
-    <a class="gcard" href="learnerships-internships-apprenticeships.html"><h2>Learnerships vs Internships vs Apprenticeships</h2><p>They sound similar but they’re not. Which one is right for you, and how much do they pay?</p></a>
-    <a class="gcard" href="bursaries-south-africa.html"><h2>How to Apply for Bursaries in South Africa</h2><p>A bursary can pay for your studies and start your career. Here’s how to apply successfully.</p></a>
-    <a class="gcard" href="job-scams-south-africa.html"><h2>How to Spot and Avoid Job Scams</h2><p>Fake recruiters, upfront fees, WhatsApp offers — learn the warning signs and stay safe.</p></a>
-    <a class="gcard" href="first-job-interview.html"><h2>Acing Your First Job Interview</h2><p>Nervous about your first interview? Prepare properly and walk in calm, ready and ahead.</p></a>
-
+    <p class="count" id="count"></p>
+    <div class="list" id="list">
+      <div class="loading">Loading jobs…</div>
+    </div>
+    <div class="pager" id="pager"></div>
   </div>
 </main>
 <footer class="site">
   <div class="wrap">
-    <span>© 2026 OnboardingSA · onboardingsa.co.za</span>
-    <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
+    <span>© <span id="yr"></span> OnboardingSA · onboardingsa.co.za</span>
+    <span><a href="about.html">About</a> &nbsp;·&nbsp; <a href="contact.html">Contact</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+const JSON_URL = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/jobs.json";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
+const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
+document.getElementById('yr').textContent = new Date().getFullYear();
+let JOBS=[];
+const PER_PAGE=12;
+let PAGE=1;
+let LAST=[];
+function slugify(s){ return (s||'').toString().toLowerCase().trim().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+function makeJobId(row, seen){
+  let base = (row.id||'').toString().trim();
+  if(!base){ base = slugify((row.job_title||'') + '-' + (row.employer||'')); }
+  if(!base){ base = 'job'; }
+  let id = base, n = 2;
+  while(seen.has(id)){ id = base + '-' + n; n++; }
+  seen.add(id);
+  return id;
+}
+function norm(row){
+  const g = k => (row[k] ?? row[k?.toUpperCase?.()] ?? '').toString().trim();
+  return {
+    _rawid: g('id'),
+    job_title: g('job_title'), employer: g('employer'), category: g('category'),
+    province: g('province'), location: g('location'), employment_type: g('employment_type'),
+    salary: g('salary'), posted_date: g('posted_date'), closing_date: g('closing_date'),
+    reference_no: g('reference_no'), about_role: g('about_role'),
+    responsibilities: g('responsibilities'), requirements: g('requirements'),
+    official_apply_url: g('official_apply_url'), featured: g('featured').toLowerCase(),
+    logo_url: g('logo_url'), status: g('status').toLowerCase()
+  };
+}
+function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(isNaN(ms)) return null; return Math.ceil(ms/86400000); }
+function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+const LOGO_BASE="https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/";
+function logoSlug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+function avatarHTML(j){
+  const gold=j.featured==='yes'?' gold':'';
+  const ini=esc(initials(j.employer));
+  const candidates=[];
+  const base=logoSlug(j.employer);
+  if(base){ for(const nm of [...new Set([base, base.toLowerCase()])]){ candidates.push(LOGO_BASE+nm+'.png',LOGO_BASE+nm+'.jpg',LOGO_BASE+nm+'.svg'); } }
+  if(j.logo_url && /^https?:\/\//i.test(j.logo_url)) candidates.push(j.logo_url);
+  if(!candidates.length) return `<div class="avatar${gold}">${ini}</div>`;
+  const list=candidates.map(u=>esc(u)).join('|');
+  return `<div class="avatar${gold}"><img src="${esc(candidates[0])}" alt="${esc(j.employer)} logo" loading="lazy" data-fallbacks="${list}" data-i="0" data-ini="${ini}" onerror="(function(el){const f=el.getAttribute('data-fallbacks').split('|');let i=+el.getAttribute('data-i')+1;if(i<f.length){el.setAttribute('data-i',i);el.src=f[i];}else{el.parentNode.textContent=el.getAttribute('data-ini');}})(this)"></div>`;
+}
+function loadFilters(){
+  const cats=[...new Set(JOBS.map(j=>j.category).filter(Boolean))].sort();
+  const provs=[...new Set(JOBS.map(j=>j.province).filter(Boolean))].sort();
+  const types=[...new Set(JOBS.map(j=>j.employment_type).filter(Boolean))].sort();
+  const fill=(id,arr)=>{const s=document.getElementById(id);arr.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});};
+  fill('fCategory',cats); fill('fProvince',provs); fill('fType',types);
+  window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer)].filter(Boolean))].sort();
+  window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
+}
+function apply(){
+  PAGE=1;
+  const q=document.getElementById('q').value.toLowerCase().trim();
+  const ql=document.getElementById('qloc').value.toLowerCase().trim();
+  const c=document.getElementById('fCategory').value;
+  const p=document.getElementById('fProvince').value;
+  const t=document.getElementById('fType').value;
+  const sort=document.getElementById('fSort').value;
+  let out=JOBS.filter(j=>{
+    const hay=(j.job_title+' '+j.employer+' '+j.category+' '+j.about_role+' '+j.requirements+' '+j.location).toLowerCase();
+    const loc=(j.province+' '+j.location).toLowerCase();
+    return (!q||hay.includes(q))&&(!ql||loc.includes(ql))&&(!c||j.category===c)&&(!p||j.province===p)&&(!t||j.employment_type===t);
+  });
+  out.sort((a,b)=>{
+    if(sort==='newest') return new Date(b.posted_date||0)-new Date(a.posted_date||0);
+    const da=new Date(a.closing_date||'2999'),db=new Date(b.closing_date||'2999');
+    return da-db;
+  });
+  out.sort((a,b)=>(b.featured==='yes')-(a.featured==='yes'));
+  render(out);
+}
+function render(list){
+  LAST=list;
+  const total=list.length;
+  const pages=Math.max(1,Math.ceil(total/PER_PAGE));
+  if(PAGE>pages) PAGE=pages;
+  if(PAGE<1) PAGE=1;
+  const start=(PAGE-1)*PER_PAGE;
+  const slice=list.slice(start,start+PER_PAGE);
+  const el=document.getElementById('list');
+  document.getElementById('count').innerHTML=`<b>${total}</b> job${total!==1?'s':''} found`;
+  if(!total){
+    el.innerHTML=`<div class="empty"><h3>No jobs match that</h3><p>Try clearing filters or searching a broader term.</p></div>`;
+    document.getElementById('pager').innerHTML='';
+    return;
+  }
+  el.innerHTML=slice.map(j=>{
+    const dl=daysLeft(j.closing_date);
+    const soon=dl!==null&&dl<=7;
+    const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl+' days left'}`:''}`:'';
+    return `<a class="jobcard" href="jobs/${encodeURIComponent(j.id)}.html" aria-label="${esc(j.job_title)} at ${esc(j.employer)}">
+      ${j.featured==='yes'?'<span class="badge">★ Featured</span>':''}
+      <div class="card-head">
+        ${avatarHTML(j)}
+        <div class="card-head-txt">
+          <h3>${esc(j.job_title)}</h3>
+          <div class="emp">${esc(j.employer)}</div>
+          <div class="loc">${esc([j.location,j.province].filter(Boolean).join(', '))}</div>
+        </div>
+      </div>
+      <div class="chips">
+        ${j.employment_type?`<span class="chip">${esc(j.employment_type)}</span>`:''}
+        ${j.salary?`<span class="chip">${esc(j.salary)}</span>`:''}
+        ${closeTxt?`<span class="chip ${soon?'close-soon':''}">${esc(closeTxt)}</span>`:''}
+      </div>
+    </a>`;
+  }).join('');
+  renderPager(pages);
+}
+function renderPager(pages){
+  const bar=document.getElementById('pager');
+  if(pages<=1){ bar.innerHTML=''; return; }
+  bar.innerHTML=
+    `<button id="pgPrev" ${PAGE<=1?'disabled':''}>‹ Previous</button>`+
+    `<span class="pinfo">Page <b>${PAGE}</b> of ${pages}</span>`+
+    `<button id="pgNext" ${PAGE>=pages?'disabled':''}>Next ›</button>`;
+  const prev=document.getElementById('pgPrev'), next=document.getElementById('pgNext');
+  if(prev) prev.addEventListener('click',()=>{ if(PAGE>1){ PAGE--; render(LAST); window.scrollTo({top:0,behavior:'smooth'}); } });
+  if(next) next.addEventListener('click',()=>{ if(PAGE<pages){ PAGE++; render(LAST); window.scrollTo({top:0,behavior:'smooth'}); } });
+}
+function isExpired(d){
+  if(!d) return false;
+  const end=new Date(d); if(isNaN(end)) return false;
+  end.setHours(23,59,59,999);
+  return end < new Date();
+}
+function boot(rows){
+  const seen=new Set();
+  JOBS=rows.map(norm)
+    .filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date))
+    .map(j=>{
+      const ref=(j.reference_no||'').trim();
+      const preset=(j._rawid||'').trim();
+      if(ref){ j.id=ref; seen.add(ref); }
+      else if(preset){ j.id=preset; seen.add(preset); }
+      else { j.id=makeJobId({job_title:j.job_title,employer:j.employer},seen); }
+      return j;
+    });
+  if(!JOBS.length){
+    document.getElementById('list').innerHTML=`<div class="empty"><h3>No jobs right now</h3><p>Please check back soon.</p></div>`;
+    document.getElementById('count').innerHTML='';
+    document.getElementById('pager').innerHTML='';
+    return;
+  }
+  loadFilters(); apply();
+}
+function acEscape(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function acHighlight(text,q){
+  const i=text.toLowerCase().indexOf(q.toLowerCase());
+  if(i<0||!q) return `<span>${acEscape(text)}</span>`;
+  return `<span>${acEscape(text.slice(0,i))}<b>${acEscape(text.slice(i,i+q.length))}</b>${acEscape(text.slice(i+q.length))}</span>`;
+}
+const SEARCH_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>';
+function setupAC(inputId,panelId,getData){
+  const input=document.getElementById(inputId), panel=document.getElementById(panelId);
+  let items=[], sel=-1;
+  const close=()=>{panel.classList.remove('open');input.setAttribute('aria-expanded','false');sel=-1;};
+  const open=()=>{if(panel.children.length){panel.classList.add('open');input.setAttribute('aria-expanded','true');}};
+  function build(){
+    const q=input.value.trim();
+    const data=getData();
+    let matches;
+    if(!q){ matches=data.slice(0,8); }
+    else{
+      const ql=q.toLowerCase();
+      const starts=data.filter(v=>v.toLowerCase().startsWith(ql));
+      const incl=data.filter(v=>!v.toLowerCase().startsWith(ql)&&v.toLowerCase().includes(ql));
+      matches=[...starts,...incl].slice(0,8);
+    }
+    items=matches; sel=-1;
+    if(!matches.length){ panel.innerHTML=''; close(); return; }
+    panel.innerHTML=matches.map((v,i)=>`<div class="ac-item" role="option" data-i="${i}">${SEARCH_ICON}${acHighlight(v,q)}</div>`).join('');
+    panel.querySelectorAll('.ac-item').forEach(el=>{
+      el.addEventListener('mousedown',e=>{e.preventDefault();choose(+el.dataset.i);});
+    });
+    open();
+  }
+  function choose(i){ input.value=items[i]; close(); apply(); }
+  function mark(){ panel.querySelectorAll('.ac-item').forEach((el,i)=>el.classList.toggle('sel',i===sel)); }
+  input.addEventListener('input',build);
+  input.addEventListener('focus',build);
+  input.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){e.preventDefault();if(items.length){sel=(sel+1)%items.length;mark();}}
+    else if(e.key==='ArrowUp'){e.preventDefault();if(items.length){sel=(sel-1+items.length)%items.length;mark();}}
+    else if(e.key==='Enter'){ if(sel>=0){e.preventDefault();choose(sel);} else {close();apply();} }
+    else if(e.key==='Escape'){ close(); }
+  });
+  input.addEventListener('blur',()=>setTimeout(close,120));
+}
+setupAC('q','qAc',()=>window.KW||[]);
+setupAC('qloc','locAc',()=>window.LOC||[]);
+document.getElementById('searchBtn').addEventListener('click',apply);
+['fCategory','fProvince','fType','fSort'].forEach(id=>document.getElementById(id).addEventListener('change',apply));
+document.getElementById('clearBtn').addEventListener('click',()=>{
+  ['q','qloc'].forEach(id=>document.getElementById(id).value='');
+  ['fCategory','fProvince','fType'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fSort').value='closing'; apply();
+});
+let booted=false;
+function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
+function loadFromCSV(attempt){
+  attempt = attempt || 1;
+  try{
+    if(typeof Papa==='undefined'){
+      if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { safeBoot([]); }
+      return;
+    }
+    Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,
+      complete:r=>{
+        const rows=(r&&r.data)||[];
+        if(rows.length){ safeBoot(rows); }
+        else if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); }
+        else { safeBoot([]); }
+      },
+      error:()=>{
+        if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { safeBoot([]); }
+      }
+    });
+  }catch(e){
+    if(attempt<=4){ setTimeout(()=>loadFromCSV(attempt+1),1500); } else { safeBoot([]); }
+  }
+}
+function loadJobs(){
+  fetch(JSON_URL,{cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error("no json"); return r.json(); })
+    .then(rows=>{
+      if(Array.isArray(rows) && rows.length){ safeBoot(rows); }
+      else { loadFromCSV(1); }
+    })
+    .catch(()=>{ loadFromCSV(1); });
+}
+loadJobs();
+</script>
 </body>
 </html>
