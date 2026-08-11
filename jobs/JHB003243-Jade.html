@@ -41,6 +41,10 @@ main{padding:22px 0 60px}
 .apply{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);border-radius:10px;padding:13px 24px;text-decoration:none}
 .apply:hover{background:var(--gold-600);color:#fff}
 .apply svg{width:16px;height:16px}
+.share{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:10px;padding:13px 20px;cursor:pointer}
+.share:hover{border-color:var(--navy)}
+.share svg{width:16px;height:16px}
+.share.copied{background:var(--tint);border-color:var(--gold)}
 .handoff{font-size:12.5px;color:var(--muted);margin:2px 0 20px}
 .section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
 .section h2{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 8px}
@@ -84,8 +88,8 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
           <div class="d-loc">Mpumalanga, Mpumalanga</div>
         </div>
       </div>
-      <div class="chips"><span class="chip">Permanent</span><span class="chip">Hospitality</span><span class="chip close-soon">Closes 14 Aug 2026 · 4 days left</span></div>
-      <div class="actions"><a class="apply" href="https://www.careers24.com/jobs/adverts/2374008-front-office-lodge-anchor-mpumalanga/" target="_blank" rel="noopener">Apply on Bright Placements's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a></div>
+      <div class="chips"><span class="chip">Permanent</span><span class="chip">Hospitality</span><span class="chip close-soon">Closes 14 Aug 2026 · 3 days left</span></div>
+      <div class="actions"><a class="apply" href="https://www.careers24.com/jobs/adverts/2374008-front-office-lodge-anchor-mpumalanga/" target="_blank" rel="noopener">Apply on Bright Placements's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a><button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       <p class="handoff">You'll be taken to Bright Placements's official careers page to apply. OnboardingSA never charges you and never collects your application.</p>
       <div class="section"><h2>About the role</h2><p>The Front Office Anchor is responsible for delivering exceptional guest service by managing all front office operations, ensuring smooth check-in and check-out procedures, handling reservations, coordinating guest requests, and creating memorable guest experiences. The role serves as the first point of contact for guests and represents the lodge&#x27;s commitment to outstanding hospitality.Key ResponsibilitiesWelcome guests warmly and provide a professional, personalized arrival experience.Manage all guest check-ins and check-outs efficiently.Handle reservations, amendments, cancellations, and room allocations.Process guest payments, invoices, and account settlements accurately.Answer telephone calls and respond promptly to emails and guest enquiries.Provide guests with information about lodge facilities, activities, and surrounding attractions.Coordinate guest arrivals, departures, transfers, and special requests.Liaise with Housekeeping, Food &amp; Beverage, Maintenance, Spa, and Safari departments to ensure seamless guest experiences.Maintain accurate guest profiles and reservation records.Assist with concierge services, including activity bookings and restaurant reservations where applicable.Resolve guest complaints professionally and escalate issues when necessary.Ensure reception and lobby areas remain clean, organised, and welcoming.Prepare daily reports, occupancy reports, and arrival/departure lists.Promote lodge services and upsell accommodation, activities, and additional guest experiences.Maintain confidentiality of guest information.Ensure compliance with lodge policies, health and safety standards, and operational procedures.
 Minimum Qualifications
@@ -132,5 +136,20 @@ Minimum Qualifications
     <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+(function(){
+  var btn=document.getElementById('shareBtn');
+  if(!btn) return;
+  btn.addEventListener('click',async function(){
+    var url=location.href;
+    var data={title:document.title,text:document.title,url:url};
+    if(navigator.share){ try{ await navigator.share(data); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(url); }catch(e){}
+    btn.classList.add('copied');
+    document.getElementById('shareLabel').textContent='Link copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; },2000);
+  });
+})();
+</script>
 </body>
 </html>

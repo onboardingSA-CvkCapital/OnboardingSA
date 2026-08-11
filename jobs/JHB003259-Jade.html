@@ -41,6 +41,10 @@ main{padding:22px 0 60px}
 .apply{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);border-radius:10px;padding:13px 24px;text-decoration:none}
 .apply:hover{background:var(--gold-600);color:#fff}
 .apply svg{width:16px;height:16px}
+.share{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:10px;padding:13px 20px;cursor:pointer}
+.share:hover{border-color:var(--navy)}
+.share svg{width:16px;height:16px}
+.share.copied{background:var(--tint);border-color:var(--gold)}
 .handoff{font-size:12.5px;color:var(--muted);margin:2px 0 20px}
 .section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
 .section h2{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 8px}
@@ -84,8 +88,8 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
           <div class="d-loc">Limpopo, Limpopo</div>
         </div>
       </div>
-      <div class="chips"><span class="chip">Permanent</span><span class="chip">Hospitality</span><span class="chip close-soon">Closes 14 Aug 2026 · 4 days left</span></div>
-      <div class="actions"><a class="apply" href="https://www.careers24.com/jobs/adverts/2374156-head-chef-limpopo/" target="_blank" rel="noopener">Apply on Bright Placements's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a></div>
+      <div class="chips"><span class="chip">Permanent</span><span class="chip">Hospitality</span><span class="chip close-soon">Closes 14 Aug 2026 · 3 days left</span></div>
+      <div class="actions"><a class="apply" href="https://www.careers24.com/jobs/adverts/2374156-head-chef-limpopo/" target="_blank" rel="noopener">Apply on Bright Placements's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a><button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       <p class="handoff">You'll be taken to Bright Placements's official careers page to apply. OnboardingSA never charges you and never collects your application.</p>
       <div class="section"><h2>About the role</h2><p>The Head Chef is responsible for the overall management of the lodge kitchen, ensuring the delivery of exceptional culinary experiences that reflect the lodge&#x27;s luxury standards. This role oversees menu planning, food preparation, staff management, stock control, budgeting, and compliance with food safety regulations while maintaining consistency, creativity, and operational excellence. Key ResponsibilitiesOversee the daily operation of the kitchen, ensuring smooth and efficient service.Plan, develop, and implement innovative seasonal menus that align with the lodge&#x27;s brand and guest expectations.Prepare and present high-quality meals with exceptional attention to detail.Supervise, train, mentor, and motivate the kitchen team.Allocate duties and prepare staff schedules to ensure adequate kitchen coverage.Ensure consistency in food quality, taste, and presentation across all meal services.Manage food ordering, receiving, storage, and stock rotation.Conduct regular stock takes and maintain accurate inventory records.Monitor food costs, minimise waste, and control kitchen expenses in line with budget.Build and maintain strong relationships with suppliers and ensure the procurement of quality ingredients.Ensure compliance with HACCP, food safety, hygiene, and health and safety regulations.Maintain a clean, organised, and efficient kitchen environment.Cater for special dietary requirements, allergies, and guest preferences.Coordinate private dining experiences, bush breakfasts, boma dinners, and special events where applicable.Monitor and maintain kitchen equipment, reporting maintenance requirements promptly.Collaborate with the Food &amp; Beverage and Lodge Management teams to deliver exceptional guest experiences.Handle guest feedback relating to food and continuously improve the dining experience.Prepare departmental reports, assist with budgeting, and monitor kitchen performance.
 Minimum Qualifications
@@ -138,5 +142,20 @@ Minimum Qualifications
     <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+(function(){
+  var btn=document.getElementById('shareBtn');
+  if(!btn) return;
+  btn.addEventListener('click',async function(){
+    var url=location.href;
+    var data={title:document.title,text:document.title,url:url};
+    if(navigator.share){ try{ await navigator.share(data); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(url); }catch(e){}
+    btn.classList.add('copied');
+    document.getElementById('shareLabel').textContent='Link copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; },2000);
+  });
+})();
+</script>
 </body>
 </html>

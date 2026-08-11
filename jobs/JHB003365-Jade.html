@@ -41,6 +41,10 @@ main{padding:22px 0 60px}
 .apply{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);border-radius:10px;padding:13px 24px;text-decoration:none}
 .apply:hover{background:var(--gold-600);color:#fff}
 .apply svg{width:16px;height:16px}
+.share{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:10px;padding:13px 20px;cursor:pointer}
+.share:hover{border-color:var(--navy)}
+.share svg{width:16px;height:16px}
+.share.copied{background:var(--tint);border-color:var(--gold)}
 .handoff{font-size:12.5px;color:var(--muted);margin:2px 0 20px}
 .section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
 .section h2{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 8px}
@@ -85,7 +89,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
         </div>
       </div>
       <div class="chips"><span class="chip">Permanent</span><span class="chip">Design Services</span><span class="chip ">Closes 2 Sep 2026</span></div>
-      <div class="actions"><a class="apply" href="https://www.careers24.com/jobs/adverts/2377733-interior-decorator-polokwane/" target="_blank" rel="noopener">Apply on Bright Placements's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a></div>
+      <div class="actions"><a class="apply" href="https://www.careers24.com/jobs/adverts/2377733-interior-decorator-polokwane/" target="_blank" rel="noopener">Apply on Bright Placements's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a><button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       <p class="handoff">You'll be taken to Bright Placements's official careers page to apply. OnboardingSA never charges you and never collects your application.</p>
       <div class="section"><h2>About the role</h2><p>The Interior Decorator is responsible for enhancing interior spaces to create aesthetically pleasing, functional, and brand-aligned environments. In a boutique hotel setting, this role focuses on curating décor, furnishings, and finishes that elevate the guest experience while maintaining consistency with the hotel’s style and identity.Key Responsibilities:Plan and execute interior décor concepts in line with the hotel’s brand and themeSelect furniture, fabrics, colour schemes, lighting, and decorative itemsStyle guest rooms, public areas, and event spaces to enhance visual appealWork closely with management and other departments to ensure design consistencySource décor items and liaise with suppliers and vendorsManage décor budgets and ensure cost-effective purchasingOversee installation and placement of décor elementsRefresh and update interiors regularly to maintain a modern and appealing lookEnsure all décor meets quality standards and aligns with guest expectationsStay updated on current design trends and incorporate them where appropriateCoordinate seasonal decorations and special event stylingMaintain an inventory of décor items and assets
 Minimum Requirements:
@@ -113,5 +117,20 @@ Understanding of luxury or boutique hospitality trends</p></div>
     <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+(function(){
+  var btn=document.getElementById('shareBtn');
+  if(!btn) return;
+  btn.addEventListener('click',async function(){
+    var url=location.href;
+    var data={title:document.title,text:document.title,url:url};
+    if(navigator.share){ try{ await navigator.share(data); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(url); }catch(e){}
+    btn.classList.add('copied');
+    document.getElementById('shareLabel').textContent='Link copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; },2000);
+  });
+})();
+</script>
 </body>
 </html>

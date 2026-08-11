@@ -41,6 +41,10 @@ main{padding:22px 0 60px}
 .apply{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);border-radius:10px;padding:13px 24px;text-decoration:none}
 .apply:hover{background:var(--gold-600);color:#fff}
 .apply svg{width:16px;height:16px}
+.share{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:10px;padding:13px 20px;cursor:pointer}
+.share:hover{border-color:var(--navy)}
+.share svg{width:16px;height:16px}
+.share.copied{background:var(--tint);border-color:var(--gold)}
 .handoff{font-size:12.5px;color:var(--muted);margin:2px 0 20px}
 .section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
 .section h2{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 8px}
@@ -84,8 +88,8 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
           <div class="d-loc">Mpumalanga</div>
         </div>
       </div>
-      <div class="chips"><span class="chip">Full-time</span><span class="chip">Market Related</span><span class="chip">Police, Security and Protective</span><span class="chip close-soon">Closes 11 Aug 2026 · 1 days left</span></div>
-      <div class="actions"><a class="apply" href="https://eskomcareers.ci.hr/applicant/index.php?controller=Listings&amp;method=view&amp;listingid=03b1d697-f23f-419a-ba69-c54380d72b66" target="_blank" rel="noopener">Apply on Eskom's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a></div>
+      <div class="chips"><span class="chip">Full-time</span><span class="chip">Market Related</span><span class="chip">Police, Security and Protective</span><span class="chip close-soon">Closes 11 Aug 2026 · 0 days left</span></div>
+      <div class="actions"><a class="apply" href="https://eskomcareers.ci.hr/applicant/index.php?controller=Listings&amp;method=view&amp;listingid=03b1d697-f23f-419a-ba69-c54380d72b66" target="_blank" rel="noopener">Apply on Eskom's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a><button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       <p class="handoff">You'll be taken to Eskom's official careers page to apply. OnboardingSA never charges you and never collects your application.</p>
       <div class="section"><h2>About the role</h2><p>Komati Power Station is looking for a dynamic skilled individual with security experience to protect Eskom’s assets and interest by performing physical security duties. Position: Senior Inspector Department: Security Task Grade: T06</p></div><div class="section"><h2>Responsibilities</h2><ul><li>Behavioural</li><li>Integrity</li><li>Honesty</li><li>Trustworthiness</li><li>Professionalism</li><li>Leadership</li><li>Live the Eskom vision and values</li><li>Grow people</li><li>Ignite passion</li><li>Promote teamwork</li><li>Encourage the right behaviour</li><li>Promote open and transparent communication</li><li>Employee relationship building</li><li>Team player</li><li>Knowledge</li><li>Apply theoretical and business knowledge on the job.</li><li>Apply good knowledge of governance, security legislation, protocols and situation monitoring.</li><li>Eskom security policies, systems, directives, and standards</li><li>Skill</li><li>Effective customer-care</li><li>Communication</li><li>Stakeholder management (supervisors, colleagues, customers, and management)</li><li>Computer literate</li><li>Report writing</li><li>Interact with senior levels.</li><li>Key Performance Areas</li><li>Perform access control duties.</li><li>Perform patrol duties.</li><li>Perform reaction/response team duties.</li><li>Perform emergency preparedness duties.</li><li>Perform guard duties.</li><li>Perform general security duties.</li></ul></div><div class="section"><h2>Requirements</h2><ul><li>Qualifications</li><li>Grade 12/NCV4/NSC3/N3 and languages/Diploma/Certificate in the relevant function at NQF4 with 120</li><li>credits.</li><li>Professional Registration Body</li><li>Professional Registration Body: Private Security Industry Regulation Authority (PSIRA) Grade C or higher</li><li>Experience</li><li>Experience in security guarding, patrolling and access control.</li><li>National Key Point (NKP) training/registration and firearm competency.</li><li>Positive security clearance issued by the State Security Agency.</li><li>2 Years Security experience.</li></ul></div>
       <div class="d-foot"><span>Ref: eskom_senior-inspector-komati-power-station-t06</span></div>
@@ -98,5 +102,20 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+(function(){
+  var btn=document.getElementById('shareBtn');
+  if(!btn) return;
+  btn.addEventListener('click',async function(){
+    var url=location.href;
+    var data={title:document.title,text:document.title,url:url};
+    if(navigator.share){ try{ await navigator.share(data); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(url); }catch(e){}
+    btn.classList.add('copied');
+    document.getElementById('shareLabel').textContent='Link copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; },2000);
+  });
+})();
+</script>
 </body>
 </html>

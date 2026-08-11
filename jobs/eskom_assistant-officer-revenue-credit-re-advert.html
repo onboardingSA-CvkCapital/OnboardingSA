@@ -41,6 +41,10 @@ main{padding:22px 0 60px}
 .apply{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:var(--gold);color:var(--navy);border-radius:10px;padding:13px 24px;text-decoration:none}
 .apply:hover{background:var(--gold-600);color:#fff}
 .apply svg{width:16px;height:16px}
+.share{display:inline-flex;align-items:center;gap:8px;font-family:Poppins;font-weight:600;font-size:15px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:10px;padding:13px 20px;cursor:pointer}
+.share:hover{border-color:var(--navy)}
+.share svg{width:16px;height:16px}
+.share.copied{background:var(--tint);border-color:var(--gold)}
 .handoff{font-size:12.5px;color:var(--muted);margin:2px 0 20px}
 .section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
 .section h2{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 8px}
@@ -84,8 +88,8 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
           <div class="d-loc">Nelspruit</div>
         </div>
       </div>
-      <div class="chips"><span class="chip">Full-time</span><span class="chip">Market Related</span><span class="chip">Office Support</span><span class="chip close-soon">Closes 13 Aug 2026 · 3 days left</span></div>
-      <div class="actions"><a class="apply" href="https://eskomcareers.ci.hr/applicant/index.php?controller=Listings&amp;method=view&amp;listingid=f06c803a-946c-4f05-a8d0-20da135e71c7" target="_blank" rel="noopener">Apply on Eskom's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a></div>
+      <div class="chips"><span class="chip">Full-time</span><span class="chip">Market Related</span><span class="chip">Office Support</span><span class="chip close-soon">Closes 13 Aug 2026 · 2 days left</span></div>
+      <div class="actions"><a class="apply" href="https://eskomcareers.ci.hr/applicant/index.php?controller=Listings&amp;method=view&amp;listingid=f06c803a-946c-4f05-a8d0-20da135e71c7" target="_blank" rel="noopener">Apply on Eskom's official site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a><button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       <p class="handoff">You'll be taken to Eskom's official careers page to apply. OnboardingSA never charges you and never collects your application.</p>
       <div class="section"><h2>About the role</h2><p>Eskom Distribution Division is looking for Assistant Officer Revenue &amp; Credit, Position/Task Grade: T10. Department: Finance - Revenue Management, Business Unit Limlanga Cluster, located at Nelspruit. Area of specialisation: To provide sales, generic and interface customer services related to revenue and credit management processes in a defined geographical area, collect overdue live debt, provide support to the value chain sub-processes.</p></div><div class="section"><h2>Responsibilities</h2><ul><li>Skills and Competencies Required</li><li>Behavioural</li><li>Integrity</li><li>Honesty</li><li>Trustworthiness</li><li>Professionalism</li><li>Leadership</li><li>Team Player</li><li>Motivating Teams</li><li>Coaching</li><li>Mentoring</li><li>Developing</li><li>Knowledge</li><li>Business processes</li><li>Bilingual/Multi-lingual</li><li>Counselling and conflict handling</li><li>Skill</li><li>Communication and interpersonal</li><li>Planning and organisational</li><li>Stress management</li><li>Customer service and marketing</li><li>Telephone</li><li>Computer</li><li>Key Responsibilities</li><li>Conduct credit revenue and credit management processes</li><li>Be responsible for customer data</li><li>Handle generic service activities</li><li>Direct the daily customer service activity operations</li><li>Build relationship between customers and Eskom via proactive interventions</li><li>Conduct measurement and meter related tasks</li><li>Perform vending and prepaid activities</li><li>Process quotation and connection activities</li></ul></div><div class="section"><h2>Requirements</h2><ul><li>Minimum Qualification Requirements</li><li>National Diploma in Finance/Commerce/Accounting at NQF6 with 240 credits</li><li>Related Minimum Experience</li><li>2 Years’ experience in finance/customer service</li></ul></div>
       <div class="d-foot"><span>Ref: eskom_assistant-officer-revenue-credit-re-advert</span></div>
@@ -98,5 +102,20 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <span><a href="../about.html">About</a> &nbsp;·&nbsp; <a href="../contact.html">Contact</a> &nbsp;·&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="../terms.html">Terms</a></span>
   </div>
 </footer>
+<script>
+(function(){
+  var btn=document.getElementById('shareBtn');
+  if(!btn) return;
+  btn.addEventListener('click',async function(){
+    var url=location.href;
+    var data={title:document.title,text:document.title,url:url};
+    if(navigator.share){ try{ await navigator.share(data); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(url); }catch(e){}
+    btn.classList.add('copied');
+    document.getElementById('shareLabel').textContent='Link copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); document.getElementById('shareLabel').textContent='Share this job'; },2000);
+  });
+})();
+</script>
 </body>
 </html>
