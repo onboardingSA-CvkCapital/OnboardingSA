@@ -161,7 +161,7 @@ def render(j):
     title=esc(j.get("job_title"))
     employer=esc(j.get("employer"))
     jid=j.get("id","")
-    canonical=f"{SITE}/{OUT_DIR}/{jid}.html"
+    canonical=f"{SITE}/{OUT_DIR}/"+re.sub(r'[^A-Za-z0-9_\-]','-',jid)+".html"
     loc_line=", ".join([x for x in [j.get("location",""),j.get("province","")] if x])
     dl=days_left(j.get("closing_date"))
     soon = dl is not None and dl<=7
