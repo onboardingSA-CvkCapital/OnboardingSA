@@ -178,6 +178,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
 </footer>
 <script>
 const JSON_URL = "jobs-lite.json";
+const PAGE1_URL = "jobs-page-1.json";
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
 const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -383,7 +384,29 @@ document.getElementById('clearBtn').addEventListener('click',()=>{
   document.getElementById('fSort').value='closing'; apply();
 });
 let booted=false;
+let FULL_LOADED=false;
 function safeBoot(rows){ if(booted) return; booted=true; boot(rows); }
+// Instant first paint: render only the first page from a tiny file,
+// without waiting for the full dataset (which loads in the background).
+function quickRender(rows){
+  if(FULL_LOADED || booted) return;
+  const seen=new Set();
+  const q=rows.map(norm)
+    .filter(j=>j.job_title && j.status==='live' && !isExpired(j.closing_date))
+    .map(j=>{
+      const ref=(j.reference_no||'').trim();
+      const preset=(j._rawid||'').trim();
+      if(ref){ j.id=ref; seen.add(ref); }
+      else if(preset){ j.id=preset; seen.add(preset); }
+      else { j.id=makeJobId({job_title:j.job_title,employer:j.employer},seen); }
+      return j;
+    });
+  if(!q.length) return;
+  JOBS=q; LAST=q; PAGE=1;
+  render(q);
+  const c=document.getElementById('count');
+  if(c) c.innerHTML='Showing latest opportunities&hellip;';
+}
 function loadFromCSV(attempt){
   attempt = attempt || 1;
   try{
@@ -407,10 +430,16 @@ function loadFromCSV(attempt){
   }
 }
 function loadJobs(){
+  // 1) Instant paint from the tiny first-page file (a few KB).
+  fetch(PAGE1_URL,{cache:"no-store"})
+    .then(r=>r.ok?r.json():null)
+    .then(rows=>{ if(Array.isArray(rows) && rows.length) quickRender(rows); })
+    .catch(()=>{});
+  // 2) Full slim dataset in the background — powers search + filters.
   fetch(JSON_URL,{cache:"no-store"})
     .then(r=>{ if(!r.ok) throw new Error("no json"); return r.json(); })
     .then(rows=>{
-      if(Array.isArray(rows) && rows.length){ safeBoot(rows); }
+      if(Array.isArray(rows) && rows.length){ FULL_LOADED=true; safeBoot(rows); }
       else { loadFromCSV(1); }
     })
     .catch(()=>{ loadFromCSV(1); });
