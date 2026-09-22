@@ -1,0 +1,40 @@
+name: Build jobs-lite.json
+
+# Regenerates the slim homepage data file whenever jobs.json changes,
+# so you never have to remember to run the script by hand.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "jobs.json"
+      - "build-lite.py"
+  workflow_dispatch:   # lets you run it manually from the Actions tab too
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate jobs-lite.json
+        run: python3 build-lite.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet jobs-lite.json; then
+            git add jobs-lite.json
+            git commit -m "Auto-build jobs-lite.json"
+            git push
+          else
+            echo "No change to jobs-lite.json"
+          fi

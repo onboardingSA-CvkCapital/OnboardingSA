@@ -177,7 +177,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
   </div>
 </footer>
 <script>
-const JSON_URL = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/jobs.json";
+const JSON_URL = "jobs-lite.json";
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv";
 const COMPANIES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3l2QVBTRLxGsSZet7ekNMeh50OmoN5T8PbK-uzL1SUywSjpC0UuJJcz1zV6_lA/pub?gid=1033310198&single=true&output=csv";
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -202,7 +202,7 @@ function norm(row){
     job_title: g('job_title'), employer: g('employer'), category: g('category'),
     province: g('province'), location: g('location'), employment_type: g('employment_type'),
     salary: g('salary'), posted_date: g('posted_date'), closing_date: g('closing_date'),
-    reference_no: g('reference_no'), about_role: g('about_role'),
+    reference_no: g('reference_no'), about_role: g('about_role'), snippet: g('snippet'),
     responsibilities: g('responsibilities'), requirements: g('requirements'),
     official_apply_url: g('official_apply_url'), featured: g('featured').toLowerCase(),
     logo_url: g('logo_url'), status: g('status').toLowerCase()
@@ -243,7 +243,7 @@ function apply(){
   const t=document.getElementById('fType').value;
   const sort=document.getElementById('fSort').value;
   let out=JOBS.filter(j=>{
-    const hay=(j.job_title+' '+j.employer+' '+j.category+' '+j.about_role+' '+j.requirements+' '+j.location).toLowerCase();
+    const hay=(j.job_title+' '+j.employer+' '+j.category+' '+j.snippet+' '+j.about_role+' '+j.requirements+' '+j.location).toLowerCase();
     const loc=(j.province+' '+j.location).toLowerCase();
     return (!q||hay.includes(q))&&(!ql||loc.includes(ql))&&(!c||j.category===c)&&(!p||j.province===p)&&(!t||j.employment_type===t);
   });
