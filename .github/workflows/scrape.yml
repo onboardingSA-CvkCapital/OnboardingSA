@@ -52,6 +52,9 @@ jobs:
       - name: Build jobs.json
         run: python build_json.py
 
+      - name: Build homepage data files (lite + first page)
+        run: python build_lite.py
+
       - name: Build static job pages
         run: python build_static.py
 
@@ -63,6 +66,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add jobs.json sitemap.xml jobs/
+          git add jobs.json jobs-lite.json jobs-page-1.json sitemap.xml jobs/
           git commit -m "Update jobs, static pages, sitemap" || echo "no changes"
           git push
