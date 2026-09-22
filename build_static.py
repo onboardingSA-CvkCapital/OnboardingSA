@@ -2,6 +2,7 @@ import json, os, sys, html, re, datetime
 
 SITE = "https://www.onboardingsa.co.za"
 OUT_DIR = "jobs"
+THIN_WORDS = 40   # pages with fewer unique content words get noindex + no sitemap entry
 LOGO_BASE = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/"
 
 def esc(s):
@@ -54,7 +55,7 @@ HEAD = """<!DOCTYPE html>
 <title>{title} — {employer} | OnboardingSA</title>
 <meta name="description" content="{metadesc}">
 <link rel="canonical" href="{canonical}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect x='20' y='20' width='200' height='200' rx='46' fill='%2312294D'/%3E%3Cpath d='M120 56 L160 112 L133 112 L133 168 L107 168 L107 112 L80 112 Z' fill='%23E8A33D'/%3E%3Crect x='76' y='176' width='88' height='14' rx='7' fill='%23E8A33D'/%3E%3C/svg%3E">
+{robots}<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect x='20' y='20' width='200' height='200' rx='46' fill='%2312294D'/%3E%3Cpath d='M120 56 L160 112 L133 112 L133 168 L107 168 L107 112 L80 112 Z' fill='%23E8A33D'/%3E%3Crect x='76' y='176' width='88' height='14' rx='7' fill='%23E8A33D'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -195,8 +196,13 @@ def render(j):
     schema={k:v for k,v in schema.items() if v is not None}
     schema_json=json.dumps(schema, ensure_ascii=False)
 
+    # thin pages (little unique content) get noindex and are left out of the sitemap
+    unique_words=len((f"{j.get('about_role','')} {j.get('responsibilities','')} {j.get('requirements','')}").split())
+    is_thin = unique_words < THIN_WORDS
+    robots = '<meta name="robots" content="noindex,follow">\n' if is_thin else ''
+
     head=HEAD.format(title=title, employer=employer, metadesc=metadesc,
-                     canonical=canonical, schema=schema_json)
+                     canonical=canonical, schema=schema_json, robots=robots)
 
     chips=""
     if j.get("employment_type"): chips+=f'<span class="chip">{esc(j.get("employment_type"))}</span>'
@@ -250,7 +256,7 @@ def render(j):
       <div class="d-foot">{foot_meta}</div>
 """
     foot=FOOT.format(year=datetime.date.today().year)
-    return head+body+foot
+    return head+body+foot, is_thin
 
 def main():
     with open("jobs.json","r",encoding="utf-8") as f:
@@ -261,15 +267,20 @@ def main():
         if fn.endswith(".html"):
             os.remove(os.path.join(OUT_DIR, fn))
     urls=[]
+    thin_count=0
     for j in jobs:
         jid=j.get("id","")
         if not jid: continue
         safe=re.sub(r'[^A-Za-z0-9_\-]', '-', jid)
         path=os.path.join(OUT_DIR, safe+".html")
+        html_str, is_thin = render(j)
         with open(path,"w",encoding="utf-8") as f:
-            f.write(render(j))
-        urls.append(f"{SITE}/{OUT_DIR}/{safe}.html")
-    print(f"Wrote {len(urls)} static job pages.", file=sys.stderr)
+            f.write(html_str)
+        if is_thin:
+            thin_count+=1            # noindexed: page exists for users, but kept out of the sitemap
+        else:
+            urls.append(f"{SITE}/{OUT_DIR}/{safe}.html")
+    print(f"Wrote static job pages ({len(urls)} indexable, {thin_count} thin/noindex).", file=sys.stderr)
     # sitemap with main pages + all job pages
     main_pages=["/","/index.html","/about.html","/contact.html","/privacy.html","/terms.html",
                "/guide-index.html","/guide-ats-friendly-cv.html","/guide-z83-form-explained.html",
