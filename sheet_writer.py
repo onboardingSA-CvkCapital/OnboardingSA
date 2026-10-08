@@ -1,6 +1,7 @@
 import re, hashlib
 import gspread
 from google.oauth2.service_account import Credentials
+import privacy_clean
 
 SPREADSHEET_ID = "1lr6iS-d_HpYrh1HHe9fjNQhaBugRMsGfpZw-IsPZfV0"
 WORKSHEET = "Jobs"
@@ -22,7 +23,8 @@ def _norm(s):
     return re.sub(r'\s+', ' ', (s or "").strip().lower())
 
 def fingerprint(row):
-    base = _norm(row.get("employer")) + "|" + _norm(row.get("job_title")) + "|" + _norm(row.get("location"))
+    base = (_norm(row.get("employer")) + "|" + _norm(row.get("job_title")) + "|" + _norm(row.get("location"))
+            + "|" + _norm(row.get("reference_no")))
     return hashlib.sha1(base.encode("utf-8")).hexdigest()[:16]
 
 def _existing_keys(ws):
@@ -32,13 +34,14 @@ def _existing_keys(ws):
     header = vals[0]
     def idx(name):
         return header.index(name) if name in header else -1
-    ei, ti, li = idx("employer"), idx("job_title"), idx("location")
+    ei, ti, li, ri = idx("employer"), idx("job_title"), idx("location"), idx("reference_no")
     keys = set()
     for r in vals[1:]:
         emp = _norm(r[ei]) if ei>=0 and ei<len(r) else ""
         tit = _norm(r[ti]) if ti>=0 and ti<len(r) else ""
         loc = _norm(r[li]) if li>=0 and li<len(r) else ""
-        base = emp + "|" + tit + "|" + loc
+        ref = _norm(r[ri]) if ri>=0 and ri<len(r) else ""
+        base = emp + "|" + tit + "|" + loc + "|" + ref
         keys.add(hashlib.sha1(base.encode("utf-8")).hexdigest()[:16])
     return keys, header
 
@@ -57,6 +60,7 @@ def append_jobs(rows):
     existing, _ = _existing_keys(ws)
     to_write = []
     for r in rows:
+        privacy_clean.clean_job(r)   # strip personal emails/phones/ID numbers before saving
         for k, v in list(r.items()):
             if isinstance(v, str) and len(v) > MAXCELL:
                 r[k] = v[:MAXCELL]

@@ -215,12 +215,21 @@ def render(j):
 
     apply=""
     apply_url=j.get("official_apply_url","")
-    if apply_url:
+    is_pdf = apply_url.lower().split("?")[0].endswith(".pdf")
+    if apply_url and is_pdf:
+        apply=(f'<a class="apply" href="{esc(apply_url)}" target="_blank" rel="noopener">'
+               f"View the official advert (PDF) "
+               f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>')
+    elif apply_url:
         apply=(f'<a class="apply" href="{esc(apply_url)}" target="_blank" rel="noopener">'
                f"Apply on {employer}'s official site "
                f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>')
-    handoff=(f'<p class="handoff">You\'ll be taken to {employer}\'s official careers page to apply. '
-             f'OnboardingSA never charges you and never collects your application.</p>') if apply_url else ""
+    if is_pdf:
+        handoff=('<p class="handoff">Follow the “How to apply” instructions below and quote the reference number. '
+                 'Government posts are free to apply for — OnboardingSA never charges you and never collects your application.</p>')
+    else:
+        handoff=(f'<p class="handoff">You\'ll be taken to {employer}\'s official careers page to apply. '
+                 f'OnboardingSA never charges you and never collects your application.</p>') if apply_url else ""
 
     sections=""
     if j.get("about_role"):

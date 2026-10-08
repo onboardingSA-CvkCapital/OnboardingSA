@@ -1,4 +1,5 @@
 import json, sys, csv, io, datetime, urllib.request
+import privacy_clean
 
 CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv"
 
@@ -30,7 +31,7 @@ def main():
         if not title or status!="live" or is_expired(r.get("closing_date","")):
             continue
         r["id"]=stable_id(r.get("reference_no",""), title, r.get("employer",""))
-        out.append(r)
+        out.append(privacy_clean.clean_job(r))   # never publish personal contact details
     with open("jobs.json","w",encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",",":"))
     print(f"Wrote jobs.json with {len(out)} live jobs (from CSV).", file=sys.stderr)
