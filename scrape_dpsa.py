@@ -70,6 +70,7 @@ FIELD_LABELS = {
 }
 LABEL_RE = re.compile(r"^\s*(" + "|".join(sorted(map(re.escape, FIELD_LABELS), key=len, reverse=True))
                       + r")\s*:\s?(.*)$")
+BARE_LABEL_RE = re.compile(r"^\s*(ENQUIRIES|APPLICATIONS|CLOSING DATE|FOR ATTENTION)\s+(?=[A-Z0-9(])(.*)$")
 POST_RE = re.compile(r"^\s*POST\s+(\d{1,2})\s*/\s*(\d{1,3})\s*:?\s*(.*)$")
 ANNEX_RE = re.compile(r"^\s*ANNEXURE\s+([A-Z]{1,2})\s*$")
 PROVADMIN_RE = re.compile(r"^\s*PROVINCIAL ADMINISTRATION\s*:\s*([A-Z][A-Z \-]+?)\s*$")
@@ -79,34 +80,63 @@ SECTION_RE = re.compile(r"^\s*(OTHER POSTS?|MANAGEMENT ECHELON|SENIOR MANAGEMENT
 DEPT_RE = re.compile(r"^\s*((?:DEPARTMENT|OFFICE|NATIONAL|PROVINCIAL TREASURY|GOVERNMENT|POLICE|"
                      r"INDEPENDENT|STATISTICS|WESTERN CAPE|GAUTENG|COMMISSION|THE PRESIDENCY|"
                      r"STATE|PUBLIC|SOUTH AFRICAN|CIVILIAN|MILITARY)[A-Z ,&()\-'’]*)\s*$")
-REF_RE = re.compile(r"REF(?:ERENCE)?\.?\s*(?:NO|NUMBER)\.?\s*:?\s*"
+REF_RE = re.compile(r"\bREF(?:ERENCE)?\.?\s*(?:NO|NUMBER)?\.?\s*:?\s*(?=[^\n]{0,25}\d)"
                     r"([A-Z0-9][A-Z0-9/.\-_]*(?:\s[A-Z0-9/.\-_]*[0-9/][A-Z0-9/.\-_]*)*)", re.I)
-COUNT_RE = re.compile(r"\(\s*X?\s*(\d+)\s*POSTS?\s*\)", re.I)
+REF_LINE_RE = re.compile(r"\b(?:REF(?:ERENCE)?|RE)\.?\s*(?:NO|NUMBER)\.?\s*:?\s*([^()\n]*)", re.I)
+
+
+def line_refs(lines):
+    """Reference numbers written as 'REF NO: XYZ 12/3' at the end of a title or centre line."""
+    out = []
+    raw = [norm_ws(l) for l in lines if norm_ws(l)]
+    lines = []
+    for ln in raw:                      # "... REF" / "NO: DD CPS" split over two lines
+        if lines and re.search(r"\b(?:REF|RE)\.?$", lines[-1], re.I):
+            lines[-1] += " " + ln
+        else:
+            lines.append(ln)
+    for i, ln in enumerate(lines):
+        for m in REF_LINE_RE.finditer(ln):
+            val = m.group(1).strip(" .:;,“”\"'")
+            if not val and i + 1 < len(lines):                 # "REF NO:" wrapped onto the next line
+                val = re.split(r"[()]", lines[i + 1])[0].strip(" .:;,")
+            if val and i + 1 < len(lines) and len(val) <= 6 and re.fullmatch(r"[A-Z0-9/.\-:]{1,12}", lines[i + 1]):
+                val += " " + lines[i + 1]                       # "REF NO: DD" / "CPS"
+            val = re.sub(r"\s*:\s*", ": ", val)
+            if val and len(val) <= 40:
+                out.append(val)
+    return out
+
+
+COUNT_RE = re.compile(r"\(\s*X?\s*(\d+)\s*POSTS?(?:\s+AVAILABLE)?\s*\)", re.I)
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july",
                                       "august", "september", "october", "november", "december"], 1)}
 
 CATEGORY_RULES = [
     ("Internship", r"\bintern|learner|graduate programme|trainee"),
-    ("Medical", r"nurse|nursing|medical|doctor|pharmac|clinical|radiograph|physiotherap|dietitian|"
+    ("Medical", r"nurse|nursing|medical|doctor|pharmac|clinical|radiograph|physiotherap|dietitian|paramedic|"
+                r"psychometr|laborator|"
                 r"dental|health|emergency care|psycholog|occupational therap|speech|audiolog|optometr"),
     ("Legal", r"legal|attorney|advocate|prosecutor|magistrate|law\b|litigation|court"),
     ("IT", r"\bict\b|information technology|software|network|systems? admin|programmer|developer|"
            r"\bit\b|cyber|data(base)? |business intelligence"),
     ("Engineering", r"engineer|technician|technologist|artisan|electrician|plumber|mechanic|"
                     r"draughts|surveyor|built environment|infrastructure|architect"),
-    ("Finance", r"financ|account|audit|budget|treasury|revenue|supply chain|procurement|"
-                r"payroll|asset|bookkeep|economist|salar"),
+    ("Finance", r"financ|account|audit|budget|treasury|revenue|supply chain|procurement|sourcing|forensic|"
+                r"remuneration|payroll|asset|bookkeep|economist|salar"),
     ("Education", r"educator|teacher|lecturer|principal|education|curriculum|training"),
-    ("Social Services", r"social work|social auxiliary|community development|child and youth care|"
+    ("Social Services", r"social work|social auxiliary|community development|child and youth care|rehabilitation|"
                         r"probation"),
-    ("Agriculture", r"agricultur|veterinar|animal|farm|crop|soil|forestry|fisheries|environment"),
-    ("Security", r"security|safety|correctional|police|traffic|law enforcement|firefight"),
-    ("HR", r"human resource|\bhr\b|labour relations|employee relations|recruitment|"
+    ("Agriculture", r"agricultur|veterinar|animal|farm|crop|soil|forestry|fisheries|environment|land reform"),
+    ("Logistics", r"transport officer|logistic|dock|harbour|fleet|warehouse|stores|driver"),
+    ("Security", r"security|safety|correctional|police|traffic|enforcement|inspector|firefight"),
+    ("HR", r"human resource|\bhr\b|labour relations|employee relations|recruitment|organisational development|"
            r"skills development|personnel"),
-    ("Admin", r"admin|clerk|secretary|registry|receptionist|office aid|messenger|typist|"
+    ("Admin", r"admin|clerk|secretar|registry|receptionist|office aid|messenger|typist|librar|telecom|"
+              r"customer|client service|employer services|coordinator|co-ordinator|facilitator|programme officer|"
               r"data captur|personal assistant|executive assistant|records"),
     ("Management", r"director|manager|head of|chief executive|deputy director"),
-    ("General Worker", r"cleaner|general worker|driver|food service|porter|gardener|handyman|"
+    ("General Worker", r"cleaner|general worker|household aid|operator|food service|porter|gardener|handyman|"
                        r"groundsman|laundry|housekeep|cook|tradesman aid"),
 ]
 
@@ -143,7 +173,8 @@ def title_case(s):
         elif i and w in small:
             words.append(w)
         else:
-            words.append(w[:1].upper() + w[1:] if not w[:1] in "(\"'" else w[:2].upper() + w[2:])
+            words.append("/".join(x[:1].upper() + x[1:] if not x[:1] in "(\"'" else x[:2].upper() + x[2:]
+                                  for x in w.split("/")))
     return " ".join(words)
 
 
@@ -194,6 +225,170 @@ def clean_dept(name):
     name = norm_ws(name).strip(" :")
     name = re.sub(r"\s*\((?:[A-Z]{2,8})\)\s*$", "", name)          # "(DOA)"
     return title_case(name)
+
+
+# ----------------------------------------------------------------- tidy-up (no AI, fixed rules)
+
+ABBREV = r"(?:e\.g|i\.e|etc|No|Nr|incl|approx|Dr|Mr|Mrs|Ms|Prof|St|vs|Ref|Pty|Ltd|cf)"
+SENT_SPLIT = re.compile(r"(?<!\b" + "e.g" + r")(?<=[.!?])\s+(?=[A-Z(•\-])")
+GROUP_HEAD = re.compile(r"^([A-Z][A-Za-z/&()'’,\- ]{2,60}?)\s*:\s+(.+)$")
+FILLER = [
+    (r"^(?:applicants|candidates|the candidate|the successful candidate|incumbents?)\s+(?:must|should|will)\s+"
+     r"(?:be in possession of|have|possess|hold)\s+", ""),
+    (r"^(?:must|should)\s+(?:be in possession of|have|possess|hold)\s+", ""),
+    (r"^(?:be in possession of|in possession of)\s+", ""),
+    (r"^(?:the )?minimum (?:educational )?(?:qualification|requirement)s?\s*(?:is|are)?\s*:?\s*", ""),
+    (r"\b(?:a\s+)?minimum of\s+", "at least "),
+    (r"\b(\w+)\s+\(\1\)", r"\1"),                  # "three (three)"
+    (r"\b(one|two|three|four|five|six|seven|eight|nine|ten)\s*\(?(\d{1,2})\)?\s+(?=years?|months?)", r"\2 "),
+    (r"\b(one|two|three|four|five|six|seven|eight|nine|ten)\s+(?=years?['’]?\s)", lambda m: str(
+        ["one","two","three","four","five","six","seven","eight","nine","ten"].index(m.group(1).lower()) + 1) + " "),
+    (r"\s+", " "),
+]
+
+
+def _sentences(text):
+    text = norm_ws(text.replace("\n", " "))
+    # protect abbreviations so "e.g. Excel" does not split
+    prot = re.sub(r"\b(" + ABBREV[3:-1] + r")\.", lambda m: m.group(1) + "\u2024", text, flags=re.I)
+    prot = re.sub(r"\betc\u2024\s+(?=[A-Z][A-Za-z ,&/'’\-]{2,60}:\s)", "etc. ", prot)
+    prot = re.sub(r"\s*/\s+", "/", prot)
+    parts = re.split(r"(?<=[.!?])\s+(?=[A-Z(•\-\d])", prot)
+    return [x.replace("\u2024", ".").strip(" •-") for x in parts if x.strip(" •-.")]
+
+
+def _tidy(sentence):
+    t = sentence.strip()
+    for pat, rep in FILLER:
+        t = re.sub(pat, rep, t, flags=re.I)
+    t = t.strip()
+    return (t[:1].upper() + t[1:]) if t else t
+
+
+LIST_HEADS = (r"(?:Job[- ]Related |Generic |Technical |Behavioural |Personal )?"
+              r"(?:Knowledge|Skills|Competencies|Competency|Attributes|Abilities|Skills and Competencies|"
+              r"Knowledge and Skills)")
+EMBEDDED_HEAD = re.compile(r"(?<=[a-z0-9)’'.])\s+((?:Essential |Key |Core |Generic |Technical |Behavioural |Personal |Inherent |Job[- ]Related )?"
+                           r"(?:Knowledge|Skills|Competenc[a-z]*|Attributes|Requirements)"
+                           r"(?:,?\s+(?:and\s+|And\s+)?[A-Za-z]+){0,6}?\s*(?:\([^)]*\))?)\s*:\s")
+
+
+def _split_list(item):
+    """Split 'A, B, C (x, y), D' on top-level commas."""
+    out, depth, cur = [], 0, ""
+    for ch in item:
+        depth += ch == "("
+        depth -= ch == ")"
+        if ch in ",;" and depth <= 0:
+            out.append(cur.strip()); cur = ""
+        else:
+            cur += ch
+    out.append(cur.strip())
+    merged = []
+    for o in (x for x in out if x):
+        if merged and re.match(r"(?:and|or|etc)\b", o, re.I):      # "theory, principles, and practices"
+            merged[-1] += ", " + o
+        else:
+            merged.append(o)
+    return merged
+
+
+def to_bullets(text, max_items_per_group=12, split_lists=False):
+    """Turn a long advert paragraph into short bullet lines (one per line).
+    'Knowledge: A. B. C.' style runs become one bullet: 'Knowledge: A, B, C.'"""
+    if not text:
+        return ""
+    bullets, head, items = [], None, []
+
+    def close_group():
+        nonlocal head, items
+        if head and items:
+            if split_lists and any(len(i) > 300 for i in items):
+                flat = []
+                for it in items:
+                    parts = _split_list(it.rstrip(".")) if len(it) > 300 else [it]
+                    flat.extend(parts if len(parts) >= 5 else [it])
+                items = [_tidy(x) for x in flat if x]
+            if len(items) == 1:
+                bullets.append(f"{head}: {items[0].rstrip('.;, ')}.")
+            else:
+                bullets.append(f"{head}:")
+                bullets.extend(i.rstrip(".;, ") for i in items[:max_items_per_group * 2])
+        head, items = None, []
+
+    text = text or ""
+
+    def _brk(m):
+        before = text[:m.start()].rstrip()
+        return (" " if before.endswith(".") else ". ") + m.group(1) + ": "
+    text = EMBEDDED_HEAD.sub(_brk, text)
+    if split_lists:     # ", Knowledge:" / ", Skills:" mid-sentence starts a new group
+        text = re.sub(r",\s+(?=" + LIST_HEADS + r"\s*(?:\([^)]*\))?\s*:)", ". ", text)
+    for sent in _sentences(text):
+        m = GROUP_HEAD.match(sent)
+        if m and re.fullmatch(LIST_HEADS + r"\s*(?:\([^)]*\))?", m.group(1).strip(), re.I):
+            parts = _split_list(m.group(2).rstrip("."))
+            if len(parts) >= 3:
+                close_group()
+                head, items = norm_ws(m.group(1)), [_tidy(x) for x in parts]
+                continue
+        if m and len(m.group(1).split()) <= 8 and not re.search(r"\d{4}", m.group(1)):
+            close_group()
+            head = norm_ws(m.group(1))
+            items = [_tidy(m.group(2))]
+            continue
+        if head and len(sent) <= 140:
+            items.append(_tidy(sent))
+            continue
+        close_group()
+        t = _tidy(sent)
+        if t:
+            bullets.append(t if t.endswith((".", "!", "?", ")")) else t + ".")
+    close_group()
+    # de-duplicate and drop empties
+    seen, out = set(), []
+    for b in bullets:
+        k = b.lower()
+        if len(b) > 3 and k not in seen:
+            seen.add(k); out.append(b.replace(";", ","))      # ';' would split a bullet on the page
+    return "\n".join(out)
+
+
+def money(salary_text):
+    m = re.search(r"R\s?(\d{1,3}(?:[ ,]\d{3})+|\d{4,})(?:\.\d+)?(?:\s*[-–]\s*R?\s?(\d{1,3}(?:[ ,]\d{3})+|\d{4,}))?"
+                  r"\s*(per annum|per month|p\.?a\.?|pm)?", salary_text or "", re.I)
+    if not m:
+        return ""
+    fmt = lambda x: "R" + f"{int(re.sub(r'[ ,]', '', x)):,}"
+    amt = fmt(m.group(1)) + (f" – {fmt(m.group(2))}" if m.group(2) else "")
+    per = (m.group(3) or "").lower()
+    return amt + (" a month" if "month" in per or per == "pm" else " a year" if per else "")
+
+
+def summary_line(employer, title, count, location, emp_type, salary, intro):
+    the = "The " if re.match(r"(Department|Office|National|Provincial|Government)\b", employer) else ""
+    art = "an" if title[:1].lower() in "aeiou" else "a"
+    if emp_type == "Internship":
+        what = (f"{count} internships" if count > 1 else "an internship") + f" in {title}"
+        s = f"{the}{employer} is offering {what}"
+    else:
+        what = f"{count} {title} posts" if count > 1 else f"{art} {title}"
+        s = f"{the}{employer} is hiring {what}"
+    unit = re.search(r"(?:Directorate|Chief Directorate|Sub-Directorate|Component|Unit|Branch|Division)\s*:\s*([^.\n(]+)",
+                     intro or "", re.I)
+    if unit:
+        s += f" in {norm_ws(unit.group(1))}"
+    if location and len(location) < 80:
+        s += f", based in {location}"
+    s += "."
+    pay = money(salary)
+    if emp_type == "Internship":
+        if pay:
+            s += f" The stipend is {pay}."
+    elif emp_type:
+        art2 = "an" if emp_type[:1].lower() in "aeiou" else "a"
+        s += f" This is {art2} {emp_type.lower()} post" + (f", paying {pay}" if pay else "") + "."
+    return s
 
 
 # ----------------------------------------------------------------- parsing
@@ -269,7 +464,7 @@ def split_posts(text):
             prev_blank = False
             continue
 
-        m = LABEL_RE.match(line)
+        m = LABEL_RE.match(line) or BARE_LABEL_RE.match(line)
         if m:
             key = FIELD_LABELS[m.group(1).strip()]
             if post is None:
@@ -314,7 +509,9 @@ def build_row(p, circular_no, posted_date, source_url, pdf_url):
         else:
             break
     title_raw = " ".join(caps)
-    title_raw = re.split(r"\bREF\.?\s*NO\b", title_raw, flags=re.I)[0]
+    title_raw = re.split(r"[“\"]?\b(?:REF\b(?=\.?\s*(?:NO|NUMBER)?\.?\s*:?\s*[^\n]{0,25}\d)|REF(?:ERENCE)?\.?\s*(?:NO|NUMBER)\b|RE\s+NO\b)",
+                         title_raw, flags=re.I)[0]
+    title_raw = title_raw.strip(" \"“”'’")
     title_raw = COUNT_RE.sub("", title_raw)
     title_raw = re.sub(r"\(\s*X\s*\d+\s*$", "", title_raw).strip(" :-,")
     title = title_case(re.sub(r"\s+", " ", title_raw))
@@ -323,7 +520,7 @@ def build_row(p, circular_no, posted_date, source_url, pdf_url):
     count = COUNT_RE.search(head)
     count = int(count.group(1)) if count else 1
 
-    refs = REF_RE.findall(head) or REF_RE.findall(f.get("centre", ""))
+    refs = line_refs(title_block) or line_refs(p["fields"].get("centre", [])) or REF_RE.findall(head)
     refs = [re.sub(r"\s+", " ", r).strip(" .") for r in refs]
     seen = set()
     refs = [r for r in refs if not (r in seen or seen.add(r))]
@@ -351,27 +548,27 @@ def build_row(p, circular_no, posted_date, source_url, pdf_url):
     if not closing and posted_date:      # no date anywhere: assume the usual ~3 weeks, never "open forever"
         closing = (datetime.date.fromisoformat(posted_date) + datetime.timedelta(days=21)).isoformat()
 
-    # about_role: short intro lines + how to apply + post-specific note. ENQUIRIES is left out on purpose.
-    about = []
+    # about_role: one-line summary + how to apply. ENQUIRIES (named officials) is left out on purpose.
+    emp_type = "Internship" if is_stipend else employment_type(head + " " + f.get("salary", ""))
     intro = join_lines(extra_lines)
-    if intro:
-        about.append(intro)
-    if count > 1:
-        about.append(f"Number of posts: {count}")
+    about = [summary_line(employer, title, count, centre_clean, emp_type, f.get("salary", ""), intro)]
+    other_intro = [x for x in _sentences(intro)
+                   if not re.match(r"(Directorate|Chief Directorate|Sub-Directorate|Component|Unit|Branch|Division)\s*:", x, re.I)]
+    if other_intro:
+        about.append(" ".join(other_intro))
+    about.append("")
+    if f.get("applications"):
+        about.append("How to apply: " + norm_ws(f["applications"]))
+    if f.get("attention"):
+        about.append("For attention: " + norm_ws(f["attention"]))
     if refs:
         about.append("Reference number" + ("s" if len(refs) > 1 else "") + " to quote: " + ", ".join(refs))
-    if f.get("applications"):
-        about.append("How to apply: " + f["applications"])
-    if f.get("attention"):
-        about.append("For attention: " + f["attention"])
-    if f.get("note"):
-        about.append("Note: " + f["note"])
     if closing:
         cl_txt = f.get("closing") or p.get("dept_closing", "")
         about.append("Closing date: " + norm_ws(cl_txt))
-    about.append("Apply on the new Z83 form with a detailed CV, quoting the reference number. "
-                 f"Full advert: DPSA Public Service Vacancy Circular {circular_no} of "
-                 f"{posted_date[:4] if posted_date else ''}.".strip())
+    about.append("Use the new Z83 form and attach a detailed CV.")
+    if f.get("note"):
+        about.append("Note: " + norm_ws(f["note"]))
 
     apply_url = pdf_url
     m = re.search(r"(https?://[^\s,;)]+|www\.[^\s,;)]+)", f.get("applications", ""))
@@ -387,7 +584,7 @@ def build_row(p, circular_no, posted_date, source_url, pdf_url):
         "category": "Internship" if is_stipend else guess_category(title, dept),
         "province": province or "National",
         "location": centre_clean,
-        "employment_type": "Internship" if is_stipend else employment_type(head + " " + f.get("salary", "")),
+        "employment_type": emp_type,
         "salary": norm_ws(f.get("salary", ""))[:160],
         "posted_date": posted_date,
         "closing_date": closing,
@@ -395,8 +592,8 @@ def build_row(p, circular_no, posted_date, source_url, pdf_url):
         # The department's own reference numbers (what applicants must quote) are in about_role.
         "reference_no": psv_id,
         "about_role": "\n".join(about),
-        "responsibilities": f.get("duties", ""),
-        "requirements": f.get("requirements", ""),
+        "responsibilities": to_bullets(f.get("duties", "")),
+        "requirements": to_bullets(f.get("requirements", ""), split_lists=True),
         "official_apply_url": apply_url,
         "source_url": source_url,
         "featured": "",
