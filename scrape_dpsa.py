@@ -173,8 +173,9 @@ def title_case(s):
         elif i and w in small:
             words.append(w)
         else:
-            words.append("/".join(x[:1].upper() + x[1:] if not x[:1] in "(\"'" else x[:2].upper() + x[2:]
-                                  for x in w.split("/")))
+            cap = lambda x: x[:1].upper() + x[1:] if not x[:1] in "(\"'" else x[:2].upper() + x[2:]
+            words.append(re.sub(r"(?<=[-–/])([a-z])", lambda m: m.group(1).upper(),
+                                "/".join(cap(x) for x in w.split("/"))))
     return " ".join(words)
 
 
@@ -363,6 +364,19 @@ def money(salary_text):
     amt = fmt(m.group(1)) + (f" – {fmt(m.group(2))}" if m.group(2) else "")
     per = (m.group(3) or "").lower()
     return amt + (" a month" if "month" in per or per == "pm" else " a year" if per else "")
+
+
+def short_salary(text):
+    """Card-sized salary: 'R1,885,710 a year (Level 15)'. The full wording stays in the advert."""
+    pay = money(text)
+    hourly = re.findall(r"R\s?(\d[\d ,]*(?:\.\d+)?)\s*(?:per|an|/)\s*hour", text or "", re.I)
+    if not pay and hourly:
+        low = min(float(re.sub(r"[ ,]", "", h)) for h in hourly)
+        return f"From R{low:,.0f} an hour"
+    if not pay:
+        return norm_ws(re.split(r"[(.,;]", text or "")[0])[:60]
+    lvl = re.search(r"\bLevel\s*(\d{1,2})", text or "", re.I)
+    return pay + (f" (Level {int(lvl.group(1))})" if lvl else "")
 
 
 def summary_line(employer, title, count, location, emp_type, salary, intro):
@@ -585,7 +599,7 @@ def build_row(p, circular_no, posted_date, source_url, pdf_url):
         "province": province or "National",
         "location": centre_clean,
         "employment_type": emp_type,
-        "salary": norm_ws(f.get("salary", ""))[:160],
+        "salary": short_salary(f.get("salary", "")),
         "posted_date": posted_date,
         "closing_date": closing,
         # The site uses reference_no as the page id, so it must be short, unique and URL-safe.
