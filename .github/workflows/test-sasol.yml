@@ -1,0 +1,27 @@
+name: Test Sasol fix (temporary)
+on:
+  push:
+    branches: [sasol-fix]
+    paths-ignore: ['test_out/**']
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: |
+          pip install playwright gspread google-auth requests
+          python -m playwright install --with-deps chromium
+      - run: |
+          mkdir -p test_out
+          python scrape_sasol.py --dry-run > test_out/sasol.json 2> test_out/log.txt || true
+          tail -5 test_out/log.txt
+      - name: Save results to branch
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git add -f test_out && git commit -m "Sasol test results" && git push
