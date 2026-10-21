@@ -1,142 +1,656 @@
 [
  {
   "url": "https://www.saps.gov.za/careers/careers.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "ok": true,
+  "secs": 6,
+  "bytes": 20215
+ },
+ {
+  "page": "careers.php",
+  "pdfs": [],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "internships.php",
+   "page/internships.php",
+   "page/pserviceact.php",
+   "page/ptrainees.php",
+   "page/publicact.php",
+   "page/reenlisments.php",
+   "page/smanagement.php",
+   "pserviceact.php",
+   "ptrainees.php",
+   "publicact.php",
+   "reenlisments.php",
+   "smanagement.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ptrainees.php",
+  "ok": true,
+  "secs": 1,
+  "bytes": 18890
+ },
+ {
+  "page": "ptrainees.php",
+  "pdfs": [
+   "downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf"
+  ],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/publicact.php",
+  "ok": true,
+  "secs": 2,
+  "bytes": 23688
+ },
+ {
+  "page": "publicact.php",
+  "pdfs": [
+   "downloads/2026/polact/214 2026.pdf",
+   "downloads/2026/polact/215 2026 EC.pdf",
+   "downloads/2026/polact/216 2026 FS.pdf",
+   "downloads/2026/polact/217 2026 GP.pdf",
+   "downloads/2026/polact/218 2026 KZN.pdf",
+   "downloads/2026/polact/219 2026 LIM.pdf",
+   "downloads/2026/polact/222 2026 MP.pdf",
+   "downloads/2026/polact/220 2026 NC.pdf",
+   "downloads/2026/polact/221 2026 WC.pdf",
+   "downloads/2026/polact/200 2026 EC.pdf",
+   "downloads/2026/polact/201 2026.pdf",
+   "downloads/2026/polact/202 2026 NW.pdf",
+   "downloads/2026/polact/203 2026 WC.pdf",
+   "downloads/2026/polact/205 2026.pdf",
+   "downloads/2026/polact/206 2026 KZN.pdf",
+   "downloads/2026/polact/207 2026 WC.pdf",
+   "downloads/2026/polact/204 2026 EC.pdf",
+   "downloads/2026/polact/210 2026 GP.pdf",
+   "downloads/2026/polact/211 2026 LIM.pdf",
+   "downloads/2026/polact/208 2026.pdf",
+   "downloads/2026/polact/213 2026 MP.pdf",
+   "downloads/2026/polact/209 2026 EC.pdf",
+   "downloads/2026/polact/212 2026 WC.pdf",
+   "downloads/2026/polact/SAPS-Application-Form-Level-2-12-2025.pdf"
+  ],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php",
+   "ls.php",
+   "publicact.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ls.php",
+  "ok": true,
+  "secs": 2,
+  "bytes": 17168
+ },
+ {
+  "page": "ls.php",
+  "pdfs": [
+   "downloads/2026/polact/LS1.pdf",
+   "downloads/2026/polact/LS3.pdf",
+   "downloads/2026/polact/LS4.pdf",
+   "downloads/2026/polact/LS2.pdf",
+   "downloads/2026/polact/SAPS-Application-Form-Level-2-12-2026.pdf"
+  ],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php",
+   "ls.php",
+   "publicact.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/smanagement.php",
+  "ok": true,
+  "secs": 3,
+  "bytes": 21861
+ },
+ {
+  "page": "smanagement.php",
+  "pdfs": [
+   "downloads/2026/SMS/SMS1.pdf",
+   "downloads/2026/SMS/SMS2.pdf",
+   "downloads/2026/SMS/SMS4.pdf",
+   "downloads/2026/SMS/SMS8.pdf",
+   "downloads/2026/SMS/SMS5.pdf",
+   "downloads/2026/SMS/SMS7.pdf",
+   "downloads/2026/SMS/SMS9.pdf",
+   "downloads/2026/SMS/SMS6.pdf",
+   "downloads/2026/SMS/SMS3.pdf",
+   "downloads/2026/SMS/SMS13.pdf",
+   "downloads/2026/SMS/SMS11.pdf",
+   "downloads/2026/SMS/SMS12.pdf",
+   "downloads/2026/SMS/SMS10.pdf",
+   "downloads/2026/SMS/APPLICATION-FORM-CLOSING-DATE-19-OCTOBER-2026.pdf"
+  ],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/internships.php",
+  "ok": true,
+  "secs": 2,
+  "bytes": 18517
+ },
+ {
+  "page": "internships.php",
+  "pdfs": [
+   "downloads/saps_career_booklet_part1.pdf",
+   "downloads/saps_career_booklet_part2.pdf",
+   "downloads/saps_career_booklet_part3.pdf",
+   "downloads/new_class_police_officer.pdf"
+  ],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/reenlisments.php",
+  "ok": true,
+  "secs": 2,
+  "bytes": 17194
+ },
+ {
+  "page": "reenlisments.php",
+  "pdfs": [],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/pserviceact.php",
+  "ok": true,
+  "secs": 2,
+  "bytes": 48796
+ },
+ {
+  "page": "pserviceact.php",
+  "pdfs": [
+   "downloads/2026/polact/SAPS-Application-Form-Level-2-12-2025.pdf"
+  ],
+  "php_links": [
+   "../../sarpcco/index.php",
+   "../about/about.php",
+   "../alert/index.php",
+   "../careers/careers.php",
+   "../child_safety/index.php",
+   "../copyright.php",
+   "../crimestop/crimestop.php",
+   "../disclaimer.php",
+   "../faq.php",
+   "../index.php",
+   "../links.php",
+   "../resource_centre/rc_index.php",
+   "../services/reservist.php",
+   "../services/services.php",
+   "../talk/talk.php",
+   "/about/about.php",
+   "/alert/index.php",
+   "/careers/careers.php",
+   "/child_safety/index.php",
+   "/crimestop/crimestop.php",
+   "/dpci/index.php",
+   "/index.php",
+   "/newsroom/selnewslist.php",
+   "/resource_centre/publications/education_trust_fund/education_trust.php",
+   "/resource_centre/rc_index.php",
+   "/services/research.php",
+   "/services/services.php",
+   "/talk/talk.php",
+   "careers.php"
+  ]
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ptrainees.php",
+  "ok": true,
+  "secs": 2,
+  "bytes": 18890
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
+  "bytes": 225734,
   "secs": 1
  },
  {
-  "url": "https://www.saps.gov.za/careers/careers.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
+  "bytes": 207033,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/215%202026%20EC.pdf",
+  "bytes": 207178,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/216%202026%20FS.pdf",
+  "bytes": 206620,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/217%202026%20GP.pdf",
+  "bytes": 206920,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/218%202026%20KZN.pdf",
+  "bytes": 206638,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/219%202026%20LIM.pdf",
+  "bytes": 207160,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/222%202026%20MP.pdf",
+  "bytes": 206605,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/220%202026%20NC.pdf",
+  "bytes": 206614,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/221%202026%20WC.pdf",
+  "bytes": 206632,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/200%202026%20EC.pdf",
+  "bytes": 206878,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/201%202026.pdf",
+  "bytes": 206881,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/202%202026%20NW.pdf",
+  "bytes": 206901,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/203%202026%20WC.pdf",
+  "bytes": 207040,
   "secs": 1
  },
  {
-  "url": "https://www.saps.gov.za/careers/careers.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/205%202026.pdf",
+  "bytes": 207885,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/206%202026%20KZN.pdf",
+  "bytes": 207349,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/207%202026%20WC.pdf",
+  "bytes": 207860,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/204%202026%20EC.pdf",
+  "bytes": 207911,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/210%202026%20GP.pdf",
+  "bytes": 206894,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/211%202026%20LIM.pdf",
+  "bytes": 206887,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/208%202026.pdf",
+  "bytes": 206892,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/213%202026%20MP.pdf",
+  "bytes": 206899,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/209%202026%20EC.pdf",
+  "bytes": 207333,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/212%202026%20WC.pdf",
+  "bytes": 206902,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/SAPS-Application-Form-Level-2-12-2025.pdf",
+  "bytes": 311552,
+  "secs": 1
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/LS1.pdf",
+  "bytes": 265237,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/LS3.pdf",
+  "bytes": 262452,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/LS4.pdf",
+  "bytes": 262821,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/LS2.pdf",
+  "bytes": 264098,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/SAPS-Application-Form-Level-2-12-2026.pdf",
+  "error": "Page.evaluate: Error: HTTP 404\n    at eval (eval at evaluate (:370:30), <anonymous>:1:56)\n    at async <anonymous>:396:30",
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/SAPS-Application-Form-Level-2-12-2026.pdf",
+  "error": "Page.evaluate: Error: HTTP 404\n    at eval (eval at evaluate (:370:30), <anonymous>:1:56)\n    at async <anonymous>:396:30",
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/polact/SAPS-Application-Form-Level-2-12-2026.pdf",
+  "error": "Page.evaluate: Error: HTTP 404\n    at eval (eval at evaluate (:370:30), <anonymous>:1:56)\n    at async <anonymous>:396:30",
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
+  "bytes": 127976,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS2.pdf",
+  "bytes": 126306,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS4.pdf",
+  "bytes": 129400,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS8.pdf",
+  "bytes": 125284,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS5.pdf",
+  "bytes": 125184,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS7.pdf",
+  "bytes": 123841,
+  "secs": 1
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS9.pdf",
+  "bytes": 123940,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS6.pdf",
+  "bytes": 124066,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS3.pdf",
+  "bytes": 125373,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS13.pdf",
+  "bytes": 123387,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS11.pdf",
+  "bytes": 127045,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS12.pdf",
+  "bytes": 123548,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS10.pdf",
+  "bytes": 123555,
+  "secs": 0
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/2026/SMS/APPLICATION-FORM-CLOSING-DATE-19-OCTOBER-2026.pdf",
+  "bytes": 383684,
+  "secs": 1
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/saps_career_booklet_part1.pdf",
+  "bytes": 2371595,
+  "secs": 3
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/saps_career_booklet_part2.pdf",
+  "bytes": 1962076,
+  "secs": 3
+ },
+ {
+  "pdf": "https://www.saps.gov.za/careers/downloads/saps_career_booklet_part3.pdf",
+  "bytes": 1364955,
   "secs": 2
  },
  {
-  "url": "https://www.saps.gov.za/careers/careers.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ptrainees.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ptrainees.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ptrainees.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ptrainees.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/publicact.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/publicact.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/publicact.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/publicact.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ls.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
-  "secs": 2
- },
- {
-  "url": "https://www.saps.gov.za/careers/ls.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ls.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/ls.php",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
-  "secs": 2
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
-  "secs": 1
- },
- {
-  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
-  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
+  "pdf": "https://www.saps.gov.za/careers/downloads/new_class_police_officer.pdf",
+  "bytes": 985647,
   "secs": 1
  }
 ]
