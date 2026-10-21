@@ -115,7 +115,7 @@ def scrub_text(text):
 
 # Official public-service adverts (DPSA circular): application mailboxes, office landlines and
 # helplines are the official way to apply, so they stay. Only cellphone numbers are removed.
-OFFICIAL_SOURCES = ("dpsa.gov.za", "saps.gov.za")
+OFFICIAL_SOURCES = ("dpsa.gov.za", "saps.gov.za", "kznhealth.gov.za")
 MOBILE_RE = re.compile(r"(?:Tel\.?\s*(?:No\.?)?\s*:?\s*|Cell\.?\s*(?:No\.?)?\s*:?\s*)?"
                        r"(?<!\d)(?:\+\s?27\s?|0027\s?|0)(?:6\d|7\d|8[1-4])[\s.\-]?\d{3}[\s.\-]?\d{4}(?!\d)",
                        re.I)

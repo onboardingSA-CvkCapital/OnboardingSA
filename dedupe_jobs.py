@@ -36,6 +36,49 @@ def signature(j):
     )
 
 
+REF_LINE = re.compile(r"Reference numbers? to quote:\s*(.+)", re.I)
+
+
+def quoted_refs(j):
+    """Reference numbers an applicant must quote, normalised ('G51/2026' == 'g 51 / 2026')."""
+    m = REF_LINE.search(str(j.get("about_role", "")))
+    if not m:
+        return set()
+    return {re.sub(r"[^a-z0-9]", "", r.lower()) for r in m.group(1).split(",") if re.search(r"\d", r)}
+
+
+def _source(j):
+    m = re.search(r"https?://([^/]+)", str(j.get("source_url", "")))
+    return m.group(1).lower().replace("www.", "") if m else ""
+
+
+def _words(t):
+    return {w for w in re.findall(r"[a-z]{3,}", str(t).lower()) if w not in {"the", "and", "for", "grade", "post", "posts"}}
+
+
+def same_post_elsewhere(jobs):
+    """The same government post published by two different sources (e.g. KZN Health's own page and the
+    DPSA circular) carries the same reference number and title. Keep the first copy. Jobs from the same
+    source are never merged (one reference can cover several districts there)."""
+    first = {}                                   # (province, ref) -> [(source, title words), ...]
+    kept = []
+    for j in jobs:
+        prov, src, words = norm(j.get("province")), _source(j), _words(j.get("job_title"))
+        dup = False
+        for r in quoted_refs(j):
+            if len(r) < 5:
+                continue
+            for osrc, owords in first.get((prov, r), []):
+                if osrc != src and words and owords and len(words & owords) / len(words | owords) >= 0.5:
+                    dup = True
+        if dup:
+            continue
+        for r in quoted_refs(j):
+            first.setdefault((prov, r), []).append((src, words))
+        kept.append(j)
+    return kept
+
+
 def main():
     if not os.path.exists(SRC):
         sys.exit(f"ERROR: {SRC} not found (run from the repo root).")
@@ -57,6 +100,7 @@ def main():
         seen.add(sig)
         kept.append(j)
 
+    kept = same_post_elsewhere(kept)
     removed = before - len(kept)
     with open(SRC, "w", encoding="utf-8") as f:
         json.dump(kept, f, ensure_ascii=False, indent=None)

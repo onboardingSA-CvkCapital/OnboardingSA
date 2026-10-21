@@ -25,7 +25,7 @@ jobs:
         run: |
           pip install playwright gspread google-auth requests
           python -m playwright install --with-deps chromium
-          sudo apt-get install -y poppler-utils   # pdftotext, for the DPSA circular PDFs
+          sudo apt-get install -y poppler-utils tesseract-ocr   # pdftotext (circular PDFs) + OCR (scanned adverts)
 
       - name: Write credentials
         run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
@@ -44,6 +44,10 @@ jobs:
 
       - name: SAPS (careers pages + e-Recruitment)
         run: python scrape_saps.py
+        continue-on-error: true
+
+      - name: KZN Department of Health
+        run: python scrape_kznhealth.py
         continue-on-error: true
 
       - name: Delete expired
