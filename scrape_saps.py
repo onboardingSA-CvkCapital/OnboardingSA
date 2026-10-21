@@ -220,6 +220,44 @@ def clean_apply(block):
     return text
 
 
+GENERIC_HEAD = re.compile(r"^[ \t\f•·➢❖\-]*([A-Za-z][A-Za-z ,&/()'’\-]{2,70}?)\s*:?\s*$", re.M)
+INLINE_HEAD = re.compile(r"^[ \t\f•·➢❖\-]*([A-Z][A-Za-z ,&/()'’\-]{2,50}?)\s*:\s+(\S.*)$", re.M)
+REQ_WORDS = re.compile(r"requirement|qualification|competenc|knowledge|skills|experience|eligib|criteria", re.I)
+DUTY_WORDS = re.compile(r"dut(?:y|ies)|function|responsibilit|key performance|\bKPAs?\b|job purpose|tasks|outputs", re.I)
+STOP_WORDS = re.compile(r"general|note|enquir|application|how to apply|closing|contact|correspondence|remuneration|salary", re.I)
+
+
+def fallback_sections(text):
+    """Unknown layout: find headings by their wording ('Minimum Requirements', 'Key Performance Areas'...)."""
+    heads = []
+    for m in INLINE_HEAD.finditer(text):                   # "REQUIREMENTS: Applicants must ..." on one line
+        h = m.group(1).strip()
+        if len(h.split()) > 5:
+            continue
+        kind = ("duty" if DUTY_WORDS.search(h) else "req" if REQ_WORDS.search(h)
+                else "stop" if STOP_WORDS.search(h) else None)
+        if kind:
+            heads.append((m.start(), m.start(2), kind))
+    for m in GENERIC_HEAD.finditer(text):
+        h = m.group(1).strip()
+        line = m.group(0).strip()
+        if not (line.endswith(":") or h.isupper()) or len(h.split()) > 8:
+            continue
+        kind = ("duty" if DUTY_WORDS.search(h) else "req" if REQ_WORDS.search(h)
+                else "stop" if STOP_WORDS.search(h) else None)
+        if kind:
+            heads.append((m.start(), m.end(), kind))
+    heads.sort()
+    out = {"req": [], "duty": []}
+    for i, (s_, e, kind) in enumerate(heads):
+        if kind in out:
+            end = heads[i + 1][0] if i + 1 < len(heads) else len(text)
+            for it in to_items(text[e:end]):               # paragraphs -> one item per sentence
+                out[kind] += [x.strip() for x in re.split(r"(?<=[a-z0-9)])\.\s+(?=[A-Z])", it) if len(x.strip()) > 3] \
+                    if len(it) > 200 else [it]
+    return out
+
+
 def parse_advert(text):
     """Structured fields from a SAPS advert PDF's text."""
     hdr = header_fields(text)
@@ -230,6 +268,10 @@ def parse_advert(text):
         m = re.search(r"following functions\s*:(.*?)(?:\n\s*[A-Z][A-Z]{3,}[A-Z ]*[:(]|\Z)", text, re.S)
         if m:
             duty = to_items(m.group(1))
+    if text and (not req or not duty):                     # layout not recognised: read by heading wording
+        fb = fallback_sections(text)
+        req = req or fb["req"]
+        duty = duty or fb["duty"]
     apply = " ".join(x for x in [clean_apply(b) for b in sec.get("apply", []) + sec.get("enq", [])] if x)
     closing = re.search(r"closing date (?:for applications )?is\s*:?\s*([^.\n]+)|Closing date for applications\s*:\s*([^\n]+)",
                         text, re.I)
@@ -434,13 +476,26 @@ def scrape_careers(pg):
     for name in pages:
         h = retry(lambda: goto(CAREERS + name))
         if h:
-            found = parse_table_rows(h, CAREERS + name)
+            try:
+                found = parse_table_rows(h, CAREERS + name)
+            except Exception as e:
+                print(f"  {name}: could not read table: {str(e)[:150]}", file=sys.stderr)
+                continue
             print(f"  {name}: {len(found)} open rows", file=sys.stderr)
             table_rows += [r for r in found if r["closing"] >= TODAY]
     for r in table_rows:
-        b64 = retry(lambda: pg.evaluate(FETCH_JS, r["pdf"]))
-        ad = parse_advert(pdf_text(base64.b64decode(b64))) if b64 else parse_advert("")
-        rows.append(build_careers_row(r, ad))
+        try:
+            b64 = retry(lambda: pg.evaluate(FETCH_JS, r["pdf"]))
+            if not b64:
+                print(f"  skipped (advert would not download, retry tomorrow): {r['title']}", file=sys.stderr)
+                continue
+            ad = parse_advert(pdf_text(base64.b64decode(b64)))
+            if not ad["requirements"] or not ad["duties"]:
+                print(f"  skipped (advert layout not readable): {r['title']} — {r['pdf']}", file=sys.stderr)
+                continue
+            rows.append(build_careers_row(r, ad))
+        except Exception as e:
+            print(f"  skipped (error): {r['title']}: {str(e)[:150]}", file=sys.stderr)
     return rows
 
 
@@ -463,8 +518,16 @@ def scrape_erecruit(pg):
             pg.wait_for_selector(".saps-vd-title", timeout=120000)
             return pg.content()
         h = retry(detail, tries=2)
-        if h:
-            rows.append(build_erecruit_row(g, parse_erecruit_detail(h)))
+        if not h:
+            continue
+        try:
+            d = parse_erecruit_detail(h)
+            if not d["requirements"] or not d["duties"]:
+                print(f"  skipped (portal page layout not readable): {g['name']}", file=sys.stderr)
+                continue
+            rows.append(build_erecruit_row(g, d))
+        except Exception as e:
+            print(f"  skipped (error): {g['name']}: {str(e)[:150]}", file=sys.stderr)
     print(f"  e-Recruitment: {len(rows)} vacancies", file=sys.stderr)
     return rows
 
@@ -474,8 +537,15 @@ def scrape():
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page()
-        careers = scrape_careers(pg)
-        erecruit = scrape_erecruit(b.new_page())
+        careers, erecruit = [], []
+        try:
+            careers = scrape_careers(pg)
+        except Exception as e:
+            print(f"SAPS careers pages failed today: {str(e)[:200]}", file=sys.stderr)
+        try:
+            erecruit = scrape_erecruit(b.new_page())
+        except Exception as e:
+            print(f"SAPS e-Recruitment failed today: {str(e)[:200]}", file=sys.stderr)
         b.close()
     return merge(careers, erecruit)
 
