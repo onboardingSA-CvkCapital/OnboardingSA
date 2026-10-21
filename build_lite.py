@@ -115,11 +115,19 @@ def render_card(j):
             extra = " · closed" if (dl is not None and dl < 0) else f" · {dl} days left"
         cls = " close-soon" if soon else ""
         chips += f'<span class="chip{cls}">Closes {esc(fmt_date(j.get("closing_date")))}{extra}</span>'
+    ini = esc(initials(j.get("employer")))
+    jid = str(j.get("id", "")).upper()
+    logo = "government.png" if jid.startswith("PSV-") else "saps.png" if jid.startswith("SAPS-") else ""
+    if logo:                                                      # DPSA circular posts / SAPS posts
+        avatar = (f'<div class="avatar{gold}"><img src="https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/{logo}" '
+                  f'alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode(\'{ini}\'))"></div>')
+    else:
+        avatar = f'<div class="avatar{gold}">{ini}</div>'
     return (
         f'<a class="jobcard" href="{href}" aria-label="{esc(j.get("job_title"))} at {esc(j.get("employer"))}">'
         f'{badge}'
         f'<div class="card-head">'
-        f'<div class="avatar{gold}">{esc(initials(j.get("employer")))}</div>'
+        f'{avatar}'
         f'<div class="card-head-txt">'
         f'<h3>{esc(j.get("job_title"))}</h3>'
         f'<div class="emp">{esc(j.get("employer"))}</div>'

@@ -168,8 +168,10 @@ def render(j):
     soon = dl is not None and dl<=7
     # avatar
     base=slug_logo(j.get("employer"))
-    if str(jid).upper().startswith("PSV-"):      # government posts from the DPSA circular share one logo
+    if str(jid).upper().startswith("PSV-"):      # DPSA circular posts: government logo
         base="government"
+    elif str(jid).upper().startswith("SAPS-"):   # SAPS posts: SAPS logo
+        base="saps"
     gold=" gold" if j.get("featured","").lower()=="yes" else ""
     ini=esc(initials(j.get("employer")))
     if base:
