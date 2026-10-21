@@ -14,7 +14,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - run: |
-          pip install requests
+          pip install playwright
+          python -m playwright install --with-deps chromium
           sudo apt-get install -y poppler-utils
       - run: python probe/probe_saps2.py
       - name: Save results to branch
