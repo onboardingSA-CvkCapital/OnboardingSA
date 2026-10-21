@@ -44,8 +44,15 @@ def iso_from_validthrough(s):
         if mon in MONTHS: return f"{y}-{MONTHS[mon]:02d}-{int(d):02d}"
     return ""
 
+def demojibake(t):
+    """'â€“' -> '–' (text that was decoded with the wrong character set)."""
+    if not t or not re.search(r"[âÃ][\x80-\xbf]|â€", t): return t
+    try: return t.encode("latin-1", "ignore").decode("utf-8", "ignore")
+    except Exception: return t.replace("â\x80\x93", "–").replace("â\x80\x99", "’")
+
 def clean(t, limit=8000):
     if not t: return ""
+    t = demojibake(t)
     out="\n".join(x for x in (re.sub(r'\s+',' ',l).strip() for l in t.split('\n')) if x and len(x)>1)
     return out[:limit].rstrip()
 
@@ -104,9 +111,15 @@ SKIP_LINE = ["equal opportunity","affirmative action","our automated process","s
 def split_sasol(segs):
     about=[]; resp=[]; req=[]; bucket="about"; purpose_seen=False
     for s in segs:
-        t=(s.get("t") or "").strip()
+        t=demojibake((s.get("t") or "").strip())
         if not t: continue
         low=t.lower()
+        # meta lines at the top of learnership adverts ("Job Req ID", "13435", a date, the location)
+        if re.fullmatch(r"job req(?:uisition)? id:?|\d{3,7}|\d{1,2} [a-z]+ \d{4}", low): continue
+        # short plain paragraphs that are really headings ("Purpose of the job", "Qualifications")
+        if not s.get("h") and not s.get("li") and len(t.split()) <= 6 and (t.endswith(":") or t[:1].isupper()) \
+                and any(k in low.rstrip(":") for k in ABOUT_H + RESP_H + REQ_H + SKIP_H):
+            s = dict(s, h=True)
         if s.get("h"):
             hl=low.rstrip(":")
             if any(hl.startswith(k) for k in SKIP_H): bucket="skip"; continue
@@ -140,7 +153,7 @@ def sasol_type(title, text):
     t=(title+" "+text).lower()
     if re.search(r"learnership|apprentic", t): return "Learnership"
     if re.search(r"\bintern|graduate in training|bursar|trainee", t): return "Internship"
-    if re.search(r"fixed[- ]term|contract", t): return "Contract"
+    if re.search(r"fixed[- ]term|\d+[- ](?:month|year)s?\s+contract|contract\s+(?:position|role|post|basis|appointment)", t): return "Contract"
     if re.search(r"permanent", t): return "Permanent"
     return ""
 
@@ -205,6 +218,7 @@ def scrape():
                 row={k:"" for k in COLUMNS}
                 alltext=" ".join(x.get("t","") for x in segs)
                 cat=guess_category(t["title"], EMPLOYER)
+                if cat=="Government" and re.search(r"mine|mining|shift ?boss|blast|underground|colliery", t["title"], re.I): cat="Mining"
                 row.update({
                     "job_title":t["title"], "employer":EMPLOYER,
                     "category": "" if cat=="Government" else cat,
