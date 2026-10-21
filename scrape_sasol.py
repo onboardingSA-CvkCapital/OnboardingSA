@@ -1,5 +1,6 @@
-import re, sys, time
+import re, sys, time, json, argparse
 import sheet_writer
+from scrape_dpsa import guess_category
 from playwright.sync_api import sync_playwright
 
 BASE = "https://jobs.sasol.com"
@@ -43,8 +44,15 @@ def iso_from_validthrough(s):
         if mon in MONTHS: return f"{y}-{MONTHS[mon]:02d}-{int(d):02d}"
     return ""
 
+def demojibake(t):
+    """'â€“' -> '–' (text that was decoded with the wrong character set)."""
+    if not t or not re.search(r"[âÃ][\x80-\xbf]|â€", t): return t
+    try: return t.encode("latin-1", "ignore").decode("utf-8", "ignore")
+    except Exception: return t.replace("â\x80\x93", "–").replace("â\x80\x99", "’")
+
 def clean(t, limit=8000):
     if not t: return ""
+    t = demojibake(t)
     out="\n".join(x for x in (re.sub(r'\s+',' ',l).strip() for l in t.split('\n')) if x and len(x)>1)
     return out[:limit].rstrip()
 
@@ -85,34 +93,69 @@ def get_detail(detail, url):
     return {}
 
 
-ABOUT_H   = ["purpose of job","introduction","about","overview"]
-RESP_H    = ["key accountabilities","accountabilities","responsibilities","key responsibilities","duties","key roles"]
-REQ_H     = ["formal education","working experience","work experience","minimum requirements",
-             "qualification","education","experience","certification","professional membership"]
+ABOUT_H   = ["purpose of job","job purpose","purpose","introduction","about the role","overview","role summary"]
+RESP_H    = ["key accountabilities","accountabilities","responsibilities","key responsibilities","duties","key roles",
+             "key performance","outputs","main tasks","what you will do"]
+REQ_H     = ["formal education","working experience","work experience","minimum requirements","requirements",
+             "qualification","education","experience","certification","professional membership","licen",
+             "skills","competenc","knowledge","what you need","who you are"]
+# Sasol's standard company text, the same on every advert — not part of the job description
+BOILERPLATE = ["sasol is a global integrated chemicals and energy company", "sasol puts people at the",
+               "at sasol, we", "we are committed to", "our people are our", "diversity", "inclusion",
+               "sasol is an equal", "we value", "join us", "our purpose", "innovating for a better world"]
 SKIP_H    = ["required personal and professional skills","required personal","closing date","job requisition",
              "ome","location"]
 SKIP_LINE = ["equal opportunity","affirmative action","our automated process","should you not hear",
              "thank you once","innovating for a better world","preference will be given","reasonable accommodation"]
 
 def split_sasol(segs):
-    about=[]; resp=[]; req=[]; bucket="about"
+    about=[]; resp=[]; req=[]; bucket="about"; purpose_seen=False
     for s in segs:
-        t=(s.get("t") or "").strip()
+        t=demojibake((s.get("t") or "").strip())
         if not t: continue
         low=t.lower()
+        # meta lines at the top of learnership adverts ("Job Req ID", "13435", a date, the location)
+        if re.fullmatch(r"job req(?:uisition)? id:?|\d{3,7}|\d{1,2} [a-z]+ \d{4}", low): continue
+        # short plain paragraphs that are really headings ("Purpose of the job", "Qualifications")
+        if not s.get("h") and not s.get("li") and len(t.split()) <= 6 and (t.endswith(":") or t[:1].isupper()) \
+                and any(k in low.rstrip(":") for k in ABOUT_H + RESP_H + REQ_H + SKIP_H):
+            s = dict(s, h=True)
         if s.get("h"):
             hl=low.rstrip(":")
-            if any(hl.startswith(k) for k in RESP_H): bucket="resp"; continue
-            if any(hl.startswith(k) for k in REQ_H): bucket="req"; continue
-            if any(hl.startswith(k) for k in ABOUT_H): bucket="about"; continue
             if any(hl.startswith(k) for k in SKIP_H): bucket="skip"; continue
-            bucket="about"; continue
+            if any(k in hl for k in RESP_H): bucket="resp"; continue
+            if any(k in hl for k in REQ_H): bucket="req"; continue
+            if any(hl.startswith(k) for k in ABOUT_H):
+                bucket="about"
+                if not purpose_seen: about=[]; purpose_seen=True      # the role's own summary replaces the company intro
+                continue
+            bucket="skip" if purpose_seen else "about"; continue
         if bucket=="skip": continue
         if any(k in low for k in SKIP_LINE): continue
-        if re.match(r'^(job requisition id|closing date|ome|location)', low): continue
+        if re.match(r'^(job requisition id|closing date|ome|location)\b', low): continue
+        if bucket=="about" and any(k in low for k in BOILERPLATE): continue
+        if bucket=="about" and not s.get("li") and re.match(r'^(national senior certificate|matric|grade 12|n\d\b|degree|diploma|'
+                                                             r'certificate|valid driver|code \w+ licen|\d+\+? years)', low):
+            req.append(t); continue                      # qualification lines that sit under no heading
         (about if bucket=="about" else resp if bucket=="resp" else req).append(t)
-    j=lambda arr: "; ".join(x.lstrip("• ").strip() for x in arr if len(x)>2)
-    return clean("\n".join(about))[:8000], j(resp)[:8000], j(req)[:8000]
+    def j(arr, cap=25):
+        out, seen = [], set()
+        for x in arr:
+            x = x.lstrip("•·- ").strip().rstrip(";")
+            key = re.sub(r"[^a-z]", "", x.lower())[:60]
+            if len(x) > 2 and key not in seen:
+                seen.add(key); out.append(x)
+        return "\n".join(out[:cap])
+    return clean("\n".join(about))[:1500], j(resp)[:8000], j(req)[:8000]
+
+
+def sasol_type(title, text):
+    t=(title+" "+text).lower()
+    if re.search(r"learnership|apprentic", t): return "Learnership"
+    if re.search(r"\bintern|graduate in training|bursar|trainee", t): return "Internship"
+    if re.search(r"fixed[- ]term|\d+[- ](?:month|year)s?\s+contract|contract\s+(?:position|role|post|basis|appointment)", t): return "Contract"
+    if re.search(r"permanent", t): return "Permanent"
+    return ""
 
 def closing_from_segs(segs):
     for i,s in enumerate(segs):
@@ -173,8 +216,13 @@ def scrape():
                 about,resp,req=split_sasol(segs)
                 closing=iso_from_validthrough(d.get("validThrough","")) or closing_from_segs(segs)
                 row={k:"" for k in COLUMNS}
+                alltext=" ".join(x.get("t","") for x in segs)
+                cat=guess_category(t["title"], EMPLOYER)
+                if cat=="Government" and re.search(r"mine|mining|shift ?boss|blast|underground|colliery", t["title"], re.I): cat="Mining"
                 row.update({
                     "job_title":t["title"], "employer":EMPLOYER,
+                    "category": "" if cat=="Government" else cat,
+                    "employment_type": sasol_type(t["title"], alltext),
                     "province":province_of(city), "location":city,
                     "posted_date":to_iso(t["date"]),
                     "closing_date":closing,
@@ -185,8 +233,15 @@ def scrape():
                 rows.append(row)
                 print(f"  NEW (SA): {t['title'][:42]} ({city})", file=sys.stderr)
                 time.sleep(0.3)
-            if rows:
-                sheet_writer.append_jobs(rows); total+=len(rows)
+            if rows and DRY:
+                DRY_ROWS.extend(rows); total+=len(rows)
+                if len(DRY_ROWS) >= DRY_LIMIT: break
+            elif rows:
+                # new jobs are added; jobs already saved get their description, lists, type and category refreshed
+                wrote, updated = sheet_writer.upsert_jobs(rows, update_fields=(
+                    "about_role", "responsibilities", "requirements", "category", "employment_type"))
+                total+=len(rows)
+                print(f"  {wrote} new, {updated} updated", file=sys.stderr)
                 print(f"  wrote {len(rows)} SA (total {total}, skipped {skipped_foreign} foreign)", file=sys.stderr)
             if len(tiles) < PER_PAGE: break
             start += PER_PAGE
@@ -194,9 +249,16 @@ def scrape():
         b.close()
     return total, skipped_foreign
 
+DRY=False; DRY_ROWS=[]; DRY_LIMIT=15
+
 def main():
+    global DRY
+    ap=argparse.ArgumentParser(); ap.add_argument("--dry-run", action="store_true"); a=ap.parse_args()
+    DRY=a.dry_run
     print("Reading sheet...", file=sys.stderr)
     total, foreign = scrape()
+    if DRY:
+        json.dump(DRY_ROWS, sys.stdout, ensure_ascii=False, indent=1); return
     print(f"\nDone: wrote {total} SA Sasol jobs, skipped {foreign} foreign.", file=sys.stderr)
 
 if __name__=="__main__":
