@@ -2,7 +2,7 @@ name: Probe SAPS (temporary)
 on:
   push:
     branches: [probe-saps]
-    paths-ignore: ['probe_out/**', 'probe_out2/**']
+    paths-ignore: ['probe_out/**', 'probe_out2/**', 'probe_out3/**']
 permissions:
   contents: write
 jobs:
@@ -17,9 +17,9 @@ jobs:
           pip install playwright
           python -m playwright install --with-deps chromium
           sudo apt-get install -y poppler-utils
-      - run: python probe/probe_saps2.py
+      - run: python probe/probe_logo.py
       - name: Save results to branch
         if: always()
         run: |
           git config user.name github-actions; git config user.email actions@github.com
-          git add -f probe_out2 && git commit -m "probe results" && git push
+          git add -f probe_out3 && git commit -m "probe results" && git push
