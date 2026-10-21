@@ -1,0 +1,1062 @@
+{
+ "dcs": {
+  "url": "http://careers.dcs.gov.za/",
+  "final_url": "https://careers.dcs.gov.za/",
+  "title": "dcs recruitment",
+  "secs": 12,
+  "feeds": [
+   "https://maps.googleapis.com/maps/api/js?key=AIzaSyCys9jXd9wVwpCJwbgT68AJCqWMRfCy-qY&libraries=places",
+   "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+   "https://dcs.api.ezra360.com/api/v1.0/entities/ExecuteRequest?RequestName=undefined",
+   "https://dcs.api.ezra360.com/api/v1.0/entities/ExecuteRequest?RequestName=RetrieveMasterValues"
+  ],
+  "relevant_links": [],
+  "pdf_links": [],
+  "tables": []
+ },
+ "kzn_health": {
+  "url": "https://www.kznhealth.gov.za/vacancies/",
+  "final_url": "https://www.kznhealth.gov.za/vacancies/",
+  "title": "Vacancies - KZN Department of Health",
+  "secs": 16,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Skip to content",
+    "https://www.kznhealth.gov.za/vacancies/#content"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "DPSA Vacancy Circulars",
+    "https://www.dpsa.gov.za/newsroom/psvc/"
+   ],
+   [
+    "Entry level vacancies",
+    "http://portal.kznhealth.gov.za/vacancies/SitePages/entry-level.aspx"
+   ],
+   [
+    "Notes for HR Staff (internal link)",
+    "http://portal.kznhealth.gov.za/vacancies/SitePages/Home.aspx"
+   ],
+   [
+    "",
+    "https://www.kznonline.gov.za/kznjobs"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   6,
+   9,
+   61,
+   3,
+   1,
+   7
+  ]
+ },
+ "kzn_health__1": {
+  "url": "https://www.kznhealth.gov.za/vacancies/#content",
+  "final_url": "https://www.kznhealth.gov.za/vacancies/#content",
+  "title": "Vacancies - KZN Department of Health",
+  "secs": 8,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Skip to content",
+    "https://www.kznhealth.gov.za/vacancies/#content"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "DPSA Vacancy Circulars",
+    "https://www.dpsa.gov.za/newsroom/psvc/"
+   ],
+   [
+    "Entry level vacancies",
+    "http://portal.kznhealth.gov.za/vacancies/SitePages/entry-level.aspx"
+   ],
+   [
+    "Notes for HR Staff (internal link)",
+    "http://portal.kznhealth.gov.za/vacancies/SitePages/Home.aspx"
+   ],
+   [
+    "",
+    "https://www.kznonline.gov.za/kznjobs"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   6,
+   9,
+   61,
+   3,
+   1,
+   7
+  ]
+ },
+ "kzn_health__2": {
+  "url": "https://www.kznhealth.gov.za/career-opportunities/",
+  "final_url": "https://www.kznhealth.gov.za/career-opportunities/",
+  "title": "Career Opportunities - KZN Department of Health",
+  "secs": 12,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Skip to content",
+    "https://www.kznhealth.gov.za/career-opportunities/#content"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Jobs not for sale",
+    "http://www.kznhealth.gov.za/Jobs-not-for-sale.pdf"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "kzn_health__3": {
+  "url": "https://www.dpsa.gov.za/newsroom/psvc/",
+  "final_url": "https://www.dpsa.gov.za/newsroom/psvc/",
+  "title": "Public service vacancy circular",
+  "secs": 12,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Public service vacancy circular",
+    "https://www.dpsa.gov.za/newsroom/psvc/"
+   ],
+   [
+    "Editable New Z83 application form [effective from 01 January 2021]",
+    "https://www.dpsa.gov.za/dpsa2g/documents/vacancies/editable%20Approved%20New%20Z83%20form%20Gazetted%206%20Nov%202020.pdf"
+   ],
+   [
+    "Circular dated 6 October 2026",
+    "https://www.dpsa.gov.za/dpsa2g/documents/vacancies/Circular%20%2055%20of%202026.pdf"
+   ],
+   [
+    "Year programme 2027",
+    "https://www.dpsa.gov.za/dpsa2g/documents/vacancies/Year%20Programme%202027.pdf"
+   ],
+   [
+    "Year programme 2026",
+    "https://www.dpsa.gov.za/dpsa2g/documents/vacancies/Year%20Programme%202026.pdf"
+   ],
+   [
+    "Circular dated 17 October 2025",
+    "https://www.dpsa.gov.za/dpsa2g/documents/vacancies/Circular%20%2043%20of%202025.pdf"
+   ],
+   [
+    "Public service vacancy circular",
+    "https://www.dpsa.gov.za/newsroom/psvc/"
+   ],
+   [
+    "Public service vacancy circular",
+    "https://www.dpsa.gov.za/newsroom/psvc/"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "kzn_health_careers": {
+  "url": "https://www.kznhealth.gov.za/career-opportunities/",
+  "final_url": "https://www.kznhealth.gov.za/career-opportunities/",
+  "title": "Career Opportunities - KZN Department of Health",
+  "secs": 15,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Skip to content",
+    "https://www.kznhealth.gov.za/career-opportunities/#content"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Jobs not for sale",
+    "http://www.kznhealth.gov.za/Jobs-not-for-sale.pdf"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "kzn_health_careers__1": {
+  "url": "https://www.kznhealth.gov.za/career-opportunities/#content",
+  "final_url": "https://www.kznhealth.gov.za/career-opportunities/#content",
+  "title": "Career Opportunities - KZN Department of Health",
+  "secs": 8,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Skip to content",
+    "https://www.kznhealth.gov.za/career-opportunities/#content"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Jobs not for sale",
+    "http://www.kznhealth.gov.za/Jobs-not-for-sale.pdf"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "kzn_health_careers__2": {
+  "url": "https://www.kznhealth.gov.za/vacancies/",
+  "final_url": "https://www.kznhealth.gov.za/vacancies/",
+  "title": "Vacancies - KZN Department of Health",
+  "secs": 13,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Skip to content",
+    "https://www.kznhealth.gov.za/vacancies/#content"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "Career Opportunities",
+    "https://www.kznhealth.gov.za/career-opportunities/"
+   ],
+   [
+    "Vacancies",
+    "https://www.kznhealth.gov.za/vacancies/"
+   ],
+   [
+    "DPSA Vacancy Circulars",
+    "https://www.dpsa.gov.za/newsroom/psvc/"
+   ],
+   [
+    "Entry level vacancies",
+    "http://portal.kznhealth.gov.za/vacancies/SitePages/entry-level.aspx"
+   ],
+   [
+    "Notes for HR Staff (internal link)",
+    "http://portal.kznhealth.gov.za/vacancies/SitePages/Home.aspx"
+   ],
+   [
+    "",
+    "https://www.kznonline.gov.za/kznjobs"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   6,
+   9,
+   61,
+   3,
+   1,
+   7
+  ]
+ },
+ "tshwane": {
+  "url": "https://www.tshwane.gov.za/?page_id=59256",
+  "final_url": "https://www.tshwane.gov.za/?page_id=59256",
+  "title": "Careers \u2013 City of Tshwane",
+  "secs": 31,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Tshwane Careers",
+    "https://www.tshwane.gov.za/?page_id=59256"
+   ],
+   [
+    "Career Portal",
+    "https://www.tshwane.gov.za/?page_id=849"
+   ],
+   [
+    "Tshwane Careers",
+    "https://careers.tshwane.gov.za/"
+   ],
+   [
+    "Job Forum",
+    "https://www.tshwane.gov.za/?page_id=7038"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "tshwane__1": {
+  "url": "https://www.tshwane.gov.za/?page_id=849",
+  "final_url": "https://www.tshwane.gov.za/?page_id=849",
+  "title": "Career Portal \u2013 City of Tshwane",
+  "secs": 25,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Tshwane Careers",
+    "https://www.tshwane.gov.za/?page_id=59256"
+   ],
+   [
+    "Seach for Vacancies",
+    "https://webapps.tshwane.gov.za/sap/bc/webdynpro/sap/hrrcf_a_unreg_job_search?sap-language=EN%23?sap-client-101#"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "tshwane__2": {
+  "url": "https://careers.tshwane.gov.za/",
+  "final_url": "https://careers.tshwane.gov.za/",
+  "title": "Tshwane Careers",
+  "secs": 12,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "",
+    "https://careers.tshwane.gov.za/#content"
+   ],
+   [
+    "Home page",
+    "https://careers.tshwane.gov.za/"
+   ],
+   [
+    "How to apply",
+    "https://careers.tshwane.gov.za/content/How-to-apply/?locale=en_GB"
+   ],
+   [
+    "Open jobs",
+    "https://careers.tshwane.gov.za/#"
+   ],
+   [
+    "cot",
+    "https://careers.tshwane.gov.za/go/cot/9524655/"
+   ],
+   [
+    "hct",
+    "https://careers.tshwane.gov.za/hct/go/hct/9524455/"
+   ],
+   [
+    "teda",
+    "https://careers.tshwane.gov.za/teda/go/teda/9524555/"
+   ],
+   [
+    "View All Jobs",
+    "https://careers.tshwane.gov.za/viewalljobs/"
+   ],
+   [
+    "Clear",
+    "https://careers.tshwane.gov.za/"
+   ],
+   [
+    "",
+    "https://careers.tshwane.gov.za/#"
+   ],
+   [
+    "Home page",
+    "https://careers.tshwane.gov.za/"
+   ],
+   [
+    "How to apply",
+    "https://careers.tshwane.gov.za/content/How-to-apply/?locale=en_GB"
+   ],
+   [
+    "Open jobs",
+    "https://careers.tshwane.gov.za/#"
+   ],
+   [
+    "cot",
+    "https://careers.tshwane.gov.za/go/cot/9524655/"
+   ],
+   [
+    "hct",
+    "https://careers.tshwane.gov.za/hct/go/hct/9524455/"
+   ],
+   [
+    "teda",
+    "https://careers.tshwane.gov.za/teda/go/teda/9524555/"
+   ],
+   [
+    "View All Jobs",
+    "https://careers.tshwane.gov.za/viewalljobs/"
+   ],
+   [
+    "Language",
+    "https://careers.tshwane.gov.za/#"
+   ],
+   [
+    "English (United Kingdom)",
+    "https://careers.tshwane.gov.za/?locale=en_GB"
+   ],
+   [
+    "View profile",
+    "https://careers.tshwane.gov.za/#"
+   ],
+   [
+    "Clear",
+    "https://careers.tshwane.gov.za/"
+   ],
+   [
+    "View profile",
+    "https://careers.tshwane.gov.za/#"
+   ],
+   [
+    "Privacy policy",
+    "https://careers.tshwane.gov.za/content/Privacy-policy/?locale=en_GB"
+   ],
+   [
+    "Terms of use",
+    "https://careers.tshwane.gov.za/content/Terms-of-use/?locale=en_GB"
+   ],
+   [
+    "Contact us",
+    "https://careers.tshwane.gov.za/content/Contact-us/?locale=en_GB"
+   ],
+   [
+    "About us",
+    "https://careers.tshwane.gov.za/content/About-us/?locale=en_GB"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   2,
+   2
+  ]
+ },
+ "tshwane__3": {
+  "url": "https://www.tshwane.gov.za/?page_id=7038",
+  "final_url": "https://www.tshwane.gov.za/?page_id=7038",
+  "title": "Job Forums \u2013 City of Tshwane",
+  "secs": 40,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Tshwane Careers",
+    "https://www.tshwane.gov.za/?page_id=59256"
+   ],
+   [
+    "Download PDF File",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/10/Job-Forum-54-2026-Divisional-Head-positions-6-20-Oct-2026-EdML.pdf"
+   ],
+   [
+    "Job Forum 51-2026 - Addendum - Shared Services Department (15 - 29 Oct 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/10/Job-Forum-51-2026-Addendum-Shared-Services-Department-15-29-Oct-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 54-2026 Divisional Head positions (6 - 20 Oct 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/10/Job-Forum-54-2026-Divisional-Head-positions-6-20-Oct-2026-EdML.pdf"
+   ],
+   [
+    "Job Forum 53 Human Settlements (30 September 2026 - 14 October 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/10/Job-Forum-53-Human-Settlements-30-September-2026-14-October-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 52-2026 GH Shared Services (23 Sep - 2 Oct 2026) and GH Group Property (23 Sep - 8 Oct 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/09/Job-Forum-52-2026-GH-Shared-Services-23-Sep-2-Oct-2026-and-GH-Group-Property-23-Sep-8-Oct-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 51-2026 Shared Services Department (23 September 2026 - 08 October 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/09/Job-Forum-51-2026-Shared-Services-Department-23-September-2026-08-October-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 50-2026 Roads and Transport (21 September - 05 October 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/09/Job-Forum-50-2026-Roads-and-Transport-21-September-05-October-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 49-2026 Emergency Services (3 - 17 Sep 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/09/Job-Forum-49-2026-Emergency-Services-3-17-Sep-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 48-2026 Water and Sanitation Business Unit & Region 6 (31 August - 14 September 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/08/Job-Forum-48-2026-Water-and-Sanitation-Business-Unit-Region-6-31-August-14-September-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 47-2026 Region 3 and Region 5 (28 Aug - 14 Sep 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/08/Job-Forum-47-2026-Region-3-and-Region-5-28-Aug-14-Sep-2026-EdML.pdf"
+   ],
+   [
+    "Job Forum 46-2026 Group Human Capital Management (27 Aug - 10 Sep 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/08/Job-Forum-46-2026-Group-Human-Capital-Management-27-Aug-10-Sep-2026-EdVN.pdf"
+   ],
+   [
+    "Job forum 45-2026 Region 1 (27 August 2026 -10 September 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/08/Job-forum-45-2026-Region-1-27-August-2026-10-September-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 41-2026 Business Units Heads (26 Jul 2026 - 11 Aug 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/07/Job-Forum-41-2026-Business-Units-Heads-26-Jul-2026-11-Aug-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 44-2026 Communication, Marketing and Events and Office of the CM (23 Jul - 6 Aug 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/07/Job-Forum-44-2026-Communication-Marketing-and-Events-and-Office-of-the-CM-23-Jul-6-Aug-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 43-2026 Customer Relations Management (16 - 29 June 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/07/Job-Forum-43-2026-Customer-Relations-Management-16-29-June-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 42-2026 Region 4 (15 - 29 Jul 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/07/Job-Forum-42-2026-Region-4-15-29-Jul-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 40-2026 City Strategy and Organisational Performance (29 June 2026 - 13 July 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/06/Job-Forum-40-2026-City-Strategy-and-Organisational-Performance-29-June-2026-13-July-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 39-2026 Department Group Human Capital Management and Office of the COO (19 June 2026 - 03 July 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/06/Job-Forum-39-2026-Department-Group-Human-Capital-Management-and-Office-of-the-COO-19-June-2026-03-July-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 38 -2026 Department Communication Marketing and Events and Office of the EM (18 June 2026 - 02 July 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/06/Job-Forum-38-2026-Department-Communication-Marketing-and-Events-and-Office-of-the-EM-18-June-2026-02-July-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 37 - 2026 Divisional Head positions- Various Departments (17 June - 30 June 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/06/Job-Forum-37-2026-Divisional-Head-positions-Various-Departments-17-June-30-June-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 36-2026 Group Property (01 June - 15 June 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/06/Job-Forum-36-2026-Group-Property-01-June-15-June-2026EdVN.pdf"
+   ],
+   [
+    "Job-Forum-35-2026-Group-Financial-Services-26-May-2026-9-June-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-35-2026-Group-Financial-Services-26-May-2026-9-June-2026-EdVN.pdf"
+   ],
+   [
+    "JOB FORUM 34-2026 Region 3, 5 and 7 WPC (14 May - 27 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/JOB-FORUM-34-2026-Region-3-5-and-7-WPC-14-May-27-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 33-2026 - Department Group Financial Services - WPC (08 May - 22 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-33-2026-Department-Group-Financeial-Services-WPC-08-May-22-May-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 32 - ROC Region 6 (08 May - 21 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-32-ROC-Region-6-08-May-21-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 31-2026 Department Environment and Agricultural Management (8 May - 21 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-31-2026-Department-Environment-and-Agricultural-Management-8-May-21-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 30 - Tshwane Metro Police Department (07 May - 20 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-30-Tshwane-Metro-Police-Department-07-May-20-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job forum 29-2026 - ROC Region 1 (7 May - 20 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-forum-29-2026-ROC-Region-1-7-May-20-May-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 28-2026 - Divisional Head Levies and others - (06 May - 19 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-28-2026-Divisional-Head-Levies-and-others-06-May-19-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 27-2026 - Business Unit Heads (10 May - 25 May 2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/05/Job-Forum-27-2026-Business-Unit-Heads-10-May-25-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 26-2026 Office of the Chief Operations Officer- and Governance and Support Officer (28 April - 12 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/04/Job-Forum-26-2026-Office-of-the-Chief-Operations-Officer-and-Governance-and-Support-Officer-28-April-12-May-2026EdVN.pdf"
+   ],
+   [
+    "Job Forum 25-2026 - Economic Developlent and Spatial Planning & Group Legal and Secretariat Services (20 April - 05 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/04/Job-Forum-25-2026-Economic-Developlent-and-Spatial-Planning-Group-Legal-and-Secretariat-Services-20-April-05-May-2026-1.pdf"
+   ],
+   [
+    "Job Forum 24-2026 Human Settlements - WPC (17 April - 04 May 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/04/Job-Forum-24-2026-Human-Settlements-WPC-17-April-04-May-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 23 / 2026 - Divisional Head City Sustainability and Divisional Head EPWP 15 - 29 April 2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/04/Job-Forum-23-2026-Divisional-Head-City-Sustainability-and-Divisional-Head-EPWP-15-29-April-2026EdML.pdf"
+   ],
+   [
+    "Job Forum 22 / 2026 - Region 2 (15 - 29 April 2026 )",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/04/Job-Forum-22-2026-Region-2-15-29-April-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 21-2026 - Roads and Transportt (26 March - 14 April 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-21-2026-Roads-and-Transportt-26-March-14-April-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 20-2026 - Community and Social Development (26 March - 13 April 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-20-2026-Community-and-Social-Development-26-March-13-April-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 19-2026 - Group Audit and Risk (26 March - 13 April 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-19-2026-Group-Audit-and-Risk-26-March-13-April-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 17-2026- Energy and Electricity Business Unit (9- 21 March 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-17-2026-Energy-and-Electricity-Business-Unit-9-21-March-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 16-2026 - Group Human Capital Management (9 - 20 March 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-16-2026-Group-Human-Capital-Management-9-20-March-2026-EdML.pdf"
+   ],
+   [
+    "Job Forum 15-2026 Department Customer Relations Management (9 - 20 March 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-15-2026-Department-Customer-Relations-Management-9-20-March-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 18-2026 - Water and Sanitation Business Unit (6 - 19 March 2026) (EdVN)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-18-2026-Water-and-Sanitation-Business-Unit-6-19-March-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 6-2026 - Department Roads and Stormwater - (4- 13 March 2026) Extension",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-6-2026-Department-Roads-and-Stormwater-4-13-March-2026-Extension.pdf"
+   ],
+   [
+    "Job Forum 4-2026 Energy and Electricity (29 January 2026 - 12 February 2026) (EdVN) Extension",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-4-2026-Energy-and-Electricity-29-January-2026-12-February-2026-EdVN-Extension.pdf"
+   ],
+   [
+    "Job Forum 3-2026 Department Group Property (04 - 13 March 2026) (EdVN) Extension",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/03/Job-Forum-3-2026-Department-Group-Property-04-13-March-2026-EdVN-Extension.pdf"
+   ],
+   [
+    "Job Forum 14-2026 - Job Forum for the Department of Heatlh (16 February 2026 - 4 March 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-14-2026-Job-Forum-for-the-Department-of-Heatlh-16-February-2026-4-March-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum - 13 - 2026 - Divisional Head-positions Audit and Office of the CM - 9 - 26 February 2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-13-2026-Divisional-Head-positions-Audit-and-Office-of-the-CM-9-26-February-2026-EdVN.pdf"
+   ],
+   [
+    "Job Forum 12 - 2026 Job Forum Department of Legal and Secretariat Serv and Economic Dev and Spatial Plan (12- 27 February 2026)",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-12-2026-Job-Forum-Department-of-Legal-and-Secretariat-Serv-and-Economic-Dev-and-Spatial-Plan-12-27-February-2026.pdf"
+   ],
+   [
+    "Job-Forum-11-2026-Department-Environment-and-Agriculture-Management-9-25-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-11-2026-Department-Environment-and-Agriculture-Management-9-25-February-2026-EdVN.pdf"
+   ],
+   [
+    "Job-Forum-10-2026-Office-of-the-",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-10-2026-Office-of-the-City-Manager-9-24-February-2026-EdVN.pdf"
+   ],
+   [
+    "City-Manager-9-24-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-10-2026-Office-of-the-City-Manager-9-24-February-2026-EdVN.pdf"
+   ],
+   [
+    "Job-Forum-9-2026-Department-Emergency-Services-Management-5-24-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-9-2026-Department-Emergency-Services-Management-5-24-February-2026-EdVN.pdf"
+   ],
+   [
+    "Job-Forum-8-2026-Department-Group-Audit-and-Risk-6-23-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-8-2026-Department-Group-Audit-and-Risk-6-23-February-2026-003.pdf"
+   ],
+   [
+    "Job-Froum-7-2026-Regional-Operations-and-Coordination-4-18-February",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Froum-7-2026-Regional-Operations-and-Coordination-4-18-February-EdVN.pdf"
+   ],
+   [
+    "Job-Forum-6-2026-Department-Roads-and-Stormwater-3-17-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-6-2026-Department-Roads-and-Stormwater-3-17-February-2026.pdf"
+   ],
+   [
+    "Job-Forum-5-2026-Department-Shared-Services-2-16-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/02/Job-Forum-5-2026-Department-Shared-Services-2-16-February-2026-EdVN.pdf"
+   ],
+   [
+    "Job-Forum-4-2026-Energy-and-Electricity-29-January-2026-12-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/01/Job-Forum-4-2026-Energy-and-Electricity-29-January-2026-12-February-2026-EdVN.pdf"
+   ],
+   [
+    "Job-Forum-2-2026-Internal-advertisement-Office-of-the-Executive-Mayor-28-January-2026-11-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/01/Job-Forum-2-2026-Internal-advertisement-Office-of-the-Executive-Mayor-28-January-2026-11-February-2026-EdVN-1.pdf"
+   ],
+   [
+    "Job-Forum-3-2026-Department-Group-Property-28-January-2026-11-February-2026",
+    "https://www.tshwane.gov.za/wp-content/uploads/2026/01/Job-Forum-3-2026-Department-Group-Property-28-January-2026-11-February-2026-EdVN.pdf"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "gauteng": {
+  "url": "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx",
+  "final_url": "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx",
+  "title": "GPG Professional Job Centre",
+  "secs": 12,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "",
+    "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx#"
+   ],
+   [
+    "JOBS",
+    "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx#"
+   ],
+   [
+    "ALL JOBS",
+    "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx"
+   ],
+   [
+    "ACCOUNT",
+    "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx#"
+   ],
+   [
+    "All Jobs",
+    "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx"
+   ],
+   [
+    "",
+    "https://gpgjobcentre.gauteng.gov.za/Public/Jobs.aspx#"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   1,
+   3,
+   1
+  ]
+ },
+ "joburg": {
+  "url": "https://joburg.org.za/work_/Pages/default.aspx",
+  "final_url": "https://joburg.org.za/work_/Pages/default.aspx",
+  "title": "Work In Joburg",
+  "secs": 16,
+  "feeds": [
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0"
+  ],
+  "relevant_links": [
+   [
+    "\u200bJob Opportunities",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   20
+  ]
+ },
+ "joburg__1": {
+  "url": "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx",
+  "final_url": "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx",
+  "title": "Job Opportunities",
+  "secs": 11,
+  "feeds": [
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0"
+  ],
+  "relevant_links": [
+   [
+    "Turn on more accessible mode",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ],
+   [
+    "Turn off more accessible mode",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ],
+   [
+    "",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ],
+   [
+    "Read more on ti\u200bps for job ap\u200bplicants",
+    "https://joburg.org.za/work_/Pages/2026-Vacancies/Tips-For-Job-Applicants.aspx"
+   ],
+   [
+    "2026 Job Opportunities\u200b",
+    "https://joburg.org.za/work_/Pages/2026-Vacancies/2026-Job-Opportunities.aspx"
+   ],
+   [
+    "2026 Internships\u200b",
+    "https://joburg.org.za/work_/Pages/2026-Vacancies/2026-Internships.aspx"
+   ],
+   [
+    "Bursary Opportunity for all Qualifying Youth in the City of Johannesburg for the 2027 Academic Year",
+    "https://joburg.org.za/work_/Documents/Vacancies-2026/Bursary-Circular-for-2027.pdf"
+   ],
+   [
+    "Invitation for Applications as Non-Executive Directors, Independent Audit Committee Members and Group Advisory Committees' Members. Read M\u200bo",
+    "https://joburg.org.za/work_/Documents/Vacancies-2026/Invitation-for-Applications-as-Non-Executive-Directors-Independent-Audit-Committee-Members-and-Group-Advisory-Committees-Members.pdf"
+   ],
+   [
+    "Closed Vacancies",
+    "https://joburg.org.za/work_/Pages/Closed-Vacancies.aspx"
+   ],
+   [
+    "0860 562 874 (General)",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ],
+   [
+    "011 375 5911 (Ambulance, Fire and JMPD)",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ],
+   [
+    "0800 002 587 (Anti fraud hotline)",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ],
+   [
+    "",
+    "https://joburg.org.za/work_/Pages/Work%20in%20Joburg/Vacancies/Vacancies.aspx#"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   9
+  ]
+ },
+ "capetown": {
+  "url": "https://www.capetown.gov.za/",
+  "final_url": "https://www.capetown.gov.za/",
+  "title": "Home | City of Cape Town",
+  "secs": 14,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Find a job",
+    "https://eservices.capetown.gov.za/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fcapetown.gov.za.coct_customisation_folder!2fcapetown.gov.za.coct_erec_folder!2fcapetown.gov.za.coct_erec_iviews_folder!2fcapetown.gov.za.iview.erec_job_search"
+   ],
+   [
+    "CITY CONNECT Apply for a service, search for a job, report a fault, log onto e-Services\u2026",
+    "https://www.capetown.gov.za/city-connect/"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "capetown__1": {
+  "url": "https://eservices.capetown.gov.za/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fcapetown.gov.za.coct_customisation_folder!2fcapetown.gov.za.coct_erec_folder!2fcapetown.gov.za.coct_erec_iviews_folder!2fcapetown.gov.za.iview.erec_job_search",
+  "final_url": "https://eservices.capetown.gov.za/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fcapetown.gov.za.coct_customisation_folder!2fcapetown.gov.za.coct_erec_folder!2fcapetown.gov.za.coct_erec_iviews_folder!2fcapetown.gov.za.iview.erec_job_search",
+  "title": "Job Search",
+  "secs": 21,
+  "feeds": [],
+  "relevant_links": [],
+  "pdf_links": [],
+  "tables": []
+ },
+ "capetown__2": {
+  "url": "https://www.capetown.gov.za/city-connect/",
+  "final_url": "https://www.capetown.gov.za/city-connect/",
+  "title": "City-Connect | City of Cape Town",
+  "secs": 10,
+  "feeds": [],
+  "relevant_links": [
+   [
+    "Find a job",
+    "https://eservices.capetown.gov.za/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fcapetown.gov.za.coct_customisation_folder!2fcapetown.gov.za.coct_erec_folder!2fcapetown.gov.za.coct_erec_iviews_folder!2fcapetown.gov.za.iview.erec_job_search"
+   ],
+   [
+    "Jobs search",
+    "https://eservices.capetown.gov.za/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fcapetown.gov.za.coct_customisation_folder!2fcapetown.gov.za.coct_erec_folder!2fcapetown.gov.za.coct_erec_iviews_folder!2fcapetown.gov.za.iview.erec_job_search"
+   ],
+   [
+    "FIND A JOB OR DEVELOP SKILLS",
+    "https://www.capetown.gov.za/city-connect/find-a-job-or-develop-skills/"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "ethekwini": {
+  "url": "https://www.durban.gov.za/",
+  "final_url": "https://www.durban.gov.za/",
+  "title": "EThekwini Municipality - Landing Page",
+  "secs": 33,
+  "feeds": [
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-v4compatibility.woff2",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-brands-400.woff2",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-solid-900.woff2",
+   "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js",
+   "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/ui-lightness/jquery-ui.css",
+   "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js",
+   "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/i18n/jquery-ui-i18n.min.js",
+   "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+   "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+   "https://cdn.commoninja.com/api/v1/embed/e396b28d-7b85-475c-b0e1-2ede7b53b015?crawler=true",
+   "https://cdn.commoninja.com/api/v1/embed/99edbb29-a8d6-4291-9ce1-963dd29cd160?crawler=true",
+   "https://cdn.commoninja.com/api/v1/embed/2848dee8-8bd6-40fa-b179-d760291bcc5e?crawler=true",
+   "https://translate.googleapis.com/element/log?format=json&hasfast=true&authuser=0"
+  ],
+  "relevant_links": [
+   [
+    "JOBS",
+    "https://www.durban.gov.za/page/jobs"
+   ],
+   [
+    "E-RECRUITMENT",
+    "https://www.durban.gov.za/page/jobs"
+   ],
+   [
+    "JOBS",
+    "https://www.durban.gov.za/page/jobs"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": []
+ },
+ "ethekwini__1": {
+  "url": "https://www.durban.gov.za/page/jobs",
+  "final_url": "https://www.durban.gov.za/page/jobs",
+  "title": "Jobs - EThekwini Corporate Website",
+  "secs": 13,
+  "feeds": [
+   "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+   "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-brands-400.woff2",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-solid-900.woff2",
+   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-v4compatibility.woff2",
+   "https://translate.googleapis.com/element/log?format=json&hasfast=true&authuser=0"
+  ],
+  "relevant_links": [
+   [
+    "RESIDENTS",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "BUSINESS",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "VISITORS",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "JOBS",
+    "https://www.durban.gov.za/page/jobs"
+   ],
+   [
+    "GOVERNMENT",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "DIGITALLY YOU E-RECRUITMENT APPLICATION PORTAL",
+    "https://iabzbn.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1"
+   ],
+   [
+    "HUMAN CAPITAL CENTRES OF EXCELLENCE",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "",
+    "https://www.durban.gov.za/uploads/0000/13/2026/04/07/creating-a-profile-for-erecruitment.pdf"
+   ],
+   [
+    "Umhlahlandlela wokwakha iphrofayela ku eThekwini Career Site isiZulu",
+    "https://www.durban.gov.za/uploads/0000/13/2026/04/21/umhlahlandlela-wokwakha-iphrofayela-ku-e-thekwini-career-site-isi-zulu.pdf"
+   ],
+   [
+    "Terms and Privacy Policy",
+    "https://www.durban.gov.za/page/jobs"
+   ],
+   [
+    "Log In",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "RESIDENTS",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "BUSINESS",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "VISITORS",
+    "https://www.durban.gov.za/page/jobs#"
+   ],
+   [
+    "JOBS",
+    "https://www.durban.gov.za/page/jobs"
+   ],
+   [
+    "GOVERNMENT",
+    "https://www.durban.gov.za/page/jobs#"
+   ]
+  ],
+  "pdf_links": [],
+  "tables": [
+   19,
+   2
+  ]
+ },
+ "ec_health": {
+  "url": "https://www.echealth.gov.za/",
+  "error": "Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://www.echealth.gov.za/\nCall log:\n  - navigating to \"https://www.echealth.gov.za/\", waiting until \"domcontentloaded\"\n",
+  "secs": 134
+ }
+}
