@@ -46,10 +46,17 @@ with sync_playwright() as p:
             for l in re.findall(r'href="([^"#?]+\.php)"', clean):
                 l = l.replace("../careers/", "").replace("/careers/", "")
                 if "/" not in l and l not in seen: names.append(l)
+    allpdfs = []
+    for e in log:
+        for x in e.get("pdfs", []):
+            if x not in allpdfs: allpdfs.append(x)
+    for x in ["downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
+              "downloads/2026/polact/214 2026.pdf", "downloads/2026/SMS/SMS1.pdf"]:
+        if x not in allpdfs: allpdfs.append(x)
     load(pg, B + "ptrainees.php")
-    for path in ["downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
-                 "downloads/2026/polact/214 2026.pdf", "downloads/2026/SMS/SMS1.pdf"]:
-        data = fetch_pdf(pg, B + path.replace(" ", "%20"))
+    for path in allpdfs[:80]:
+        path = path.replace("../careers/", "").replace("/careers/", "").lstrip("/")
+        data = fetch_pdf(pg, path if path.startswith("http") else B + path.replace(" ", "%20"))
         if data:
             fn = f"{OUT}/" + re.sub(r"[^A-Za-z0-9.]+", "_", path)
             open(fn, "wb").write(data)
