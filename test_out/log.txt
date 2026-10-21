@@ -1,0 +1,13 @@
+  ptrainees.php: 1 open rows
+  publicact.php: 23 open rows
+  ls.php: 4 open rows
+  smanagement.php: 13 open rows
+  internships.php: 0 open rows
+  pserviceact.php: 0 open rows
+  reenlisments.php: 0 open rows
+  retry 1/2: Page.goto: Timeout 240000ms exceeded.
+Call log:
+  - navigating to "https://erecruitment.saps.gov.za/SAPS-Vacancies/", wa
+  e-Recruitment: 1 vacancies
+
+28 SAPS posts
