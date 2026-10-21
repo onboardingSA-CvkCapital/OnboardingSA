@@ -1,0 +1,19 @@
+Reading sheet...
+Loading jobs 0-25...
+  NEW (SA): Learner Electro Mechanic (Millwright) (Secunda)
+  NEW (SA): Shiftboss (Secunda)
+  NEW (SA): Snr Artisan Diesel Mechanic x7 (Secunda)
+  NEW (SA): Reliability Engineer I (Secunda)
+  NEW (SA): Learner Administrator (Sandton)
+  NEW (SA): Learner Administrator (People Living with  (Sandton)
+Loading jobs 25-50...
+  NEW (SA): Artisan Mechanical Fitter Gr 2 (Secunda)
+  NEW (SA): Junior Chemical Plant Operator (Jnr CPO) (Secunda)
+  NEW (SA): Artisan Gr 2 Mechanical Fitter (Secunda)
+  NEW (SA): SHE Ventilation Recorder X2 (Secunda)
+  NEW (SA): Learnership: Artisan Maintenance (Secunda) (Secunda)
+  NEW (SA): Mine Overseer (Secunda)
+  NEW (SA): Manufacturing Inspector (Secunda)
+  NEW (SA): Personal Assistant Mining (People living w (Secunda)
+Loading jobs 50-75...
+  NEW (SA): Foreman - Plant Outside Services (Sasolburg)
