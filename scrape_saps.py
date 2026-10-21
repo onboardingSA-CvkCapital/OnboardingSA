@@ -220,15 +220,18 @@ def clean_apply(block):
     return text
 
 
-GENERIC_HEAD = re.compile(r"^[ \t\f•·➢❖\-]*([A-Za-z][A-Za-z ,&/()'’\-]{2,70}?)\s*:?\s*$", re.M)
+GENERIC_HEAD = re.compile(r"^[ \t\f•·➢❖\-]*([A-Za-z][A-Za-z ,&/()'’\-]{2,70}?)\s*[:\-–]*\s*$", re.M)
 INLINE_HEAD = re.compile(r"^[ \t\f•·➢❖\-]*([A-Z][A-Za-z ,&/()'’\-]{2,50}?)\s*:\s+(\S.*)$", re.M)
-REQ_WORDS = re.compile(r"requirement|qualification|competenc|knowledge|skills|experience|eligib|criteria", re.I)
-DUTY_WORDS = re.compile(r"dut(?:y|ies)|function|responsibilit|key performance|\bKPAs?\b|job purpose|tasks|outputs", re.I)
+# tolerant of the misspellings found in real adverts ("KEY PERFOMANCE AREARS", "MINIMUM REQUIEMENTS")
+REQ_WORDS = re.compile(r"requi\w*m\w*nts?|qualification|competenc|knowledge|skills|experience|eligib|criteria|recommendation", re.I)
+DUTY_WORDS = re.compile(r"dut(?:y|ies)|function|responsib|\bkey\s*pe\w*\s*ar\w*|\bKPAs?\b|job purpose|tasks|outputs", re.I)
+FOOTER = re.compile(r"^\s*(?:ASIBE HEALTHY KZN|GROWING KWAZULU-NATAL TOGETHER|Page \d+ of \d+|-\s*\d+\s*-)\s*\|?\s*$", re.I | re.M)
 STOP_WORDS = re.compile(r"general|note|enquir|application|how to apply|closing|contact|correspondence|remuneration|salary", re.I)
 
 
 def fallback_sections(text):
     """Unknown layout: find headings by their wording ('Minimum Requirements', 'Key Performance Areas'...)."""
+    text = FOOTER.sub("", text)
     heads = []
     for m in INLINE_HEAD.finditer(text):                   # "REQUIREMENTS: Applicants must ..." on one line
         h = m.group(1).strip()
@@ -241,7 +244,7 @@ def fallback_sections(text):
     for m in GENERIC_HEAD.finditer(text):
         h = m.group(1).strip()
         line = m.group(0).strip()
-        if not (line.endswith(":") or h.isupper()) or len(h.split()) > 8:
+        if not (line.rstrip("-– ").endswith(":") or line.endswith("-") or h.isupper()) or len(h.split()) > 8:
             continue
         kind = ("duty" if DUTY_WORDS.search(h) else "req" if REQ_WORDS.search(h)
                 else "stop" if STOP_WORDS.search(h) else None)

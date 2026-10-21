@@ -169,7 +169,7 @@ def render(j):
     soon = dl is not None and dl<=7
     # avatar
     base=slug_logo(j.get("employer"))
-    if str(jid).upper().startswith("PSV-"):      # DPSA circular posts: government logo
+    if str(jid).upper().startswith(("PSV-", "KZNH-")):   # DPSA circular / provincial department posts: government logo
         base="government"
     elif str(jid).upper().startswith("SAPS-"):   # SAPS posts: SAPS logo
         base="saps"

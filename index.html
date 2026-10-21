@@ -290,7 +290,7 @@ function avatarHTML(j){
   const ini=esc(initials(j.employer));
   const candidates=[];
   // Posts from the DPSA circular ("PSV-") use the government logo; SAPS posts use saps.png.
-  if(/^PSV-/i.test(j.id||'')||/^PSV-/i.test(j.reference_no||'')) candidates.push(LOGO_BASE+'government.png');
+  if(/^(PSV|KZNH)-/i.test(j.id||'')||/^(PSV|KZNH)-/i.test(j.reference_no||'')) candidates.push(LOGO_BASE+'government.png');
   if(/^SAPS-/i.test(j.id||'')||/^SAPS-/i.test(j.reference_no||'')) candidates.push(LOGO_BASE+'saps.png');
   const base=logoSlug(j.employer);
   if(base){ for(const nm of [...new Set([base, base.toLowerCase()])]){ candidates.push(LOGO_BASE+nm+'.png',LOGO_BASE+nm+'.jpg',LOGO_BASE+nm+'.svg'); } }
