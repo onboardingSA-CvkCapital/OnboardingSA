@@ -1,0 +1,142 @@
+[
+ {
+  "url": "https://www.saps.gov.za/careers/careers.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/careers.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/careers.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "secs": 2
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/careers.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/careers.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ptrainees.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ptrainees.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ptrainees.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ptrainees.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ptrainees.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/publicact.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/publicact.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/publicact.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/publicact.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/publicact.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certifica",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ls.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
+  "secs": 2
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ls.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ls.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/ls.php",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/ls.php (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/trainee/Police-Trainee-Advert-2026-2027.pdf (Caused by SSLError(SSLCertVerificationError(1",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
+  "secs": 2
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/polact/214%202026.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/polact/214%202026.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_V",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
+  "secs": 1
+ },
+ {
+  "url": "https://www.saps.gov.za/careers/downloads/2026/SMS/SMS1.pdf",
+  "error": "HTTPSConnectionPool(host='www.saps.gov.za', port=443): Max retries exceeded with url: /careers/downloads/2026/SMS/SMS1.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAI",
+  "secs": 1
+ }
+]
