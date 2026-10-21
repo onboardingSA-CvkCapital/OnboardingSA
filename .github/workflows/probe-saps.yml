@@ -2,23 +2,23 @@ name: Probe SAPS (temporary)
 on:
   push:
     branches: [probe-saps]
-    paths-ignore: ['probe_out/**']
+    paths-ignore: ['probe_out/**', 'probe_out2/**']
 permissions:
   contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - run: |
-          pip install playwright
-          python -m playwright install --with-deps chromium
-      - run: python probe/probe_saps.py
+          pip install requests
+          sudo apt-get install -y poppler-utils
+      - run: python probe/probe_saps2.py
       - name: Save results to branch
         if: always()
         run: |
           git config user.name github-actions; git config user.email actions@github.com
-          git add -f probe_out && git commit -m "probe results" && git push
+          git add -f probe_out2 && git commit -m "probe results" && git push
