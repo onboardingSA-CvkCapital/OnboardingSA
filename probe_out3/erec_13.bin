@@ -1,0 +1,1549 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en-US" data-lang="en-US" crm-lang="en-US" dir="ltr" crm-lcid="1033" same-site-mode="None">
+<head>
+		
+		<meta charset="utf-8"><meta name="viewport" content="width=device-width,&#32;initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+				
+        </script>
+	<title>
+	
+		Home
+		- SAPS eRecruitment Portal
+</title>
+		
+		<script src="/_portal/b625ac76-7584-ee11-8178-00224882e798/Resources/ResourceManager?lang=en-US"></script>
+	
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+        // Refresh all powerBI Iframes on Login in one Iframe
+        window.addEventListener('message', function (event) {
+            if (event && event.data && event.data == 'refreshPowerBI') {
+                $("iframe.powerbi").each(function () {
+                    this.src = this.src;
+                });
+            }
+        });
+
+        // Fix for incorrect viewport width setting in IE 10 on Windows Phone 8.
+        if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+            var msViewportStyle = document.createElement("style");
+            msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}"));
+            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+        }
+    </script>
+		
+	
+		
+		<link href="/bootstrap.min.css" rel="stylesheet">
+
+		<link href="https://content.powerapps.com/resource/powerappsportal/dist/font-awesome.BootstrapV5.bundle-2ce6efb497.css" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;link&#32;=&#32;document.createElement(&#39;link&#39;);&#32;link.crossOrigin&#32;=&#32;target.crossOrigin;&#32;link.href&#32;=&#32;&#39;/dist/font-awesome.BootstrapV5.bundle-2ce6efb497.css&#39;;&#32;link.rel&#32;=&#32;&#39;stylesheet&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,link);" rel="stylesheet">
+
+				<link href="https://content.powerapps.com/resource/powerappsportal/dist/preform.BootstrapV5.bundle-e3e84e09a3.css" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;link&#32;=&#32;document.createElement(&#39;link&#39;);&#32;link.crossOrigin&#32;=&#32;target.crossOrigin;&#32;link.href&#32;=&#32;&#39;/dist/preform.BootstrapV5.bundle-e3e84e09a3.css&#39;;&#32;link.rel&#32;=&#32;&#39;stylesheet&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,link);" rel="stylesheet">
+
+
+		
+		<link href="https://content.powerapps.com/resource/powerappsportal/dist/privatemode.bundle-049b12b66e.css" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;link&#32;=&#32;document.createElement(&#39;link&#39;);&#32;link.crossOrigin&#32;=&#32;target.crossOrigin;&#32;link.href&#32;=&#32;&#39;/dist/privatemode.bundle-049b12b66e.css&#39;;&#32;link.rel&#32;=&#32;&#39;stylesheet&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,link);" rel="stylesheet">
+
+
+		
+			
+
+
+		
+		<link href="/theme.css" rel="stylesheet">
+<link href="/portalbasictheme.css" rel="stylesheet">
+
+		<style type="text/css">
+.sectionBlockLayout{
+  display:none !important;
+}
+.mobile-banner{
+  display:none !important;
+}
+@media only screen and (max-width: 600px) {
+  .desktop-banner{
+  display: none !important;
+}
+.mobile-banner{
+  display:block !important;
+}
+  .btn-axz{
+    width:100% !important;
+  }
+    .mySapsApp-mobile{
+  display: block !important;
+}
+  .mySapsApp-desktop{
+  display: none !important;
+}
+#ip12h{
+  font-size: 26px !important;
+}
+#ihegud{
+  font-size: 20px !important;
+}
+.c-h-txt{
+  margin-top: 65px !important;
+}
+.c-h-sub-txt{
+  margin-bottom: 40px !important;
+}
+.qr-code{
+  display: none !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+  .desktop-banner{
+  display: none !important;
+}
+.mobile-banner{
+  display:block !important;
+}
+  .btn-axz{
+    width:100% !important;
+  }
+  [class*="col-"] {
+    width: 100%;
+  }
+    .mySapsApp-mobile{
+  display: block !important;
+}
+  .mySapsApp-desktop{
+  display: none !important;
+}
+#ip12h{
+  font-size: 26px !important;
+}
+#ihegud{
+  font-size: 20px !important;
+}
+.c-h-txt{
+  margin-top: 65px !important;
+}
+.c-h-sub-txt{
+  margin-bottom: 40px !important;
+}
+.qr-code{
+  display: none !important;
+}
+}
+
+@media only screen and (max-width: 1024px) {
+  .desktop-banner{
+  display: none !important;
+}
+.mobile-banner{
+  display:block !important;
+}
+  .btn-axz{
+    width:100% !important;
+  }
+   [class*="col-"] {
+    width: 100%;
+  }
+  .txt-saps-s{
+    display:none !important;
+  }
+  .eRecruitment-Portal{
+    display:none !important;
+  }
+    .mySapsApp-mobile{
+  display: block !important;
+}
+  .mySapsApp-desktop{
+  display: none !important;
+}
+#ip12h{
+  font-size: 26px !important;
+}
+#ihegud{
+  font-size: 20px !important;
+}
+.c-h-txt{
+  margin-top: 65px !important;
+}
+.c-h-sub-txt{
+  margin-bottom: 40px !important;
+}
+.qr-code{
+  display: none !important;
+}
+#last-hr{
+  display: none;
+}
+}
+@media only screen and (max-width: 768px) {
+  /*add mq for contact us */
+  div.saps-contactus-header{
+    font-size: 18px!important;
+  }
+  p.saps-contactus-body{
+    font-size: 16px!important;
+  }
+  div.saps-contactus{
+    font-size: 25px!important;
+  }
+  /* For mobile phones: */
+  .desktop-banner{
+  display: none !important;
+}
+.mobile-banner{
+  display:block !important;
+}
+  [class*="col-"] {
+    width: 100%;
+  }
+    .mySapsApp-mobile{
+  display: block !important;
+}
+  .mySapsApp-desktop{
+  display: none !important;
+}
+#ip12h{
+  font-size: 26px !important;
+}
+#ihegud{
+  font-size: 20px !important;
+}
+.c-h-txt{
+  margin-top: 65px !important;
+}
+.c-h-sub-txt{
+  margin-bottom: 40px !important;
+}
+.qr-code{
+  display: none !important;
+}
+.navbar-toggler {
+    padding: 1.25rem 2rem;
+}
+}
+@media only screen and (max-width: 280px) {
+  /* For mobile phones: */
+  .desktop-banner{
+  display: none !important;
+}
+.mobile-banner{
+  display:block !important;
+}
+  .apptxt{
+    margin-top: 0px !important;
+  }
+  .dowaloadAppStoretxt{
+    font-size: 9px !important;
+  }
+  .appDescription{
+    font-size: 10px !important;
+  }
+  .mySapsApp-mobile{
+  display: block !important;
+}
+  .mySapsApp-desktop{
+  display: none !important;
+}
+#ip12h{
+  font-size: 26px !important;
+}
+#ihegud{
+  font-size: 20px !important;
+}
+.c-h-txt{
+  margin-top: 65px !important;
+}
+.c-h-sub-txt{
+  margin-bottom: 40px !important;
+}
+.qr-code{
+  display: none !important;
+}
+}
+.mySapsApp-mobile{
+  display: none;
+}
+.qr-code{
+      display: grid;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+        color: #182350;
+    font-weight: 700;
+}
+.header-text{
+  padding: 20px;
+}
+@media (max-width: 480px) {
+    .home-footer {
+        margin-top: calc(5% + 360px) !important;
+    }
+}
+@media (min-width: 481px) and (max-width: 767px) {
+    .home-footer {
+        margin-top: calc(5% + 360px) !important;
+    }
+    
+}
+
+#ibbu0y-2{
+  font-size: 16px !important;
+}
+
+
+
+#iz1rzn{
+ color: #2B6EDF !important;
+  text-align: justify !important;
+  margin-top: 7px !important;
+  margin-left: 8px !important;
+}
+#itu7s8{
+ color: #2B6EDF !important;
+ text-align: justify !important;
+  margin-top: 7px !important;
+  margin-left: 8px !important;
+}
+</style>
+		
+		
+		
+		
+	
+		
+		<link href="https://content.powerapps.com/resource/powerappsportal/dist/pwa-style.bundle-55718a4c0d.css" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;link&#32;=&#32;document.createElement(&#39;link&#39;);&#32;link.crossOrigin&#32;=&#32;target.crossOrigin;&#32;link.href&#32;=&#32;&#39;/dist/pwa-style.bundle-55718a4c0d.css&#39;;&#32;link.rel&#32;=&#32;&#39;stylesheet&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,link);" rel="stylesheet">
+
+		</head>
+<body data-sitemap-state="/" data-dateformat="yyyy/MM/dd" data-timeformat="h:mm tt" data-datetimeformat="yyyy/MM/dd h:mm tt" data-app-path="/" data-ckeditor-basepath="/js/BaseHtmlContentDesigner/Libs/msdyncrm_/libs/ckeditor/" data-case-deflection-url="/_services/search/b625ac76-7584-ee11-8178-00224882e798">
+
+
+	
+		<link href="https://content.powerapps.com/resource/powerappsportal/dist/pcf-style.bundle-373a0f4982.css" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;link&#32;=&#32;document.createElement(&#39;link&#39;);&#32;link.crossOrigin&#32;=&#32;target.crossOrigin;&#32;link.href&#32;=&#32;&#39;/dist/pcf-style.bundle-373a0f4982.css&#39;;&#32;link.rel&#32;=&#32;&#39;stylesheet&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,link);" rel="stylesheet">
+
+			
+	
+		
+
+	<div id="offlineNotificationBar" class="displayNone">
+		<img alt="web" class="col-3" id="web" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;img&#32;=&#32;document.createElement(&#39;img&#39;);&#32;img.src&#32;=&#32;&#39;/css/images/web.png&#39;;&#32;img.alt&#32;=&#32;&#39;web&#39;;&#32;img.id&#32;=&#32;&#39;web&#39;&#32;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,img);&#32;target.remove();" src="https://content.powerapps.com/resource/powerappsportal/img/web.png">
+		<div id="message">You&#8217;re offline. This is a read only version of the page.</div>
+		<div id="close" onclick="this.parentElement.style.display='none';"><img alt="close" class="col-3" onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;img&#32;=&#32;document.createElement(&#39;img&#39;);&#32;img.src&#32;=&#32;&#39;/css/images/close.png&#39;;&#32;img.alt&#32;=&#32;&#39;close&#39;;&#32;img.id&#32;=&#32;&#39;&#39;&#32;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,img);&#32;target.remove();" src="https://content.powerapps.com/resource/powerappsportal/img/close.png"></div>
+	</div>
+
+	
+
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+        window.DisableCkEditor = window.DisableCkEditor || {};
+		
+		DisableCkEditor.Value = 'False';
+    </script>
+
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+        var enableOmniChannelWidgetWithSiteCopilot = 'False';
+        if (enableOmniChannelWidgetWithSiteCopilot === "True" || enableOmniChannelWidgetWithSiteCopilot === "true") {
+            const authUrl = window.location.origin + "/_services/auth/portalusertoken";
+            const fetchWithRetries = async (url, options, retries) => {
+                try {
+                    const authResponse = await fetch(url, options);
+                    const token = await authResponse.text();
+                    sessionStorage['c2Token'] = token;
+                } catch (err) {
+                    if (retries === 1) throw err;
+                    return await fetchWithRetries(url, options, retries - 1);
+                }
+            };
+            fetchWithRetries(authUrl, { method: "POST" }, 4);
+
+            // Enable/disable Omnichannel session refresh on auth state change
+            // When enabled, closeChat() is called when user logs in/out to start a fresh session
+            var enableOmniChannelSessionRefreshSetting = 'True';
+            window.enableOmniChannelSessionRefresh = enableOmniChannelSessionRefreshSetting === 'True' || enableOmniChannelSessionRefreshSetting === 'true';
+        }
+    </script>
+
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+		var isPvaBotAuthenticated = sessionStorage['isPvaBotAuthenticated'];
+		var isPortalUserLoggedIn = 'False';
+
+        if ((isPvaBotAuthenticated != null || isPvaBotAuthenticated != undefined) && isPvaBotAuthenticated != isPortalUserLoggedIn) {
+			sessionStorage['triggerPvaBotSignOut'] = true;
+			sessionStorage.removeItem('c2Token');
+            sessionStorage.removeItem('directLinetoken');
+            sessionStorage.removeItem('conversation_Id');
+
+			sessionStorage.removeItem('bot_c2Token');
+			sessionStorage.removeItem('botdirectLinetoken');
+            sessionStorage.removeItem('botconversation_Id');
+		}
+		sessionStorage['isPvaBotAuthenticated'] = isPortalUserLoggedIn;
+    </script>
+
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+		window["CSPSettings"] = window["CSPSettings"] || {};
+		window["CSPSettings"].nonce = 'L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=';
+        window["FabricConfig"] = window["FabricConfig"] || {};
+        window["FabricConfig"].mergeStyles = window["FabricConfig"].mergeStyles || {};
+		window["FabricConfig"].mergeStyles.cspSettings = window["CSPSettings"];
+        window["Microsoft"] = window["Microsoft"] || {};
+		window["Microsoft"].Dynamic365 = {
+			Portal: {
+				
+				User: {
+					userName: '',
+					firstName: '',
+					lastName: '',
+					email: '',
+					contactId: '',
+					userRoles: [],
+				},
+				
+				type: 'PowerPages_BlankTemplate_V2',
+				id: '05a13a61-7b28-47b2-8855-584027f2faa9', 
+				geo: 'EUR', 
+				tenant: '5f8658c1-506f-474a-9e6e-728ea922a0fc', 
+				correlationId: '73f7dd74-d934-44d5-b619-b226d177f5f8',
+                orgEnvironmentId: '2bc9badc-9ce4-efe1-a8f0-47a58a100b4c',
+                orgId: 'd91bec00-6993-ee11-be32-0022489d707e',
+                portalProductionOrTrialType: 'Production',
+                isTelemetryEnabled: 'True',
+                InstrumentationSettings: {
+                    instrumentationKey: '197418c5cb8c4426b201f9db2e87b914-87887378-2790-49b0-9295-51f43b6204b1-7172',
+                    collectorEndpoint: 'https://eu-mobile.events.data.microsoft.com/OneCollector/1.0/'
+                },
+                timerProfileForBatching: 'NEAR_REAL_TIME',
+                activeLanguages: ["en-US"],
+                isClientApiEnabled: 'True',
+                isSpaSite: 'False'
+            }
+        };
+
+		window["Microsoft"].PowerPages = window["Microsoft"].PowerPages || {};
+		window["Microsoft"].PowerPages.onPagesClientApiReady = (callback) => {
+			return new Promise((resolve, reject) => {
+				let isComplete = false;
+				let timeoutId;
+				const timeoutInterval = 10000;
+		
+				function handleReady() {
+					if (!isComplete && window.$pages) {
+						isComplete = true;
+						clearTimeout(timeoutId);
+						try {
+							if (typeof callback === "function") {
+								callback(window.$pages);
+							}
+						} catch (e) {
+							console.error("onPagesClientApiReady callback error:", e);
+						}
+						resolve(window.$pages); // should we reject if callback throws an error
+					}
+				}
+		
+				if (window.$pages) {
+					handleReady();
+					return;
+				}
+		
+				function sdkListener() {
+					handleReady();
+					window.removeEventListener('pagesSDKInitialized', sdkListener);
+				}
+		
+				window.addEventListener('pagesSDKInitialized', sdkListener);
+		
+				timeoutId = setTimeout(() => {
+					if (!isComplete) {
+						window.removeEventListener('pagesSDKInitialized', sdkListener);
+						if (window.$pages) {
+							handleReady();
+						} else {
+							isComplete = true;
+							reject(new Error('window.$pages not available.'));
+						}
+					}
+				}, timeoutInterval);
+			});
+		};
+
+		// Deprecated alias: Microsoft.Dynamic365.Portal.onPagesClientApiReady.
+		// Remove once telemetry shows no callers remain.
+		(function () {
+			var _impl = window["Microsoft"].PowerPages.onPagesClientApiReady;
+			var _logged = false;
+
+			window["Microsoft"].Dynamic365.Portal.onPagesClientApiReady = function (callback) {
+				if (!_logged) {
+					_logged = true;
+					try {
+						if (window.clientLogWrapper && typeof window.clientLogWrapper.traceWarning === "function") {
+							window.clientLogWrapper.traceWarning(
+								"Microsoft.Dynamic365.Portal.onPagesClientApiReady invoked (deprecated)",
+								"DeprecatedApi",
+								"ClientApiReady",
+								"Invoke",
+								"DeprecationTracker"
+							);
+						}
+						if (typeof console !== "undefined" && console.warn) {
+							console.warn(
+								"[DEPRECATED] Microsoft.Dynamic365.Portal.onPagesClientApiReady is deprecated " +
+								"and will be removed in a future release. Use Microsoft.PowerPages.onPagesClientApiReady instead."
+							);
+						}
+					} catch (_) { /* never break the caller */ }
+				}
+
+				return _impl(callback);
+			};
+		})();
+
+        // Mark request not cacheable if Dynamics365PortalAnalytics cookie is being refreshed by the server or if the cookie in request header is invalid
+		
+
+        // For client side telemetry intializing Dynamics365PortalAnalytics cookie object
+		
+        window["Microsoft"].Dynamic365.Portal.dynamics365PortalAnalytics = localStorage.getItem("Dynamics365PortalAnalytics");
+			
+
+	</script>
+	
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+
+		
+    </script>
+
+	
+		<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+(function () {
+    if (window.location.pathname.toLowerCase() === "/signin-entraexternalid") {
+        window.location.replace("/");
+    }
+})();
+</script>
+
+<style>
+.navbar-toggler {
+    background-color: #C29D06 !important;
+}
+.siteTitle{
+    color: #fff!important;
+}
+.navbar{
+    min-height:120px !important;
+}
+.navbar-dark .navbar-nav > li > a:hover {
+    color: #182350!important;
+}
+.navbar-dark .navbar-nav > li > a:hover, .navbar-dark .navbar-nav > li.dropdown > a:hover {
+    background-color: #182350!important;
+    color: #fff!important;
+    text-decoration: Underline;
+}
+ .navbar-expand-xl {
+        background-color: #182350;
+    }
+
+    .logo{
+        width:100%;
+        display: flex;
+        margin-right: 34%;
+        justify-content: flex-start;
+    }
+    .siteWeblinks{
+        flex:2;
+        width: 900px;
+        margin-top: 1%;
+    }
+    .searchLogin{
+        flex:1;
+        /*margin-left:28px;*/
+        justify-content: right;
+        margin-top: 1%;
+    }
+    /* background of the nav items */
+    .static-top.navbar .menu-bar > .navbar-nav > li > a{
+        background:transparent;
+    }
+    /* profile dropdown - changed the bg color on 'mouse leave / unfocused' */
+    .navbar-dark .navbar-nav a.show:focus, .navbar-dark .navbar-nav a.dropdown-toggle.show:focus{
+        /* color: #fff; */
+        background-color: #182350;
+        text-decoration: Underline;
+    }
+
+    /* bg color for the menu icon */
+    .navbar-dark .navbar-toggler:focus{
+        background-color:#001489;
+    }
+
+    /* color for the dropdown-items */
+    .dropdown-item{
+        color:#000!important;
+        background-color:#fff!important;
+        border:none;
+    }
+    .navbar-dark .navbar-toggler:hover {
+        background-color: transparent;
+        border-color: transparent;
+    }
+    .navbar-dark .navbar-nav .show.dropdown-menu > li > a:hover{
+        background-color:transparent;
+    }
+    .nav-link{
+        color:#fff!important;
+    }
+
+    div.banner-home{
+        background-color: #1c254d!important;
+    }
+    	.navbar-dark .navbar-nav > li > a{
+		width: 109px !important;
+		border-radius: 6px !important;
+		text-align: center !important;
+		padding: var(--spacing-md, 8px) var(--spacing-lg, 12px)!important;
+		font-size: 16px !important;
+		font-style: normal !important;
+		font-weight: 600 !important;
+		line-height: 24px !important;
+        white-space: nowrap !important;
+        width: auto !important;
+	}
+	.navbar-dark .navbar-nav > li > a:hover{
+		background: #F9FAFB !important;
+        color: #182230 !important;
+        text-decoration: none !important;
+	}
+	.static-top.navbar .menu-bar > .navbar-nav > .divider-vertical {
+		display: none;
+	}
+    h1.siteTitle, .static-top.navbar-dark .navbar-brand a h1.siteTitle, .static-top.navbar-dark .navbar-brand a h1.siteTitle > span{
+        display: none;
+    }
+    .static-top.navbar-dark{
+        border-bottom: none; 
+    }
+    .xrm-attribute-value > a > img{
+        height:80px !important;
+    }
+	.dropdown{
+		background: transparent !important;
+		color: #ffff !important;
+		text-decoration: none !important;
+		border-radius: 6px;
+	}
+    .navbar-dark .navbar-nav > li > a:hover, .navbar-dark .navbar-nav > li.dropdown > a:hover {
+     background-color: #F9FAFB !important; 
+    }
+    .navbar-dark .navbar-nav a.show:focus, .navbar-dark .navbar-nav a.dropdown-toggle.show:focus {
+    background-color: #F9FAFB !important;
+    }
+	.dropdown span{
+		color: #182230 !important;
+	}
+    
+.dropdown-toggle::after {
+    color:#182230 !important;       
+}
+@media only screen and (max-width: 600px) {
+  .siteWeblinks {
+    width: 100%;
+    margin: 25px !important;
+}
+.xrm-attribute-value > a > img {
+    height: 50px !important;
+}
+.static-top .navbar-brand {
+height:100%;    
+}
+.sign-btn {
+    position: relative !important;
+    text-align: center;
+    right: auto !important;
+}
+.navbar-dark .navbar-toggler {
+    border: 1px solid #001489;
+    float: right !important;
+    right: 33px !important;
+    position: absolute !important;
+}
+.menu-bar{
+    float: left !important;
+}
+.static-top.navbar .menu-bar > .navbar-nav > li > a {
+    line-height: 10px !important;
+}
+}
+.container{
+    max-width:none !important;
+    width:-webkit-fill-available !important;
+}
+@media (min-width: 1200px){
+    .container{
+    max-width:none !important;
+    width:-webkit-fill-available !important;
+}
+.navbar-dark .navbar-toggler {
+    border: 1px solid #001489;
+    float: right !important;
+    right: 33px !important;
+    position: absolute !important;
+}
+.siteWeblinks{
+    float: left !important;
+    margin: 25px !important;
+}
+.menu-bar{
+    float: left !important;
+}
+.static-top.navbar .menu-bar > .navbar-nav > li > a {
+    line-height: 10px !important;
+    border-right-color: transparent;
+}
+}
+@media (min-width: 992px){
+    .static-top.navbar .menu-bar > .navbar-nav > li > a {
+    line-height: 10px !important;
+}
+    .container{
+    max-width:none !important;
+    width:-webkit-fill-available !important;
+}
+.navbar-dark .navbar-toggler {
+    border: 1px solid #001489;
+    float: right !important;
+    right: 33px !important;
+    position: absolute !important;
+}
+.siteWeblinks{
+    float: left !important;
+    margin: 25px !important;
+}
+.menu-bar{
+    float: left !important;
+}
+}
+@media (min-width: 768px){
+
+    .container {
+    max-width:none !important;
+    width:-webkit-fill-available !important;
+}
+
+.navbar-dark .navbar-toggler {
+    border: 1px solid #001489;
+    float: right !important;
+    right: 33px !important;
+    position: absolute !important;
+}
+.siteWeblinks{
+    float: left !important;
+    margin: 25px !important;
+}
+.menu-bar{
+    float: left !important;
+}
+.static-top.navbar .menu-bar > .navbar-nav > li > a {
+    line-height: 10px !important;
+    border-right-color: transparent;
+}
+}
+.sign-btn{
+    position:absolute;
+    right:50px;
+}
+.navbar-dark .navbar-nav > li > a {
+    font-weight: 1 !important;
+}
+.dropdown span {
+    color: #ffff !important;
+}
+.dropdown-toggle::after {
+    color: #ffff !important;
+}
+.navbar-dark .navbar-nav a.show, .navbar-dark .navbar-nav a.dropdown-toggle.show {
+    color: #ffff !important;
+     background-color: #182230 !important;
+     text-decoration: none !important; 
+}
+.navbar-dark .navbar-nav a.show:focus, .navbar-dark .navbar-nav a.dropdown-toggle.show:focus {
+     background-color: transparent !important;
+     color: #ffff !important;
+}
+.navbar-dark .navbar-nav > li > a{
+    border-right: 1px solid white;
+        border-radius: 0px !important;
+        line-height: 0px !important;
+}
+.static-top.navbar .menu-bar > .navbar-nav > li > a:hover {
+    background-color:transparent !important;
+    color:white !important;
+    border: 1px solid white !important;
+    border-radius:6px !important;
+}
+.static-top.navbar .menu-bar > .navbar-nav > li > a:focus {
+    border: 1px solid white !important;
+    outline: none;
+}
+@media only screen and (max-width: 1024px){
+
+    .static-top.navbar .menu-bar > .navbar-nav > li > a {
+    line-height: 10px !important;
+    border-right-color: transparent;
+}
+.sign-btn {
+    position: relative !important;
+    text-align: center;
+    right: auto !important;
+}
+.navbar-dark .navbar-toggler {
+    border: 1px solid #001489;
+    float: right !important;
+    right: 33px !important;
+    position: absolute !important;
+}
+.siteWeblinks{
+    float: left !important;
+    margin: 25px !important;
+}
+.menu-bar{
+    float: left !important;
+}
+}
+
+</style>
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+<div class=" navbar-expand-xl navbar navbar-dark static-top" role="banner" style="background-color: #182350;">
+    <div class="skip-to-content"><a href="#mainContent">Skip to main content</a></div>
+    <div class="container">
+   
+        <!--div class=" ">
+          <div class="xrm-editable-html&#32;xrm-attribute" data-languageContext="English"><div class="xrm-attribute-value"><a href="~/">
+    
+        <img src="/Mobile Banner4.jpg" alt="Contoso Limited" style="width: auto; height: 32px; margin: 0 10px;">
+     
+    
+        <h1 class="siteTitle">South African Police Service</h1>
+    
+</a>
+
+<style>
+ mid{
+     text-align: center;
+ }
+</style>
+</div></div>
+        </div-->
+        <!--<div class="navbar-brand">
+            <div class="xrm-editable-html&#32;xrm-attribute" data-languageContext="English"><div class="xrm-attribute-value"><a href="~/">
+    
+        <img src="/Mobile Banner4.jpg" alt="Contoso Limited" style="width: auto; height: 32px; margin: 0 10px;">
+     
+    
+        <h1 class="siteTitle">South African Police Service</h1>
+    
+</a>
+
+<style>
+ mid{
+     text-align: center;
+ }
+</style>
+</div></div>
+        </div>-->
+        <button type="button" class="navbar-toggler collapsed text-white" title="Toggle navigation
+
+" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" onclick="setHeight();">
+            <span class="visually-hidden">Toggle navigation
+
+</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    <div id="navbar" class="navbar-collapse collapse logo ">
+        
+        
+        
+        <nav aria-label="Main Navigation" class="menu-bar " data-weblinks-maxdepth="2">
+            <ul class="nav navbar-nav weblinks siteWeblinks ">
+                
+                
+                
+                
+                
+                <li class=" nav-item weblink ">
+                    <a style="color: #fff;" aria-label="Home" class="nav-link" href="/" aria-roledescription="link" title="Home">
+                        Home
+                    </a>
+                    
+                </li>
+                
+                
+                <li class=" nav-item divider-vertical text-white" aria-hidden="true"></li>
+                
+                
+                
+                
+                <li class=" nav-item weblink ">
+                    <a style="color: #fff;" aria-label="SAPS Vacancies" class="nav-link" href="/SAPS-Vacancies/" aria-roledescription="link" title="SAPS Vacancies">
+                        SAPS Vacancies
+                    </a>
+                    
+                </li>
+                
+                
+                <li class=" nav-item divider-vertical text-white" aria-hidden="true"></li>
+                
+                
+                
+                
+                <li class=" nav-item weblink ">
+                    <a style="color: #fff;" aria-label="How To Apply" class="nav-link" href="/How-To-Apply/" aria-roledescription="link" title="How To Apply">
+                        How To Apply
+                    </a>
+                    
+                </li>
+                
+                
+                <li class=" nav-item divider-vertical text-white" aria-hidden="true"></li>
+                
+                
+                
+                
+                <li class=" nav-item weblink ">
+                    <a style="color: #fff;" aria-label="Contact us" class="nav-link" href="/contact-us/" aria-roledescription="link" title="Contact us">
+                        Contact us
+                    </a>
+                    
+                </li>
+                
+                
+                
+               <!-- Removed devider <li class=" nav-item divider-vertical" aria-hidden="true"></li>-->
+                <div id="navbar2" class="navbar-collapse collapse searchLogin" style="flex-wrap: wrap;">
+                   
+                    
+                </div>   
+                
+                
+             
+                
+                <div class="sign-btn">
+                <li class="nav-item">
+                    <a class="nav-link" aria-label="Sign in" aria-roledescription="link" href="/Account/Login/ExternalLogin?returnUrl=%2F&provider=https%3A%2F%2Fsapserecruitment.ciamlogin.com%2Fe7bd2440-7c95-4fdb-a768-8a2a8ba2dedd">
+                        Sign in
+                    </a>
+                </li>
+                </div>
+
+            
+                
+            </ul>
+            
+        </nav>
+        
+       
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=" type="text/javascript">
+
+   $(document).ready(function() {
+    var imageUrl = "";
+    var userId = $('span#userId').text(); //this is the id we will use to check for internal users 
+  
+    $('li a span.username').each(function() {
+        var username = $(this).text();
+        var words = username.split(' ');
+        //console.log(username); this displays the name of the logged in user 
+        for (var i = 0; i < words.length; i++) {
+            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
+        }
+
+        var capitalizedUsername = words.join(' ');
+        $(this).text(capitalizedUsername);
+    });
+    
+  function handleNoImage() {
+    var fullName = $(".username").text(); // Replace with the correct selector for your full name
+
+    var words = fullName.split(" ");
+    var initials = words.map(function(word) {
+      return word.charAt(0);
+    }).join("");
+
+    $profilePicture.css("background-image", "none");
+    $profilePicture.text(initials);
+    $(".nav-link").attr("title", fullName);
+
+    }
+  
+    });
+
+  window.onload = function() {
+    if (window.navigator.appName == "Microsoft Internet Explorer" || window.navigator.userAgent.indexOf("Trident") > 0) {
+      var searchElement = document.getElementById("search");
+      if (searchElement != null) searchElement.setAttribute("href", "");
+    }
+  };
+  function setHeight() {
+    var windowHeight = window.innerHeight - 140;
+    var navbar = document.getElementById("navbar");
+    if (navbar) {
+      navbar.style.maxHeight = windowHeight + "px";
+    }
+  }
+  window.addEventListener('resize', function(event) {
+    setHeight();
+  });
+</script>
+<link rel="shortcut icon" href="#">
+	
+
+	<!-- add anti-forgery token-->
+	<div id="antiforgerytoken" data-url="/_layout/tokenhtml"></div>
+
+	
+			<!-- Client Telemetry init if telemetry enabled-->
+			<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/client-telemetry.bundle-2bb0ef927d.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/client-telemetry.bundle-2bb0ef927d.js" type="text/javascript"></script>
+
+		
+	
+		<!-- Client Telemetry Wrapper init -->
+		<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/client-telemetry-wrapper.bundle-633e70f51b.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/client-telemetry-wrapper.bundle-633e70f51b.js" type="text/javascript"></script>
+
+		<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+			window.clientLogWrapper = new ClientLogWrapper();
+		</script>
+		<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/preform.BootstrapV5.moment_2_29_4.bundle-e6db58f462.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/preform.BootstrapV5.moment_2_29_4.bundle-e6db58f462.js" type="text/javascript"></script>
+
+		
+
+		<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/pcf-dependency.bundle-805a1661b7.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/pcf-dependency.bundle-805a1661b7.js" type="text/javascript"></script>
+
+							   <script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/pcf.bundle-60440c37cb.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/pcf.bundle-60440c37cb.js" type="text/javascript"></script>
+
+							   <script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/pcf-extended.bundle-b0e01b5622.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/pcf-extended.bundle-b0e01b5622.js" type="text/javascript"></script>
+
+						
+	<!-- Default studio template. Please do not modify -->
+<div id="mainContent" class="wrapper-body" role="main">
+    <div class="page-copy">
+        <div class="xrm-editable-html&#32;xrm-attribute"><div class="xrm-attribute-value"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<div id="i0gx6" class="banner-home" style="background-color: rgb(28, 37, 77);"><img src="/Mobile Banner.jpg" class="mobile-banner" style="background-position: center; background-size: cover; width: 100%; height: auto; position: relative; margin-top: -21px; background-color: rgb(28, 37, 77);"><img src="/desktop banner.jpg" class="desktop-banner" style="background-position: center; background-size: cover; width: 100%; height: auto; position: relative; margin-top: -21px; background-color: rgb(28, 37, 77);"></div>
+<div data-component-theme="" id="ipnpz" class="row text-start" style="text-align: left; display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
+  <div id="iljk1" class="container con" style="padding: 0px; display: flex; flex-wrap: wrap; max-width: none; width: -webkit-fill-available;">
+    <div id="if17r" class="col-lg-12 header-text" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; margin: 0px; padding: 0px; text-align: center;">
+      <h1 id="i7pl2" class="header-heading" style="margin-left: auto; margin-right: auto; margin-top: 1rem;">
+        <p id="ip12h" style="font-size: 36px; font-weight: 600;"><span>   Hi </span><span data-ppid="98ca2c1f-e808-a783-8eef-da7d732cf3f7" id="igkp6" style="text-align: center;">,</span><span data-ppid="01a26446-c632-daf2-ae80-8557a22f5330" id="i3gn6" style="text-align: center;">‌</span></p>
+        <p id="ihegud" style="font-size: 24px; font-weight: 600;">Welcome to the South African Police Service eRecruitment Portal.</p>
+      </h1>
+    </div>
+  </div>
+</div>
+<div id="icwf9n" class="btn-axz" style="width: 60%; margin: auto; color: #182350;">
+  <div id="i35gj8" class="col-md-4" style="text-align: center;">
+    <a href="/SAPS-Vacancies"><div><img src="/icons-01.png" height="50"></div></a><a href="/SAPS-Vacancies"><p id="iakq4h" style="border: 1px #dfdfe5 solid; border-radius: 5px; color: #182350; font-size: 15px; height: 45px; padding: 10px; width: auto; font-weight: 500;">SAPS Vacancies</p></a>
+  </div>
+  <div id="iauipf" class="col-md-4" style="text-align: center;">
+    <a href="/My-Applications"><div><img src="/icons-02.png" height="50"></div></a><a href="/My-Applications"><p href="/My-Applications" value="My-Applications" id="iefapj" style="border: 1px #dfdfe5 solid; border-radius: 5px; color: #182350; font-weight: 500; font-size: 15px; height: 45px; padding: 10px; width: auto;">My Applications</p></a>
+  </div>
+  <div id="itbasl" class="col-md-4" style="text-align: center;">
+    <a href="/How-To-Apply"><div><img src="/icons-03.png" height="50"></div></a><a href="/How-To-Apply"><p id="ix7x6i" style="border: 1px #dfdfe5 solid; border-radius: 5px; color: #182350; font-size: 15px; height: 45px; padding: 10px; width: auto; font-weight: 500;">How To Apply</p></a>
+  </div>
+</div>
+<div id="i2755o" class="c-h-txt saps-contactus" style="margin-top: 140px; color: rgb(43, 110, 223); font-weight: 600; text-align: center; font-size: 25px;">Contact us</div>
+<div id="izn4g4" class="c-h-sub-txt saps-contactus-header" style="font-weight: 600; text-align: center; font-size: 20px; margin-bottom: 7px;">We’d love to hear from you</div>
+<hr style="margin-left: 130px; margin-right: 130px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(87, 140, 229);">
+<div id="ikbarv" class="contact-body" style="height: 140px; margin: auto;">
+  <div id="iwme5l" class="col-md-3 cotact-list" style="text-align: center;">
+    <div id="i6vt4x" class="con-icon" style="display: -webkit-inline-box;"><img src="Featured icon-4.png" alt=""></div>
+    <p id="iu1k7n" class="saps-contactus-body" style="font-weight: 600; font-size: 18px;">Crime Stop- Tip off</p>
+    <p id="ic6d0k" style="color: #2B6EDF; font-weight: 600; font-size: 16px;">0860010111</p>
+  </div>
+  <div id="im9nlj" class="col-md-3 cotact-list" style="text-align: center;">
+    <div id="iyzq5a" class="con-icon" style="display: -webkit-inline-box;"><img src="/Featured icon-4.png" alt=""></div>
+    <p id="i85ugp" class="saps-contactus-body" style="font-weight: 600; font-size: 18px;">SAPS Emergency No</p>
+    <p id="iqys1y" style="color: #2B6EDF; font-weight: 600; font-size: 16px;">10111</p>
+  </div>
+  <div id="inj49m" class="col-md-3 cotact-list" style="text-align: center;">
+    <div id="ij2qd7" class="con-icon" style="display: -webkit-inline-box;"><img src="/Featured icon-4.png" alt=""></div>
+    <p id="ibbu0y" class="saps-contactus-body" style="font-weight: 600; font-size: 18px;">Service complaints centre</p>
+    <p id="izhgjb" style="color: #2B6EDF; font-weight: 600; font-size: 16px;">0800333177</p>
+  </div>
+  <div id="i7uy9d" class="col-md-3 cotact-list mySapsApp-mobile" style="text-align: center;">
+    <div id="i4375u" class="con-icon" style="display: -webkit-inline-box; width: 48px; height: 48px; padding: 12px 15px; border-radius: 9999px; background: #E9F0FC;">
+      <svg width="16" height="22" viewbox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 1V2.4C11 2.96005 11 3.24008 10.891 3.45399C10.7951 3.64215 10.6422 3.79513 10.454 3.89101C10.2401 4 9.96005 4 9.4 4H6.6C6.03995 4 5.75992 4 5.54601 3.89101C5.35785 3.79513 5.20487 3.64215 5.10899 3.45399C5 3.24008 5 2.96005 5 2.4V1M4.2 21H11.8C12.9201 21 13.4802 21 13.908 20.782C14.2843 20.5903 14.5903 20.2843 14.782 19.908C15 19.4802 15 18.9201 15 17.8V4.2C15 3.07989 15 2.51984 14.782 2.09202C14.5903 1.71569 14.2843 1.40973 13.908 1.21799C13.4802 1 12.9201 1 11.8 1H4.2C3.0799 1 2.51984 1 2.09202 1.21799C1.71569 1.40973 1.40973 1.71569 1.21799 2.09202C1 2.51984 1 3.0799 1 4.2V17.8C1 18.9201 1 19.4802 1.21799 19.908C1.40973 20.2843 1.71569 20.5903 2.09202 20.782C2.51984 21 3.07989 21 4.2 21Z" stroke="#578CE5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+    <p id="ibbu0y-2" style="font-size: 18px; font-weight: 600;">Get the MySAPS App</p>
+    <div id="ipuh9j" style="display: flex; gap: 10px; justify-content: center;">
+      <div id="it7s9g" style="width: 160px; height: 45px; border-radius: 7px; border: 1px solid #101828; display: flex; padding: 5px;">
+        <div>
+          <svg width="19" height="23" viewbox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.269 12.3011C15.2907 10.6201 16.1934 9.02947 17.6256 8.149C16.7221 6.85868 15.2088 6.04058 13.6344 5.99132C11.9552 5.81506 10.3272 6.99615 9.47149 6.99615C8.59922 6.99615 7.28172 6.00882 5.86299 6.03801C4.01374 6.09776 2.28977 7.14914 1.39007 8.76588C-0.543928 12.1143 0.898662 17.0354 2.75127 19.742C3.67817 21.0673 4.76145 22.5478 6.1789 22.4953C7.56596 22.4377 8.084 21.6108 9.7583 21.6108C11.4171 21.6108 11.9031 22.4953 13.3493 22.4619C14.8377 22.4377 15.7754 21.1306 16.6698 19.7927C17.3358 18.8484 17.8483 17.8047 18.1882 16.7002C16.4391 15.9604 15.271 14.2002 15.269 12.3011Z" fill="#101828"></path>
+            <path d="M12.5373 4.21132C13.3489 3.23711 13.7487 1.98494 13.6518 0.720703C12.412 0.850924 11.2668 1.44348 10.4443 2.38031C9.63998 3.29564 9.22143 4.52579 9.30056 5.7417C10.5408 5.75447 11.7601 5.17798 12.5373 4.21132Z" fill="#101828"></path>
+          </svg>
+        </div>
+        <div id="ik4232" class="apptxt" style="margin-top: -6px; text-align: justify;"><div id="itu7s8" class="appDescription" style="font-size: 18px; font-weight: 600; color: rgb(43, 110, 223); text-align: justify; margin-top: 7px; margin-left: 8px;">App Store</div></div>
+      </div>
+      <div id="i456pk" style="width: 160px; height: 45px; border-radius: 7px; border: 1px solid #101828; display: flex; padding: 5px;">
+        <div>
+          <svg width="24" height="26" viewbox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.65651 0.966174C0.538394 1.23367 0.473145 1.56144 0.473145 1.94269V24.0587C0.473145 24.4408 0.538474 24.7686 0.656727 25.036L12.6907 13.0003L0.65651 0.966174ZM1.35173 25.7552C1.79778 25.9461 2.37965 25.8855 3.01414 25.5257L17.1712 17.4809L13.3978 13.7074L1.35173 25.7552ZM18.0737 16.9691L22.5151 14.4457C23.9121 13.6507 23.9121 12.3517 22.5151 11.5577L18.0717 9.03282L14.1048 13.0003L18.0737 16.9691ZM17.1699 8.5204L3.01414 0.476701C2.37961 0.116123 1.79771 0.0559596 1.35165 0.247098L13.3977 12.2932L17.1699 8.5204Z" fill="#101828"></path></svg>
+        </div>
+        <div id="i57pvi" class="apptxt" style="margin-top: -6px; text-align: justify;"><div id="iz1rzn" class="appDescription" style="font-size: 18px; font-weight: 600; color: rgb(43, 110, 223); text-align: justify; margin-top: 7px; margin-left: 8px;">Google Play</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 cotact-list mySapsApp-desktop" style="text-align: center;">
+    <div class="con-icon" style="display: -webkit-inline-box; width: 48px; height: 48px; padding: 12px 15px; border-radius: 9999px; background: #E9F0FC;">
+      <svg width="16" height="22" viewbox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 1V2.4C11 2.96005 11 3.24008 10.891 3.45399C10.7951 3.64215 10.6422 3.79513 10.454 3.89101C10.2401 4 9.96005 4 9.4 4H6.6C6.03995 4 5.75992 4 5.54601 3.89101C5.35785 3.79513 5.20487 3.64215 5.10899 3.45399C5 3.24008 5 2.96005 5 2.4V1M4.2 21H11.8C12.9201 21 13.4802 21 13.908 20.782C14.2843 20.5903 14.5903 20.2843 14.782 19.908C15 19.4802 15 18.9201 15 17.8V4.2C15 3.07989 15 2.51984 14.782 2.09202C14.5903 1.71569 14.2843 1.40973 13.908 1.21799C13.4802 1 12.9201 1 11.8 1H4.2C3.0799 1 2.51984 1 2.09202 1.21799C1.71569 1.40973 1.40973 1.71569 1.21799 2.09202C1 2.51984 1 3.0799 1 4.2V17.8C1 18.9201 1 19.4802 1.21799 19.908C1.40973 20.2843 1.71569 20.5903 2.09202 20.782C2.51984 21 3.07989 21 4.2 21Z" stroke="#578CE5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+    <p style="font-weight: 600; font-size: 20px;">Get the MySAPS App</p>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <div><p style="color: #2B6EDF; font-weight: 600; font-size: 16px; cursor: pointer;">App Store</p></div>
+      <div><p style="color: #2B6EDF; font-weight: 600; font-size: 16px; cursor: pointer;">Google Play</p></div>
+    </div>
+  </div>
+</div>
+<hr id="last-hr" style="margin-left: 130px; margin-right: 130px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(87, 140, 229);">
+<div class="qr-code">
+  <!-- <img src="/qr-code.png" height="250" style="margin:auto"/> --><a href="https://recruitment-training.powerappsportals.com/" style="margin: auto; display: flex;"><img src="/sapsvacanciesqr.png" height="250" alt="saps_vacancies_qr" name="saps_vacancies_qr.png" style="height: 100%; width: 100%;"></a><!--<span>Scan the QR code to download the MySAPS App</span>--><span>Scan the QR code to view SAPS Vacancies</span>
+</div>
+<div id="ilbglq" class="row sectionBlockLayout text-start" style="flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px; display: none;">
+  <div id="i7y7mh" class="container" style="padding: 0px; display: flex; flex-wrap: wrap; max-width: none; width: -webkit-fill-available;"><div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word;"></div></div>
+</div>
+</div></div>
+    </div>
+</div>
+
+
+	<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/pcf-loader.bundle-f4a0e619b8.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/pcf-loader.bundle-f4a0e619b8.js" type="text/javascript"></script>
+
+		
+		
+	
+
+	
+		<div id="pp-native-controls-react-root"></div>
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">window._nativeControlConfig = { "publicPath":"https://content.powerapps.com/resource/powerappsportal/controls", "versions": {"pcf_loader":"0.0.51","pcf_controls":"3.24.9","mf_shared":"0.2.32","host":"0.15.2","data_grid":"1.12.4","controls_fluent_v9":"0.0.54"}, "pvaEmbedded": { "defaultWidgetMode": "normal", "useCustomTypingIndicator": false, "skipSingleBotWelcomeScreen": false } }</script>
+<script defer="defer" src="https://content.powerapps.com/resource/powerappsportal/controls/host/main.8512520686.chunk.js"></script>
+		
+	
+	
+		<style>
+  .footer-content {
+    display: flex;
+    justify-content: space-between; /* Evenly spaces children */
+    flex: 1;
+   
+}
+
+  .footer-content .social-media-side {
+    color: white;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: 130px;
+  }
+
+  .footer-content .logo-side {
+    color: white;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-left: 130px;
+  }
+
+  .footer-menu {
+    display: flex;
+    margin-right: 15px;
+  }
+
+  .footer-menu div {
+    margin-right: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .home-footer {
+    background: #182350;
+    width: 100%;
+    height: 250px;
+    padding: 16px, 0px, 16px, 0px;
+    margin-top: calc(5% + 60px);
+  }
+
+  .social-media-side .social-icons {
+    display: flex;
+  }
+
+  .social-media-side .social-icons div {
+    margin-right: 15px;
+    cursor: pointer;
+  }
+
+
+  /* Media Query for Mobile Devices */
+  @media (max-width: 480px) {
+    .home-footer {
+      margin-top: calc(5% + 460px);
+
+    }
+    	.logo-side p{
+	  width:auto !important;
+	  font-size:12px;
+	}
+	.footer-menu div {
+    margin-right: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 9px;
+	}
+	.footer-content .logo-side {
+    margin-left: auto !important;
+    padding: 10px;
+    
+}
+.footer-content .social-media-side {
+   margin-right: auto !important;
+}
+
+   
+  }
+
+
+  /* Media Query for low resolution  Tablets, Ipads */
+  @media (min-width: 481px) and (max-width: 767px) {
+    .home-footer {
+      margin-top: calc(5% + 725px);
+
+    }
+
+	.logo-side p{
+	  width:auto !important;
+	  font-size:12px;
+	}
+	.footer-menu div {
+    margin-right: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 9px;
+	}
+	.footer-content .logo-side {
+    margin-left: auto !important;
+    padding: 10px;
+}
+.footer-content .social-media-side {
+   margin-right: auto !important;
+}
+  }
+
+@media (max-width: 400px){
+
+.footer-menu a {
+  
+    font-size: 10px !important;
+}
+}
+
+  /* Media Query for Tablets Ipads portrait mode */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .home-footer {
+      margin-top: calc(5% + 725px);
+    }
+    .sa-home-content {
+      height: 500px;
+    }
+  }
+  hr{
+    border-top: 1px solid #578CE5 !important;
+    margin-left: 130px;
+    margin-right: 130px;
+  }
+  .footer-menu a{
+    color: white;
+  }
+  .footer-menu a:hover{
+    color: #c9c4a7;
+  }
+</style>
+<div class="home-footer">
+  <div class="footer-content">
+    <div class="logo-side">
+      <p style="margin-top: 10px;color:white; padding-right: 111px;">If you need help with the online e-Recruitment system, reach out to the
+        South African Police Department by clicking on the contact us page for a list of helplines and email addresses
+       </p>
+      <div class="footer-menu">
+        <div>
+          <a href='/SAPS-Vacancies/'>
+            SAPS Vacancies
+          </a>
+        </div>
+        <div>
+          <a href='/My-Applications/'>
+            My applications
+          </a>
+        </div>
+        <div>
+          <a href='/How-To-Apply/'>
+            How to Apply
+          </a>
+        </div>
+         <div>
+          <a href='/contact-us/'>
+            Contact us
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <hr>
+
+  <div class="footer-content">
+    <div class="logo-side">
+      © <span id="year"></span> SAPS All rights reserved.
+    </div>
+    <div class="social-media-side">
+      <div class="social-icons">
+        <div>
+        <a href="https://www.youtube.com/user/sapoliceservice" target="_blank">
+          <img src="/youtube-icon.png" height="24" width="24" alt="" href="https://www.youtube.com/user/sapoliceservice">
+          </a>
+        </div>
+        <div>
+        <a href="https://www.instagram.com/sapoliceservice_za" target="_blank">
+          <img src="/instagram-icon.png" height="24" width="24" alt="" href="https://www.instagram.com/sapoliceservice_za">
+          </a>
+        </div>
+        <div>
+        <a href="https://twitter.com/SAPoliceService" target="_blank">
+          <img src="/Social icon.png" height="24" width="24" alt="" href="https://twitter.com/SAPoliceService">
+          </a>
+        </div>
+        
+        <div>
+        <a href="https://www.facebook.com/SAPoliceService/" target="_blank">
+          <img src="/Social icon-2.png" height="24" width="24" alt="">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=" src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=" type="text/javascript">
+  
+  document.getElementById("year").innerHTML = new Date().getFullYear();
+
+ </script>
+
+ <style>
+ /* Fix Higher Qualification Table Styling */
+#HigherQualification {
+    color: #000 !important; 
+    background-color: #fff !important;
+}
+
+#HigherQualification th {
+    background-color: #182350 !important; /* Deep blue header */
+    color: #fff !important; /* White text in header */
+}
+
+#HigherQualification td {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+#HigherQualification tbody tr:hover {
+    background-color: #f2f2f2 !important;
+    color: #000 !important;
+}
+
+
+  </style>
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+
+// Fallback: if logout returns to the Entra callback page,
+// immediately send the user to the portal Home page.
+// if (
+//     window.location.pathname.toLowerCase() === "/signin-entraexternalid" &&
+//     !document.body.classList.contains("authenticated")
+// ) {
+//     window.location.replace("https://recruitment-training.powerappsportals.com/");
+// }
+
+document.addEventListener("click", function (e) {
+
+    const signOutLink = e.target.closest('a[href*="/Account/Login/LogOff"]');
+
+    if (!signOutLink) {
+        return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    window.location.assign(signOutLink.href);
+
+}, true);
+
+
+$(document).ready(function () {
+
+    // Keep all your existing code below here
+
+});
+</script>
+<!------------------------------------------------code for signing out then navigating to the home page-------------------------------------------->
+<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+document.addEventListener("click", function (e) {
+
+    const signOutLink = e.target.closest('a[href*="/Account/Login/LogOff"]');
+
+    if (!signOutLink) {
+        return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Use the logout URL generated by Power Pages
+    window.location.assign(signOutLink.href);
+
+}, true);
+
+</script>
+	
+
+	<script type="text/javascript" nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+
+		function trackCopilotCustomUsage(botSchema) {
+			const request = {
+				botSchemaName: botSchema
+			}
+			var json = JSON.stringify(request);
+			shell.ajaxSafePost({
+				type: "POST",
+				contentType: "application/json",
+				url: "/_services/copilot/TrackUsage",
+				data: json
+			}).done(function () {
+			}).fail(function (jqXhr) {
+			});
+		}
+
+		function findAndLogCustomCopilotUsage() {
+			const pageSource = document.documentElement.outerHTML;
+			const customPvaBotWebchatRegex = /api\.(preprod\.|test\.)?powerplatform\.(com|us|cn|appsplatform\.us)\/powervirtualagents\/botsbyschema\/([^/]+)\/directline\/token/;
+			const customPvaBotIframeRegex = /powerva\.microsoft\.com\/environments\/([0-9a-fA-F\-]+)\/bots\/([^/]+)\/webchat/;
+			const omniChannelRegex = /livechatwidget\/scripts\/LiveChatBootstrapper\.js/;
+
+			const matchPvaBotWebchat = pageSource.match(customPvaBotWebchatRegex);
+			if (matchPvaBotWebchat && matchPvaBotWebchat[3]) {
+				trackCopilotCustomUsage(matchPvaBotWebchat[3]);
+			}
+
+			const matchPvaBotIframe = pageSource.match(customPvaBotIframeRegex);
+			if (matchPvaBotIframe && matchPvaBotIframe[2]) {
+				trackCopilotCustomUsage(matchPvaBotIframe[2]);
+			}
+
+			const matchOmniChannel = pageSource.match(omniChannelRegex);
+			if (matchOmniChannel && matchOmniChannel[0]) {
+				trackCopilotCustomUsage("omnichannelWidget");
+			}
+		}
+
+		window.addEventListener("load", function () {
+			findAndLogCustomCopilotUsage();
+		});
+	</script>
+
+		
+			
+			
+			
+			
+		
+	<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/bootstrap.BootstrapV5.bundle-be8391e97d.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/bootstrap.BootstrapV5.bundle-be8391e97d.js" type="text/javascript"></script>
+
+	<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/postpreform.BootstrapV5.bundle-1e48131190.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/postpreform.BootstrapV5.bundle-1e48131190.js" type="text/javascript"></script>
+
+	<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/app.BootstrapV5.bundle-6959e669d6.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/app.BootstrapV5.bundle-6959e669d6.js" type="text/javascript"></script>
+
+	<script onerror="javascript:&#32;var&#32;target&#32;=&#32;event.target;&#32;var&#32;script&#32;=&#32;document.createElement(&#39;script&#39;);&#32;script.crossOrigin&#32;=&#32;target.crossOrigin;&#32;script.src&#32;=&#32;&#39;/dist/default-1033.moment_2_29_4.bundle-eda4e638fd.js&#39;;&#32;script.type&#32;=&#32;&#39;text/javascript&#39;;&#32;target.insertAdjacentElement(&#39;afterend&#39;,script);" src="https://content.powerapps.com/resource/powerappsportal/dist/default-1033.moment_2_29_4.bundle-eda4e638fd.js" type="text/javascript"></script>
+
+	
+
+	
+	<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=" type="text/javascript">$(document).ready(function(){
+    $('#it7s9g').click(function(){
+        window.location.href = "https://apps.apple.com/za/app/my-saps/id1478487910";
+    });
+
+    $('#i456pk').click(function(){
+        window.location.href = "https://play.google.com/store/search?q=my+saps+app&c=apps&hl=en";
+    });
+});
+</script>
+	
+	<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+        //this event will update the title of the page based on active breadcrumb
+        $('.breadcrumb').ready(function () {
+            if ($('.breadcrumb').is(':visible')) {
+                document.querySelector('title').innerHTML = ($('.breadcrumb > li.active').text() + "- SAPS eRecruitment Portal");
+            }
+        });
+
+        function GoToNewEditor() {
+            var editCmsUrlSegment = "EditInCms";
+            var currentUrl = window.location.href;
+            if (currentUrl.indexOf('?') > -1) {
+                var urlSegments = currentUrl.split("?");
+                window.location.href = window.location.origin + '/' + editCmsUrlSegment + window.location.pathname + '?' + urlSegments[1];
+            }
+            else {
+                window.location.href = window.location.origin + '/' + editCmsUrlSegment + window.location.pathname;
+            }
+        }
+    </script>
+	
+		
+		
+	
+		
+				<script nonce="L5z3jHPIvwkk2wUQTk17WcjGS1hS2Cfj87DZanlu9xM=">
+					if ('serviceWorker' in navigator) {
+						navigator.serviceWorker.getRegistrations().then(function (registrations) {
+							for (let registration of registrations) {
+								registration.unregister();
+							}
+						}).catch(function (err) {
+							console.log('Service Worker unregister action failed: ', err);
+						});
+					}
+				</script>
+			
+	
+		
+	<!--Start Show Session Expire Warning Popup here -->
+    
+		
+</body>
+</html>
+<!-- Generated at 10/21/2026 5:43:04 AM -->
+<!-- Page OK -->
