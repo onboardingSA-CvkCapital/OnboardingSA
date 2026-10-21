@@ -42,6 +42,10 @@ jobs:
         run: python scrape_dpsa.py
         continue-on-error: true
 
+      - name: SAPS (careers pages + e-Recruitment)
+        run: python scrape_saps.py
+        continue-on-error: true
+
       - name: Delete expired
         run: python delete_expired.py
         continue-on-error: true
