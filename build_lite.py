@@ -101,7 +101,8 @@ def render_card(j):
     href = f"jobs/{safe_id(rid)}.html"
     gold = " gold" if str(j.get("featured", "")).lower() == "yes" else ""
     badge = '<span class="badge">★ Featured</span>' if gold else ""
-    loc = ", ".join([x for x in [j.get("location", ""), j.get("province", "")] if str(x).strip()])
+    _loc, _prov = str(j.get("location", "") or "").strip(), str(j.get("province", "") or "").strip()
+    loc = _loc if (_prov and _prov.lower() in _loc.lower()) else ", ".join([x for x in [_loc, _prov] if x])
     chips = ""
     if j.get("employment_type"):
         chips += f'<span class="chip">{esc(j.get("employment_type"))}</span>'

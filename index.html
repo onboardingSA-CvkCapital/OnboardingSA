@@ -278,6 +278,10 @@ function norm(row){
 function daysLeft(d){ if(!d) return null; const ms=new Date(d)-new Date(); if(isNaN(ms)) return null; return Math.ceil(ms/86400000); }
 function fmtDate(d){ if(!d) return ''; const t=new Date(d); if(isNaN(t)) return d; return t.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}); }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function locLine(j){   // province only when the location doesn't already include it ("National, National")
+  const l=(j.location||'').trim(), p=(j.province||'').trim();
+  return (p && l.toLowerCase().includes(p.toLowerCase())) ? l : [l,p].filter(Boolean).join(', ');
+}
 function initials(name){ return (name||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 const LOGO_BASE="https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/";
 function logoSlug(name){ return (name||'').trim().replace(/&/g,'and').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
@@ -351,7 +355,7 @@ function render(list){
         <div class="card-head-txt">
           <h3>${esc(j.job_title)}</h3>
           <div class="emp">${esc(j.employer)}</div>
-          <div class="loc">${esc([j.location,j.province].filter(Boolean).join(', '))}</div>
+          <div class="loc">${esc(locLine(j))}</div>
         </div>
       </div>
       <div class="chips">

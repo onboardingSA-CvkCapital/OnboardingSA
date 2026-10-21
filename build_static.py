@@ -163,7 +163,8 @@ def render(j):
     employer=esc(j.get("employer"))
     jid=j.get("id","")
     canonical=f"{SITE}/{OUT_DIR}/"+re.sub(r'[^A-Za-z0-9_\-]','-',jid)+".html"
-    loc_line=", ".join([x for x in [j.get("location",""),j.get("province","")] if x])
+    _loc, _prov = (j.get("location","") or "").strip(), (j.get("province","") or "").strip()
+    loc_line = _loc if (_prov and _prov.lower() in _loc.lower()) else ", ".join([x for x in [_loc, _prov] if x])
     dl=days_left(j.get("closing_date"))
     soon = dl is not None and dl<=7
     # avatar
