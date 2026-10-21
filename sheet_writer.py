@@ -45,6 +45,43 @@ def _existing_keys(ws):
         keys.add(hashlib.sha1(base.encode("utf-8")).hexdigest()[:16])
     return keys, header
 
+def upsert_jobs(rows, update_fields=()):
+    """Like append_jobs, but rows already in the sheet get `update_fields` refreshed when they changed
+    (e.g. a SAPS apply link that became available, or an extended closing date)."""
+    if not rows:
+        return 0, 0
+    from gspread.utils import rowcol_to_a1
+    ws = _sheet()
+    vals = ws.get_all_values()
+    header = vals[0] if vals else COLUMNS
+    col = {name: i for i, name in enumerate(header)}
+    where = {}
+    for n, r in enumerate(vals[1:], start=2):
+        g = lambda name: r[col[name]] if name in col and col[name] < len(r) else ""
+        where[fingerprint({"employer": g("employer"), "job_title": g("job_title"),
+                           "location": g("location"), "reference_no": g("reference_no")})] = (n, r)
+    to_write, updates, touched = [], [], set()
+    for r in rows:
+        privacy_clean.clean_job(r)
+        for k, v in list(r.items()):
+            if isinstance(v, str) and len(v) > MAXCELL:
+                r[k] = v[:MAXCELL]
+        fp = fingerprint(r)
+        if fp in where:
+            n, old = where[fp]
+            for f in update_fields:
+                if f in col and (old[col[f]] if col[f] < len(old) else "") != r.get(f, ""):
+                    updates.append({"range": rowcol_to_a1(n, col[f] + 1), "values": [[r.get(f, "")]]})
+                    touched.add(n)
+            continue
+        where[fp] = (None, [])
+        to_write.append(r)
+    if updates:
+        ws.batch_update(updates, value_input_option="RAW")
+    if to_write:
+        ws.append_rows([[r.get(c, "") for c in COLUMNS] for r in to_write], value_input_option="RAW")
+    return len(to_write), len(touched)
+
 def existing_refs():
     ws = _sheet()
     try:

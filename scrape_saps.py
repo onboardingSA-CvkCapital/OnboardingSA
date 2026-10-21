@@ -287,6 +287,7 @@ def parse_advert(text):
         "requirements": req, "duties": duty, "apply": apply,
         "closing_text": norm_ws(next((g for g in (closing.groups() if closing else []) if g), "")),
         "no_email": bool(re.search(r"No email option", text, re.I)),
+        "online": bool(re.search(r"apply online|electronic recruitment|e-?recruitment", text, re.I)),
     }
 
 
@@ -386,7 +387,9 @@ def build_careers_row(r, ad):
         "employment_type": emp_type, "salary": pay, "posted_date": TODAY, "closing_date": r["closing"],
         "reference_no": job_id(ad["ref"], r["pdf"]), "about_role": "\n".join(about),
         "responsibilities": "\n".join(ad["duties"]), "requirements": "\n".join(ad["requirements"]),
-        "official_apply_url": r["pdf"], "source_url": r["page"], "featured": "", "status": "live",
+        # adverts that say "apply online" point to the e-Recruitment portal (the job page there, once matched)
+        "official_apply_url": ERECRUIT_LIST if ad.get("online") else r["pdf"],
+        "source_url": r["page"], "featured": "", "status": "live",
         "_ref": ad["ref"],
     }
 
@@ -500,11 +503,17 @@ def scrape_careers(pg):
 
 
 def scrape_erecruit(pg):
+    """The portal never goes fully quiet, so wait for its job-list feed instead of for the page to settle."""
     grids = []
     pg.on("response", lambda resp: grids.append(resp) if "entity-grid-data.json" in resp.url else None)
-    if retry(lambda: pg.goto(ERECRUIT_LIST, wait_until="networkidle", timeout=240000), tries=2) is None and not grids:
+    def load():
+        with pg.expect_response(lambda r: "entity-grid-data.json" in r.url, timeout=240000):
+            pg.goto(ERECRUIT_LIST, wait_until="domcontentloaded", timeout=240000)
+        return True
+    if not retry(load, tries=3, wait=20) and not grids:
+        print("  e-Recruitment did not answer today", file=sys.stderr)
         return []
-    pg.wait_for_timeout(5000)
+    pg.wait_for_timeout(3000)
     recs = []
     for resp in grids:
         try:
@@ -560,8 +569,8 @@ def main():
         print(f"\n{len(rows)} SAPS posts", file=sys.stderr)
         return
     import sheet_writer
-    wrote = sheet_writer.append_jobs(rows)
-    print(f"SAPS: {len(rows)} open posts, wrote {wrote} new rows.", file=sys.stderr)
+    wrote, updated = sheet_writer.upsert_jobs(rows, update_fields=("official_apply_url", "closing_date", "about_role"))
+    print(f"SAPS: {len(rows)} open posts, {wrote} new rows, {updated} existing rows updated.", file=sys.stderr)
 
 
 if __name__ == "__main__":
