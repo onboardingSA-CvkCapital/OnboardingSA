@@ -215,7 +215,7 @@ def render(j):
     if j.get("category"): chips+=f'<span class="chip">{esc(j.get("category"))}</span>'
     if j.get("closing_date"):
         cd=esc(fmt_date(j.get("closing_date")))
-        extra=f" · {dl} days left" if (soon and dl is not None and dl>=0) else ""
+        extra=(" · closes today" if dl==0 else f" · {dl} day{'s' if dl!=1 else ''} left") if (soon and dl is not None and dl>=0) else ""
         chips+=f'<span class="chip {"close-soon" if soon else ""}">Closes {cd}{extra}</span>'
 
     apply=""

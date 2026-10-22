@@ -113,7 +113,7 @@ def render_card(j):
         soon = dl is not None and dl <= 7
         extra = ""
         if soon:
-            extra = " · closed" if (dl is not None and dl < 0) else f" · {dl} days left"
+            extra = " · closed" if (dl is not None and dl < 0) else (" · closes today" if dl == 0 else f" · {dl} day{'s' if dl != 1 else ''} left")
         cls = " close-soon" if soon else ""
         chips += f'<span class="chip{cls}">Closes {esc(fmt_date(j.get("closing_date")))}{extra}</span>'
     ini = esc(initials(j.get("employer")))

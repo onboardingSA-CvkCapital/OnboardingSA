@@ -347,7 +347,7 @@ function render(list){
   el.innerHTML=slice.map(j=>{
     const dl=daysLeft(j.closing_date);
     const soon=dl!==null&&dl<=7;
-    const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl+' days left'}`:''}`:'';
+    const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl===0?'closes today':dl+(dl===1?' day left':' days left')}`:''}`:'';
     return `<a class="jobcard" href="jobs/${j.id.replace(/[^A-Za-z0-9_-]/g,'-')}.html" aria-label="${esc(j.job_title)} at ${esc(j.employer)}">
       ${j.featured==='yes'?'<span class="badge">★ Featured</span>':''}
       <div class="card-head">

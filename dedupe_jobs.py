@@ -79,6 +79,71 @@ def same_post_elsewhere(jobs):
     return kept
 
 
+def tidy_title(t):
+    """'Professional Nurse- Specialty' / 'A - B' -> 'A – B' (leaves 'Pre-Audit' and 'Grade 1 -3' alone)."""
+    t = re.sub(r"(?<=[A-Za-z)])-\s+(?=[A-Za-z])|(?<=\w)\s+-\s+(?=\w)", " – ", str(t or ""))
+    return re.sub(r"\s{2,}", " ", t).strip()
+
+
+PLACE_WORDS = re.compile(r"hospital|clinic|\bCHC\b|centre|center|college|campus|office|station|court|registry|"
+                         r"academy|laboratory|depot|prison|correctional|school|ward|unit|theatre|department", re.I)
+
+
+def _parts(loc):
+    loc = re.sub(r"Kwa\s*Zulu\s*-\s*Natal", "KwaZulu\u2011Natal", loc, flags=re.I)        # keep the province name whole
+    parts = [p.strip(" )") for p in re.split(r"\s*[,;(]\s*|\s*[-–]\s*(?=[A-Z])", loc) if p.strip(" )")]
+    return [p.replace("\u2011", "-") for p in parts]
+
+
+def _short(label, n=40):
+    return label if len(label) <= n else label[:n].rsplit(" ", 1)[0]
+
+
+def _labels(locs):
+    """What tells several locations apart. Within one hospital/town: the ward or unit
+    ('Port Shepstone Regional Hospital-Orthopaedics' -> 'Orthopaedics'); otherwise the hospital/town."""
+    parts = [_parts(l) for l in locs]
+    firsts = [p[0].lower() if p else "" for p in parts]
+    out = []
+    for p, f in zip(parts, firsts):
+        if not p:
+            out.append(""); continue
+        if firsts.count(f) > 1 and len(p) > 1:
+            out.append(_short(" ".join(p[1:])))
+        else:
+            named = [x for x in p if PLACE_WORDS.search(x)]      # prefer the part that names the hospital/office
+            out.append(_short(named[0] if named else p[0]))
+    return out
+
+
+def distinguish_titles(jobs):
+    """Several posts from one employer with the same title look like duplicates on the site.
+    Add what tells them apart (unit, ward or town) to each title."""
+    groups = {}
+    for j in jobs:
+        j["job_title"] = tidy_title(j.get("job_title"))
+        key = (norm(j.get("employer")), re.sub(r"[^a-z0-9]", "", j["job_title"].lower().replace("speciality", "specialty")))
+        groups.setdefault(key, []).append(j)
+    for group in groups.values():
+        if len(group) < 2:
+            continue
+        locs = [str(j.get("location") or "").strip() for j in group]
+        labels = _labels(locs) if len(set(locs)) > 1 and all(locs) else [""] * len(group)
+        if len(set(labels)) < 2:
+            # same place: use the unit named in the summary ("... is hiring a X in Operating Theatre, based in ...")
+            units = []
+            for j in group:
+                m = re.search(r"is (?:hiring|offering) .+? in (.+?)(?:, based in|\. )", str(j.get("about_role", "")).split("\n")[0])
+                units.append(_short(m.group(1).strip()) if m else "")
+            labels = units
+        if len(set(labels)) < 2:
+            continue
+        for j, d in zip(group, labels):
+            if d and d.lower() not in j["job_title"].lower():
+                j["job_title"] = f"{j['job_title']} ({d})"
+    return jobs
+
+
 def main():
     if not os.path.exists(SRC):
         sys.exit(f"ERROR: {SRC} not found (run from the repo root).")
@@ -101,6 +166,7 @@ def main():
         kept.append(j)
 
     kept = same_post_elsewhere(kept)
+    kept = distinguish_titles(kept)
     removed = before - len(kept)
     with open(SRC, "w", encoding="utf-8") as f:
         json.dump(kept, f, ensure_ascii=False, indent=None)
