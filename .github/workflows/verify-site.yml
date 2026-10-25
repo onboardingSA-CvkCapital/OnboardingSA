@@ -1,0 +1,29 @@
+name: Verify live site (temporary)
+on:
+  push:
+    branches: [verify-site]
+    paths-ignore: ['verify_out/**']
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p verify_out; cd verify_out
+          UA="Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+          for p in / /about.html /guide-index.html; do
+            echo "== $p" >> report.txt
+            curl -sS -A "$UA" "https://www.onboardingsa.co.za$p" | grep -oE '<link rel="(icon|apple-touch-icon)"[^>]*>|"@type":"Organization"[^<]*' >> report.txt
+          done
+          for f in favicon.ico favicon-48x48.png favicon-96x96.png favicon-192x192.png favicon-512x512.png apple-touch-icon.png onboardingsa-icon.svg; do
+            curl -sS -A "$UA" -o "$f" -w "$f  HTTP %{http_code}  %{content_type}  %{size_download} bytes\n" "https://www.onboardingsa.co.za/$f" >> report.txt
+          done
+          curl -sS -A "$UA" https://www.onboardingsa.co.za/robots.txt >> report.txt
+          cat report.txt
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git add -f verify_out && git commit -m "verify results" && git push
