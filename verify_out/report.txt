@@ -1,0 +1,30 @@
+== /
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+<link rel="icon" type="image/svg+xml" href="/onboardingsa-icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+"@type":"Organization","name":"OnboardingSA","url":"https://www.onboardingsa.co.za/","logo":"https://www.onboardingsa.co.za/favicon-512x512.png"}
+== /about.html
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+<link rel="icon" type="image/svg+xml" href="/onboardingsa-icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+== /guide-index.html
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+<link rel="icon" type="image/svg+xml" href="/onboardingsa-icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+favicon.ico  HTTP 200  image/vnd.microsoft.icon  3263 bytes
+favicon-48x48.png  HTTP 200  image/png  1512 bytes
+favicon-96x96.png  HTTP 200  image/png  3032 bytes
+favicon-192x192.png  HTTP 200  image/png  5764 bytes
+favicon-512x512.png  HTTP 200  image/png  14976 bytes
+apple-touch-icon.png  HTTP 200  image/png  2141 bytes
+onboardingsa-icon.svg  HTTP 200  image/svg+xml  346 bytes
+User-agent: *
+Allow: /
+
+Sitemap: https://www.onboardingsa.co.za/sitemap.xml
