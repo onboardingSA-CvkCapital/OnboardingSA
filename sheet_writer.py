@@ -1,4 +1,4 @@
-import re, hashlib
+import re, hashlib, datetime
 import gspread
 from google.oauth2.service_account import Credentials
 import privacy_clean
@@ -12,6 +12,9 @@ COLUMNS = ["id","job_title","employer","category","province","location","employm
            "responsibilities","requirements","official_apply_url","source_url","featured","status"]
 
 MAXCELL = 45000
+
+def _today():
+    return (datetime.datetime.utcnow() + datetime.timedelta(hours=2)).date().isoformat()   # SAST
 
 def _sheet():
     creds = Credentials.from_service_account_file(
@@ -66,9 +69,14 @@ def upsert_jobs(rows, update_fields=()):
         for k, v in list(r.items()):
             if isinstance(v, str) and len(v) > MAXCELL:
                 r[k] = v[:MAXCELL]
+        if not r.get("posted_date"):
+            r["posted_date"] = _today()      # first day we saw it; Google rejects jobs without datePosted
         fp = fingerprint(r)
         if fp in where:
             n, old = where[fp]
+            if "posted_date" in col and n and not (old[col["posted_date"]] if col["posted_date"] < len(old) else "").strip():
+                updates.append({"range": rowcol_to_a1(n, col["posted_date"] + 1), "values": [[r["posted_date"]]]})
+                touched.add(n)
             for f in update_fields:
                 if f in col and (old[col[f]] if col[f] < len(old) else "") != r.get(f, ""):
                     updates.append({"range": rowcol_to_a1(n, col[f] + 1), "values": [[r.get(f, "")]]})
@@ -91,23 +99,6 @@ def existing_refs():
         return set()
 
 def append_jobs(rows):
-    if not rows:
-        return 0
-    ws = _sheet()
-    existing, _ = _existing_keys(ws)
-    to_write = []
-    for r in rows:
-        privacy_clean.clean_job(r)   # strip personal emails/phones/ID numbers before saving
-        for k, v in list(r.items()):
-            if isinstance(v, str) and len(v) > MAXCELL:
-                r[k] = v[:MAXCELL]
-        fp = fingerprint(r)
-        if fp in existing:
-            continue
-        existing.add(fp)
-        to_write.append(r)
-    if not to_write:
-        return 0
-    data = [[r.get(c, "") for c in COLUMNS] for r in to_write]
-    ws.append_rows(data, value_input_option="RAW")
-    return len(to_write)
+    """Add new jobs; rows already in the sheet are left as they are (except a blank posted_date gets filled)."""
+    new, _ = upsert_jobs(rows)
+    return new

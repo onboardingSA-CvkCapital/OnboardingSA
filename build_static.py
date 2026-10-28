@@ -3,6 +3,30 @@ import json, os, sys, html, re, datetime
 SITE = "https://www.onboardingsa.co.za"
 OUT_DIR = "jobs"
 THIN_WORDS = 40   # pages with fewer unique content words get noindex + no sitemap entry
+TODAY_ISO = (datetime.datetime.utcnow() + datetime.timedelta(hours=2)).date().isoformat()   # SAST
+
+try:
+    from sa_places import province_of
+except Exception:
+    province_of = lambda loc: ""
+
+def base_salary(text):
+    """'R487,197 – R573,897 a year (Level 9)' -> schema.org MonetaryAmount; None when there's no number."""
+    t = (text or "").replace("\u00a0", " ")
+    nums = [float(n.replace(",", "").replace(" ", "")) for n in re.findall(r"R\s?(\d[\d, ]*(?:\.\d+)?)", t)]
+    nums = [n for n in nums if n > 0]
+    if not nums:
+        return None
+    low = t.lower()
+    unit = ("HOUR" if "hour" in low else "DAY" if re.search(r"\bday\b|daily", low) else
+            "WEEK" if "week" in low else "MONTH" if re.search(r"month|p\.?m\.?\b", low) else "YEAR")
+    val = {"@type": "QuantitativeValue", "unitText": unit}
+    if len(nums) >= 2 and nums[1] > nums[0]:
+        val.update(minValue=nums[0], maxValue=nums[1])
+    else:
+        val["value"] = nums[0]
+    return {"@type": "MonetaryAmount", "currency": "ZAR", "value": val}
+
 LOGO_BASE = "https://raw.githubusercontent.com/onboardingSA-CvkCapital/OnboardingSA/main/"
 
 def esc(s):
@@ -189,17 +213,21 @@ def render(j):
     body_txt=(j.get("about_role","") or j.get("responsibilities","") or j.get("requirements",""))
     metadesc=esc((f"{j.get('job_title','')} at {j.get('employer','')}. " + body_txt)[:155])
     # schema
+    region=j.get("province","")
+    if not region or region=="National":
+        region=province_of(j.get("location",""))
     schema={
         "@context":"https://schema.org/","@type":"JobPosting",
         "title":j.get("job_title",""),
         "description":(j.get("about_role","")+" "+j.get("responsibilities","")+" "+j.get("requirements","")).strip() or j.get("job_title",""),
-        "datePosted":j.get("posted_date","") or None,
+        "datePosted":j.get("posted_date","") or TODAY_ISO,
         "validThrough":j.get("closing_date","") or None,
         "employmentType":emptype_schema(j.get("employment_type","")),
         "hiringOrganization":{"@type":"Organization","name":j.get("employer","")},
-        "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress",
+        "jobLocation":{"@type":"Place","address":{k:v for k,v in {"@type":"PostalAddress",
             "addressLocality":j.get("location","") or j.get("province",""),
-            "addressRegion":j.get("province",""),"addressCountry":"ZA"}},
+            "addressRegion":region,"addressCountry":"ZA"}.items() if v}},
+        "baseSalary":base_salary(j.get("salary","")),
         "directApply":False,
     }
     schema={k:v for k,v in schema.items() if v is not None}

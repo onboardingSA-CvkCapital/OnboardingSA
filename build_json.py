@@ -1,5 +1,6 @@
 import json, sys, csv, io, datetime, urllib.request
 import privacy_clean
+from sa_places import province_of
 
 CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv"
 
@@ -30,6 +31,8 @@ def main():
         status=r.get("status","").lower()
         if not title or status!="live" or is_expired(r.get("closing_date","")):
             continue
+        if not r.get("province"):
+            r["province"]=province_of(r.get("location",""))   # e.g. Eskom gives only the town
         r["id"]=stable_id(r.get("reference_no",""), title, r.get("employer",""))
         out.append(privacy_clean.clean_job(r))   # never publish personal contact details
     with open("jobs.json","w",encoding="utf-8") as f:

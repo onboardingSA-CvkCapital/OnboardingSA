@@ -1,5 +1,7 @@
 import re, sys, time
 import sheet_writer
+from sa_places import province_of
+import datetime
 from playwright.sync_api import sync_playwright
 
 START_URL = "https://eskomcareers.ci.hr/applicant/index.php?controller=Page&name=jobsearch"
@@ -55,6 +57,8 @@ def build_row(data, title, url, ref):
     row.update({
         "job_title":meta.get("title") or title, "employer":EMPLOYER,
         "category":meta.get("category",""), "location":meta.get("location",""),
+        "province":province_of(meta.get("location","")),
+        "posted_date":(datetime.datetime.utcnow()+datetime.timedelta(hours=2)).date().isoformat(),
         "employment_type":map_type(meta.get("employmenttype","")),
         "salary":(data.get("remun") or "").strip(),
         "closing_date":to_iso(data.get("applyby","")), "reference_no":ref,
@@ -140,8 +144,8 @@ def scrape():
 def main():
     print("Scraping Eskom...", file=sys.stderr)
     rows=scrape()
-    n=sheet_writer.append_jobs(rows)
-    print(f"\nDone: found {len(rows)} jobs, wrote {n} new to the sheet.", file=sys.stderr)
+    n,u=sheet_writer.upsert_jobs(rows, update_fields=("province","closing_date"))
+    print(f"\nDone: found {len(rows)} jobs, wrote {n} new, updated {u} in the sheet.", file=sys.stderr)
 
 if __name__=="__main__":
     main()
