@@ -40,7 +40,7 @@ def get(s, url):
 def list_jobs(s, cfg):
     out, offset, total = [], 0, None
     while offset < 3000:
-        d = get(s, f"{cfg['host']}/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true"
+        d = get(s, f"{cfg['host']}/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations"
                    f"&finder=findReqs;siteNumber={cfg['site']},limit=25,offset={offset},sortBy=POSTING_DATES_DESC")
         item = (d.get("items") or [{}])[0]
         reqs = item.get("requisitionList") or []

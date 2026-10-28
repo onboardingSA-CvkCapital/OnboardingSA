@@ -16,13 +16,13 @@ jobs:
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe8
-          python scrape_oracle.py --dry-run > probe8/tfg.json 2> probe8/tfg.log
-          curl -sSL -o probe8/tfg_logo.png -w "%{http_code} %{content_type}\n" "https://stg-tfglimited-staging.kinsta.cloud/wp-content/uploads/2023/09/TFG_Logo_150x40px-1.png" > probe8/logo.txt
-          curl -sSL -o probe8/tfg_logo2.png -w "%{http_code} %{content_type}\n" "https://www.tfglimited.co.za/wp-content/uploads/2023/09/TFG_Logo_150x40px-1.png" >> probe8/logo.txt
-          tail -5 probe8/tfg.log; cat probe8/logo.txt
+          mkdir -p probe9
+          python scrape_oracle.py --dry-run > probe9/tfg.json 2> probe9/tfg.log
+          curl -sSL -o probe9/tfg_logo.png -w "%{http_code} %{content_type}\n" "https://stg-tfglimited-staging.kinsta.cloud/wp-content/uploads/2023/09/TFG_Logo_150x40px-1.png" > probe9/logo.txt
+          curl -sSL -o probe9/tfg_logo2.png -w "%{http_code} %{content_type}\n" "https://www.tfglimited.co.za/wp-content/uploads/2023/09/TFG_Logo_150x40px-1.png" >> probe9/logo.txt
+          tail -5 probe9/tfg.log; cat probe9/logo.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe8; git commit -m "probe tfg live" || true; git push
+          git add probe9; git commit -m "probe tfg live2" || true; git push
