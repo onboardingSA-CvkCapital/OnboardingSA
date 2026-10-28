@@ -17,6 +17,7 @@ SITES = [
              r"we look for people with passion"},
     {"employer": "Pick n Pay", "host": "picknpay.wd3.myworkdayjobs.com", "tenant": "picknpay", "site": "PNP_Careers", "ref": "PNP",
      "public": "https://picknpay.wd3.myworkdayjobs.com/PNP_Careers",
+     "keep_thin": True,
      "skip": r"it'?s fun to work in a company|if you like wild growth|discover who we are|"
              r"the incumbent may also be expected to perform other duties"},
 ]
@@ -79,6 +80,10 @@ def build_row(cfg, info, columns):
     desc = info.get("jobDescription", "")
     about, resp, req = sections(desc, re.compile(cfg["skip"], re.I))
     title = re.sub(r"^\W+", "", re.sub(r"\s+", " ", info.get("title", ""))).strip()
+    title = re.sub(r"^Job Posting Title\s+", "", title, flags=re.I)
+    posts = [p.strip() for p in re.split(r"\s*,\s*", title) if p.strip()]
+    if len(posts) > 3:                      # store adverts that list many posts in the title
+        title = f"{posts[0]}, {posts[1]} and {len(posts) - 2} more store posts"
     loc = re.sub(r"\s+-\s+", ", ", info.get("location") or "").strip()
     loc = re.sub(r"^HQ\s+", "", loc)
     province = province_of(loc)
@@ -86,6 +91,8 @@ def build_row(cfg, info, columns):
     closing = info.get("endDate") or closing_from_text(plain)
     art = "an" if re.match(r"[AEIOU]", title) else "a"
     intro = f"{cfg['employer']} is hiring {art} {title}" + (f", based in {loc}" if loc else "") + "."
+    if len(posts) > 3:
+        intro = f"{cfg['employer']} is hiring for these posts" + (f" in {loc}" if loc else "") + ": " + ", ".join(posts) + "."
     cat = guess_category(title, cfg["employer"])
     row = {k: "" for k in columns}
     row.update({
@@ -124,7 +131,7 @@ def scrape_site(s, cfg, columns):
             continue
         seen.add(info.get("jobReqId"))
         row = build_row(cfg, info, columns)
-        if not row["responsibilities"] and not row["requirements"] and len(row["about_role"].split()) < 70:
+        if not row["responsibilities"] and not row["requirements"] and len(row["about_role"].split()) < 70 and not cfg.get("keep_thin"):
             print(f"  skipped (could not read duties/requirements): {row['job_title']}", file=sys.stderr)
             continue
         if row["closing_date"] and row["closing_date"] < today:

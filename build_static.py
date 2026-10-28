@@ -243,11 +243,13 @@ def render(j):
 
     # thin pages (little unique content) get noindex and are left out of the sitemap
     unique_words=len((f"{j.get('about_role','')} {j.get('responsibilities','')} {j.get('requirements','')}").split())
-    is_thin = unique_words < THIN_WORDS
+    is_thin = unique_words < THIN_WORDS or not (to_list(j.get("responsibilities")) or to_list(j.get("requirements")))
     robots = '<meta name="robots" content="noindex,follow">\n' if is_thin else ''
 
     head=HEAD.format(title=title, employer=employer, metadesc=metadesc,
                      canonical=canonical, schema=schema_json, robots=robots)
+    if is_thin:   # adverts with hardly any detail: listed for job seekers, but no ads and kept out of Google
+        head=head.replace('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5134977183220630" crossorigin="anonymous"></script>\n','')
 
     chips=""
     if j.get("employment_type"): chips+=f'<span class="chip">{esc(j.get("employment_type"))}</span>'
