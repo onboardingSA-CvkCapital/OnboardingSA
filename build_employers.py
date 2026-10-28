@@ -121,7 +121,7 @@ def facts(jobs, short):
     out = []
     provs = [p for p, _ in collections.Counter(j.get("province") for j in jobs
                                                 if j.get("province") and j.get("province") != "National").most_common()]
-    s1 = f"There {'is' if n == 1 else 'are'} {n} {short} post{'s' if n != 1 else ''} open right now"
+    s1 = f"There {'is' if n == 1 else 'are'} {n:,} {short.lower() if short == 'Government' else short} post{'s' if n != 1 else ''} open right now"
     if len(provs) == 1:
         s1 += f", all in {provs[0]}"
     elif len(provs) > 1:
@@ -246,6 +246,17 @@ def update_sitemap(urls):
     open("sitemap.xml", "w", encoding="utf-8").write(sm)
 
 
+GOVERNMENT = {   # all public-sector jobs on one page (the coat of arms on the homepage links here)
+    "slug": "government-jobs", "short": "Government", "name": "South African government departments",
+    "intro": ["Vacancies in national and provincial government departments, SAPS and other public bodies."],
+    "by_province": True,
+}
+
+
+def is_government(j):
+    return not re.match(r"^(Eskom|Sasol)\b", j.get("employer") or "", re.I)
+
+
 def main():
     jobs = json.load(open("jobs.json", encoding="utf-8"))
     by = collections.defaultdict(list)
@@ -264,6 +275,11 @@ def main():
         if len(js) >= MIN_JOBS:
             rows.append((g, len(js)))
             urls.append(f"{SITE}/{OUT_DIR}/{g['slug']}.html")
+    gov = sorted((j for j in jobs if is_government(j)), key=lambda j: (j.get("closing_date") or "9999", j.get("job_title", "")))
+    open(os.path.join(OUT_DIR, GOVERNMENT["slug"] + ".html"), "w", encoding="utf-8").write(render_group(GOVERNMENT, gov))
+    if len(gov) >= MIN_JOBS:
+        rows.append((GOVERNMENT, len(gov)))
+        urls.append(f"{SITE}/{OUT_DIR}/{GOVERNMENT['slug']}.html")
     rows.sort(key=lambda r: -r[1])
     open(os.path.join(OUT_DIR, "index.html"), "w", encoding="utf-8").write(render_index(rows))
     update_homepage(rows, len(jobs))
