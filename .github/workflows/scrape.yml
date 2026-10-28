@@ -50,7 +50,7 @@ jobs:
         run: python scrape_successfactors.py
         continue-on-error: true
 
-      - name: SAB and Pick n Pay (Workday sites)
+      - name: SAB, Pick n Pay and FirstRand (Workday sites)
         run: python scrape_workday.py
         continue-on-error: true
 
@@ -60,6 +60,10 @@ jobs:
 
       - name: TFG (Oracle careers site)
         run: python scrape_oracle.py
+        continue-on-error: true
+
+      - name: Standard Bank (SmartRecruiters)
+        run: python scrape_smartrecruiters.py
         continue-on-error: true
 
       - name: DPSA Public Service Vacancy Circular

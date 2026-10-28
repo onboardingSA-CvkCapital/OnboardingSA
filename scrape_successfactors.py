@@ -89,7 +89,7 @@ def build_row(cfg, item, page, columns):
     from advert_sections import sections
     t = re.search(r'<(span|h1)[^>]*itemprop="title"[^>]*>(.*?)</\1>', page, re.S)
     title = re.sub(r"\s+", " ", text(t.group(2)) if t else item["title"]).strip()
-    d = re.search(r'<span[^>]*class="jobdescription"[^>]*>(.*?)(?:class="[^"]*applylink|id="similar-jobs"|Requisition ID:|$)', page, re.S)
+    d = re.search(r'<span[^>]*class="jobdescription"[^>]*>(.*?)(?:<[^>]*class="[^"]*applylink|<[^>]*id="similar-jobs"|Requisition ID:|$)', page, re.S)
     about, resp, req = sections(d.group(1) if d else "", re.compile(cfg["skip"], re.I))
     city = meta(page, "addressLocality") or item["loc"].split(",")[0].strip()
     if re.fullmatch(r"[A-Z]{2}|South Africa", city or ""):

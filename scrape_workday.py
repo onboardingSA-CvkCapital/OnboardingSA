@@ -15,6 +15,10 @@ SITES = [
      "public": "https://wd1.myworkdaysite.com/recruiting/abinbev/SAB",
      "skip": r"dreaming big is in our dna|are you ready to join a team that dreams|ab inbev is an equal|"
              r"we look for people with passion"},
+    {"employer": "FirstRand", "host": "firstrand.wd3.myworkdayjobs.com", "tenant": "firstrand", "site": "FRB", "ref": "FRB",
+     "public": "https://firstrand.wd3.myworkdayjobs.com/FRB",
+     "skip": r"welcome to fnb|home of the #changeables|we design for the shapeshifters|you will be surrounded by unique talent|"
+             r"now'?s the time to imagine your potential|^(fnb|rmb|wesbank|firstrand|ashburton|aldermore) introduction"},
     {"employer": "Pick n Pay", "host": "picknpay.wd3.myworkdayjobs.com", "tenant": "picknpay", "site": "PNP_Careers", "ref": "PNP",
      "public": "https://picknpay.wd3.myworkdayjobs.com/PNP_Careers",
      "keep_thin": True,
@@ -130,6 +134,9 @@ def scrape_site(s, cfg, columns):
         if info.get("jobReqId") in seen:
             continue
         seen.add(info.get("jobReqId"))
+        if re.search(r"not for an active vacancy|build a talent pool", info.get("jobDescription", ""), re.I):
+            print(f"  skipped (talent pool, not a real vacancy): {info.get('title')}", file=sys.stderr)
+            continue
         row = build_row(cfg, info, columns)
         if not row["responsibilities"] and not row["requirements"] and len(row["about_role"].split()) < 70 and not cfg.get("keep_thin"):
             print(f"  skipped (could not read duties/requirements): {row['job_title']}", file=sys.stderr)

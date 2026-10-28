@@ -67,7 +67,21 @@ def days_left(d):
 def to_list(text):
     if not text: return []
     parts = re.split(r'[\n;]|•', text)
-    return [p.strip() for p in parts if p.strip()]
+    out = []
+    for p in parts:
+        p = re.sub(r"<[a-zA-Z/][^>]*>?$|^[^<]*?>|<[^>]*$", "", p.strip()).strip()   # stray HTML fragments
+        if p and not re.fullmatch(r"[<>/\w\s=\"'-]*<\w*|<\w+", p):
+            out.append(p)
+    return out
+
+def li_items(items):
+    html_out = ""
+    for r in items:
+        if r.endswith(":") and len(r) <= 70:
+            html_out += f'<li class="sub">{esc(r.rstrip(":"))}</li>'
+        else:
+            html_out += f"<li>{esc(r)}</li>"
+    return html_out
 
 def emptype_schema(t):
     t=(t or "").upper()
@@ -136,6 +150,8 @@ main{{padding:22px 0 60px}}
 .section p{{margin:0;font-size:14.5px;color:var(--text);white-space:pre-line}}
 .section ul{{margin:0;padding-left:18px}}
 .section li{{font-size:14.5px;color:var(--text);margin-bottom:6px}}
+.section li.sub{{list-style:none;margin:14px 0 6px -18px;font-weight:600;color:var(--navy)}}
+.section li.sub:first-child{{margin-top:0}}
 .d-foot{{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:20px;flex-wrap:wrap}}
 @media(max-width:640px){{.detail{{padding:22px 18px}}.d-head h1{{font-size:22px}}.actions .apply{{flex:1 1 100%;justify-content:center}}}}
 footer.site{{border-top:1px solid var(--line);background:#fff;padding:24px 0;font-size:13px;color:var(--muted)}}
@@ -283,13 +299,13 @@ def render(j):
         sections+=f'<div class="section"><h2>About the role</h2><p>{esc(j.get("about_role"))}</p></div>'
     resp=to_list(j.get("responsibilities"))
     if resp:
-        sections+='<div class="section"><h2>Responsibilities</h2><ul>'+"".join(f"<li>{esc(r)}</li>" for r in resp)+'</ul></div>'
+        sections+='<div class="section"><h2>Responsibilities</h2><ul>'+li_items(resp)+'</ul></div>'
     reqs=to_list(j.get("requirements"))
     if reqs:
-        sections+='<div class="section"><h2>Requirements</h2><ul>'+"".join(f"<li>{esc(r)}</li>" for r in reqs)+'</ul></div>'
+        sections+='<div class="section"><h2>Requirements</h2><ul>'+li_items(reqs)+'</ul></div>'
 
     foot_meta=""
-    if j.get("reference_no") and not str(j.get("reference_no")).startswith(("OMNIA-", "HEINEKEN-", "TFG-")): foot_meta+=f'<span>Ref: {esc(re.sub(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP)-", "", j.get("reference_no")))}</span>'
+    if j.get("reference_no") and not str(j.get("reference_no")).startswith(("OMNIA-", "HEINEKEN-", "TFG-")): foot_meta+=f'<span>Ref: {esc(re.sub(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB)-", "", j.get("reference_no")))}</span>'
     else: foot_meta+="<span></span>"
     if j.get("posted_date"): foot_meta+=f'<span>Posted {esc(fmt_date(j.get("posted_date")))}</span>'
 

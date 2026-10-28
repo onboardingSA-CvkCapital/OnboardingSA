@@ -10,14 +10,14 @@ H_ABOUT = re.compile(r"^((main )?purpose of the (job|role|position)|job purpose|
                      r"the role|your role|what is the role|introduction|job description|description)\b", re.I)
 H_RESP = re.compile(r"^(key roles?( &| and)? responsibilities|roles? and responsibilities|key responsibilities|"
                     r"responsibilities|your responsibilities|duties|main duties|key duties|key performance areas|kpas?|"
-                    r"key result areas|required outputs?|what you will learn|what you'll learn|outputs|job profile|what you will do|what you'll do|"
+                    r"key result areas|are you someone who can|required outputs?|what you will learn|what you'll learn|outputs|job profile|what you will do|what you'll do|"
                     r"what will you do|your main tasks|the job|key accountabilities|accountabilities|job functions)\b", re.I)
 H_REQ = re.compile(r"^(requirements|minimum requirements|job requirements|qualifications?|education|experience|"
                    r"knowledge|skills|key competencies|competencies|personal attributes|behavioural|technical skills|"
                    r"what you need|what you will need|what you'll need|what we are looking for|what we're looking for|"
-                   r"the (successful|ideal) candidate|we'?re looking for|we are looking for|who are we looking for|who you are|your profile|profile|candidate profile|about you|you have|must have|nice to have|"
+                   r"the (successful|ideal) candidate|you will be an ideal candidate|additional requirements|we'?re looking for|we are looking for|who are we looking for|who you are|your profile|profile|candidate profile|about you|you have|must have|nice to have|"
                    r"advantageous|preferred|conditions of employment)\b", re.I)
-H_STOP = re.compile(r"^(application process|candidates who do not receive|additional information|what we offer|we offer|what's in it for you|benefits|our offer|about us|about the company|"
+H_STOP = re.compile(r"^(thank you for your interest|important closing date|application process|candidates who do not receive|additional information|what we offer|we offer|what's in it for you|benefits|our offer|about us|about the company|"
                     r"who we are|why join|equal opportunit|employment equity|disclaimer|please note|note:|"
                     r"if you do not hear|only shortlisted|closing date|how to apply|privacy|discover who we are|"
                     r"summary$|.* respects your right to privacy|.* is an equal opportunity)", re.I)
@@ -28,6 +28,7 @@ def lines_of(desc):
     d = re.sub(r"<(strong|b)\b[^>]*>", "\x01", desc or "", flags=re.I)
     d = re.sub(r"</(strong|b)>", "\x02", d, flags=re.I)
     d = re.sub(r"<br\s*/?>|</p>|</li>|</div>|</h\d>|<li\b[^>]*>|<p\b[^>]*>|<h\d\b[^>]*>", "\n", d, flags=re.I)
+    d = re.sub(r"<[a-zA-Z/!][^>]*$", "", d)             # a tag cut off at the end of the advert
     d = html.unescape(re.sub(r"<[^>]+>", "", d)).replace("\xa0", " ").replace("\u200b", "").replace("\ufeff", "")
     out = []
     for raw in d.split("\n"):
@@ -47,10 +48,12 @@ def sections(desc, skip=None):
     """Return (about, duties, requirements) as lists of lines. `skip` is an optional regex of company boilerplate lines."""
     about, resp, req, pre, body, sec = [], [], [], [], [], None
     for t, bold in lines_of(desc):
+        if re.fullmatch(r"(#\S+\s*)+", t):
+            continue                                   # hashtags such as #LI-AA1
         head = t.rstrip(":.").strip()
         short = len(head) <= 90
         looks_head = short and (bold or t.endswith(":") or (head.isupper() and len(head) > 3))
-        if short and H_STOP.match(head):
+        if H_STOP.match(head) and (short or bold):
             sec = "stop"
             continue
         known = short and len(head.split()) <= 7 and not head.endswith(".") and (
@@ -59,7 +62,8 @@ def sections(desc, skip=None):
             if H_RESP.match(head):
                 sec = "resp"
             elif H_REQ.match(head):
-                if sec == "req" or not re.match(r"^(minimum |job )?requirements$|^qualifications?( and experience)?$", head, re.I):
+                if sec == "req" or not re.match(r"^(minimum |job )?requirements$|^qualifications?( and experience)?$|"
+                                                r".*(candidate|looking for|you need|you have|you:)", head, re.I):
                     req.append((head.capitalize() if head.isupper() else head) + ":")
                 sec = "req"
             elif H_ABOUT.match(head):
@@ -69,7 +73,7 @@ def sections(desc, skip=None):
             elif looks_head and sec is None:
                 pass                                   # company slogan / intro heading
             continue
-        if skip is not None and skip.search(t):
+        if (skip is not None and skip.search(t)) or re.fullmatch(r"(#\S+\s*)+", t):
             continue
         if sec != "stop":
             body.append(t)
