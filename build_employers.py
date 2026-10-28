@@ -17,12 +17,8 @@ EXTRA_CSS = """
 .section ol li{font-size:14.5px;color:var(--text);margin-bottom:6px;padding-left:4px}
 .section ol li::marker{color:var(--muted);font-weight:600}
 .detail{background:none;border:0;padding:0}
-.facts{width:100%;max-width:680px;border-collapse:collapse;margin:16px 0 6px;font-size:14px}
-.facts th{text-align:left;font-weight:600;color:var(--muted);padding:8px 18px 8px 0;width:1%;vertical-align:top;white-space:nowrap}
-.facts td{padding:8px 0;color:var(--text)}
-.facts tr{border-top:1px solid var(--line)}
-.facts tr:last-child{border-bottom:1px solid var(--line)}
-.facts .soon{color:#B23B3B;font-weight:600}
+.summary{font-size:16px;line-height:1.65;color:var(--text);max-width:680px;margin:14px 0 4px}
+.summary .soon{color:#B23B3B;font-weight:600}
 .e-body h2.e-h{font-family:Poppins;font-weight:600;font-size:16px;color:var(--navy);margin:22px 0 4px}
 .e-title{font-family:Poppins;font-weight:700;font-size:28px;color:var(--navy);margin:0;line-height:1.2}
 .e-body{margin-top:14px}
@@ -112,50 +108,58 @@ def counted(counter, limit=5):
     return out
 
 
-def facts(jobs):
-    """Plain facts counted from the live jobs: where, type, kind of work, pay, closing."""
+def nice_list(items):
+    items = [i for i in items if i]
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1] if items else ""
+
+
+def facts(jobs, short):
+    """A short, plain summary written from the live jobs (no tables, no jargon)."""
     if not jobs:
         return ""
-    rows = []
-    provs = collections.Counter(j.get("province") or "Not stated" for j in jobs)
-    rows.append(("Where", counted(provs)))
-    types = collections.Counter(j.get("employment_type") for j in jobs if j.get("employment_type"))
+    n = len(jobs)
+    out = []
+    provs = [p for p, _ in collections.Counter(j.get("province") for j in jobs
+                                                if j.get("province") and j.get("province") != "National").most_common()]
+    s1 = f"There {'is' if n == 1 else 'are'} {n} {short} post{'s' if n != 1 else ''} open right now"
+    if len(provs) == 1:
+        s1 += f", all in {provs[0]}"
+    elif len(provs) > 1:
+        s1 += f", mostly in {nice_list(provs[:3])}" if len(provs) > 3 else f", in {nice_list(provs)}"
+    out.append(s1 + ".")
+    types = collections.Counter((j.get("employment_type") or "").lower() for j in jobs if j.get("employment_type"))
+    def cat_word(c):
+        c = c.split(",")[0].replace(" and Telecommunications", "").strip()   # 'Engineering, Technical, ...' -> 'Engineering'
+        return " ".join(w if w.isupper() else w.lower() for w in c.split())
+    skip = {"government", "internship", "learnership", "apprenticeship"}
+    cats = []
+    for c, _ in collections.Counter(cat_word(j.get("category")) for j in jobs if j.get("category")).most_common():
+        if c not in skip and c not in cats:
+            cats.append(c)
+    cats = cats[:3]
     if types:
-        rows.append(("Type", ", ".join(f"{v} {esc(k).lower()}" for k, v in types.most_common())))
-    cats = collections.Counter(j.get("category") for j in jobs if j.get("category") and j.get("category") != "Government")
-    if cats:
-        rows.append(("Kind of work", counted(cats, 4)))
-    yearly, monthly, hourly = [], [], []
+        top, cnt = types.most_common(1)[0]
+        lead = "All are" if cnt == n else "Most are" if cnt > n / 2 else "Many are"
+        s2 = f"{lead} {top}"
+        s2 += f" posts in {nice_list(cats)}" if cats else " posts"
+        out.append(s2 + ".")
+    elif cats:
+        out.append(f"Most are in {nice_list(cats)}.")
+    yearly = []
     for j in jobs:
         b = base_salary(j.get("salary"))
-        if not b:
-            continue
-        v = b["value"]
-        lo, hi = v.get("minValue", v.get("value")), v.get("maxValue", v.get("value"))
-        {"YEAR": yearly, "MONTH": monthly, "HOUR": hourly}.get(v["unitText"], []).extend([lo, hi])
-    pay = []
-    if yearly:
-        pay.append(f"{money(min(yearly))} to {money(max(yearly))} a year" if min(yearly) != max(yearly) else f"{money(min(yearly))} a year")
-    if monthly:
-        pay.append(f"from {money(min(monthly))} a month (trainee and stipend posts)" if yearly else
-                   f"{money(min(monthly))} to {money(max(monthly))} a month" if min(monthly) != max(monthly) else f"{money(min(monthly))} a month")
-    if hourly:
-        pay.append(f"from {money(min(hourly))} an hour (sessional posts)")
-    if not pay and any((j.get("salary") or "").lower().startswith("market") for j in jobs):
-        pay.append("Market related (not published)")
-    if pay:
-        rows.append(("Pay", "; ".join(pay)))
-    dls = [(days_left(j.get("closing_date")), j.get("closing_date")) for j in jobs]
-    dls = [(d, c) for d, c in dls if d is not None and d >= 0]
-    if dls:
-        week = sum(1 for d, _ in dls if d <= 7)
-        nxt = min(dls)[1]
-        txt = f"Next closes {esc(fmt_date(nxt))}"
-        if week:
-            txt = f'<span class="soon">{week} close{"s" if week == 1 else ""} this week</span> · ' + txt
-        rows.append(("Closing", txt))
-    return ('<table class="facts"><tbody>' +
-            "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows) + "</tbody></table>")
+        if b and b["value"]["unitText"] == "YEAR":
+            v = b["value"]; yearly += [v.get("minValue", v.get("value")), v.get("maxValue", v.get("value"))]
+    if yearly and min(yearly) != max(yearly):
+        out.append(f"Pay ranges from {money(min(yearly))} to {money(max(yearly))} a year.")
+    elif yearly:
+        out.append(f"Pay is {money(min(yearly))} a year.")
+    elif any((j.get("salary") or "").lower().startswith("market") for j in jobs):
+        out.append("Salaries are market related and not published in the adverts.")
+    week = sum(1 for j in jobs if (lambda d: d is not None and 0 <= d <= 7)(days_left(j.get("closing_date"))))
+    if week:
+        out.append(f'<span class="soon">{week} close{"s" if week == 1 else ""} this week</span>, so don\'t wait.')
+    return '<p class="summary">' + " ".join(out) + "</p>"
 
 
 def stats_line(jobs):
@@ -180,8 +184,8 @@ def render_group(g, jobs):
     parts = [head(title, metadesc, url, breadcrumb([("Home", SITE + "/"), ("Employers", f"{SITE}/{OUT_DIR}/index.html"),
                                                      (f"{g['short']} jobs", url)]), n < MIN_JOBS)]
     parts.append(f'''      <h1 class="e-title">{esc(g["short"])} jobs</h1>
-      <p class="e-stats">{len(jobs)} open post{"s" if len(jobs) != 1 else ""} · updated {esc(fmt_date(datetime.date.today().isoformat()))}</p>
-      {facts(jobs)}
+      <p class="e-stats">Updated {esc(fmt_date(datetime.date.today().isoformat()))}</p>
+      {facts(jobs, g['short'])}
       <div class="e-body"><h2 class="e-h">Open posts</h2>''')
     if not jobs:
         parts.append('<p class="e-empty">There are no open posts right now. New posts are added every day, so check back soon.</p>')
