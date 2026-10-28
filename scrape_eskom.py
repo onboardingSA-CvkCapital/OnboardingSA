@@ -55,7 +55,9 @@ def build_row(data, title, url, ref):
     reqs =cards.get("minimum requirements") or cards.get("requirements") or ""
     row={k:"" for k in COLUMNS}
     row.update({
-        "job_title":meta.get("title") or title, "employer":EMPLOYER,
+        "job_title":re.split(r"\s+(?:Position\s*/\s*Task Grade|Task Grade|Area of speciali[sz]ation)\b",
+                             re.sub(r"^\s*Position\s*:\s*","",meta.get("title") or title,flags=re.I),1,flags=re.I)[0].strip(" :;,-"),
+        "employer":EMPLOYER,
         "category":meta.get("category",""), "location":meta.get("location",""),
         "province":province_of(meta.get("location","")),
         "posted_date":(datetime.datetime.utcnow()+datetime.timedelta(hours=2)).date().isoformat(),

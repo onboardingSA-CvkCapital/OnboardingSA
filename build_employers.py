@@ -12,13 +12,13 @@ INDEX_FILE = "index.html"
 EXTRA_CSS = """
 .e-intro p{font-size:15px;margin:0 0 12px;white-space:normal}
 .e-stats{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
-.e-list{display:block;margin-top:4px}
-.e-job{display:block;border-bottom:1px solid var(--line);padding:14px 0;text-decoration:none;color:inherit}
-.e-job:last-child{border-bottom:0}
-.e-job:hover h3{text-decoration:underline}
-.e-job h3{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 3px;line-height:1.3}
-.e-job .loc{font-size:13.5px;color:var(--muted);margin-bottom:8px}
-.e-job .chips{margin:0}
+.section ul.e-list{list-style:none;margin:4px 0 0;padding:0}
+.section ul.e-list li{margin:0;padding:11px 0;border-bottom:1px solid var(--line-2)}
+.section ul.e-list li:last-child{border-bottom:0}
+.e-list a{font-weight:600;font-size:15px;color:var(--navy);text-decoration:none}
+.e-list a:hover{text-decoration:underline}
+.e-list .meta{font-size:13.5px;color:var(--muted);margin-top:2px}
+.e-list .soon{color:#B23B3B;font-weight:600}
 .e-prov{font-family:Poppins;font-weight:600;font-size:14px;color:var(--navy);margin:22px 0 2px}
 .e-empty{font-size:14.5px;color:var(--muted)}
 .section ul.e-grid{list-style:none;margin:4px 0 0;padding:0}
@@ -47,18 +47,17 @@ def loc_line(j):
 
 
 def job_card(j):
-    chips = ""
+    bits = [esc(loc_line(j))] if loc_line(j) else []
     if j.get("salary"):
-        chips += f'<span class="chip">{esc(j["salary"])}</span>'
-    if j.get("employment_type"):
-        chips += f'<span class="chip">{esc(j["employment_type"])}</span>'
+        bits.append(esc(j["salary"]))
     if j.get("closing_date"):
         dl = days_left(j["closing_date"])
-        soon = dl is not None and 0 <= dl <= 7
-        extra = (" · closes today" if dl == 0 else f" · {dl} day{'s' if dl != 1 else ''} left") if soon else ""
-        chips += f'<span class="chip{" close-soon" if soon else ""}">Closes {esc(fmt_date(j["closing_date"]))}{extra}</span>'
-    return (f'<a class="e-job" href="../jobs/{page_id(j.get("id"))}.html"><h3>{esc(j.get("job_title"))}</h3>'
-            f'<div class="loc">{esc(loc_line(j))}</div><div class="chips">{chips}</div></a>')
+        when = f"Closes {esc(fmt_date(j['closing_date']))}"
+        if dl is not None and 0 <= dl <= 7:
+            when = f'<span class="soon">{when} ({"today" if dl == 0 else f"{dl} day" + ("s" if dl != 1 else "") + " left"})</span>'
+        bits.append(when)
+    return (f'<li><a href="../jobs/{page_id(j.get("id"))}.html">{esc(j.get("job_title"))}</a>'
+            f'<div class="meta">{" · ".join(bits)}</div></li>')
 
 
 def month_year():
@@ -122,10 +121,10 @@ def render_group(g, jobs):
         for j in jobs:
             byp[j.get("province") or "Other"].append(j)
         for p in sorted(byp, key=lambda p: (PROV_ORDER.index(p) if p in PROV_ORDER else 99, p)):
-            parts.append(f'<div class="e-prov">{esc(p)} ({len(byp[p])})</div><div class="e-list">'
-                         + "".join(job_card(j) for j in byp[p]) + "</div>")
+            parts.append(f'<div class="e-prov">{esc(p)} ({len(byp[p])})</div><ul class="e-list">'
+                         + "".join(job_card(j) for j in byp[p]) + "</ul>")
     else:
-        parts.append('<div class="e-list">' + "".join(job_card(j) for j in jobs) + "</div>")
+        parts.append('<ul class="e-list">' + "".join(job_card(j) for j in jobs) + "</ul>")
     parts.append("</div>\n")
     parts.append(FOOT.format(year=datetime.date.today().year))
     page = "".join(parts)

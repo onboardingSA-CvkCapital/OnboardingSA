@@ -3,6 +3,12 @@ import privacy_clean
 from sa_places import province_of
 import re as _re
 
+def clean_title(t):
+    """Eskom sometimes puts the whole advert header in the title: keep only the job name."""
+    t = _re.sub(r"^\s*Position\s*:\s*", "", t or "", flags=_re.I)
+    t = _re.split(r"\s+(?:Position\s*/\s*Task Grade|Task Grade|Area of speciali[sz]ation|Job Purpose|Purpose of the job)\b", t, 1, flags=_re.I)[0]
+    return t.strip(" :;,-")
+
 def no_dashes(v):
     """Long dashes look machine-written; use 'to' for ranges and a plain hyphen elsewhere."""
     if not isinstance(v, str) or ("\u2014" not in v and "\u2013" not in v):
@@ -41,6 +47,7 @@ def main():
         if not title or status!="live" or is_expired(r.get("closing_date","")):
             continue
         r={k:(v if k in ("official_apply_url","source_url") else no_dashes(v)) for k,v in r.items()}
+        r["job_title"]=clean_title(r.get("job_title",""))
         if not r.get("province"):
             r["province"]=province_of(r.get("location",""))   # e.g. Eskom gives only the town
         r["id"]=stable_id(r.get("reference_no",""), title, r.get("employer",""))
