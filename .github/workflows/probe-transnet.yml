@@ -16,17 +16,15 @@ jobs:
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe11
-          python scrape_workday.py --dry-run --only FirstRand > probe11/frb.json 2> probe11/frb.log
-          python scrape_smartrecruiters.py --dry-run > probe11/sb.json 2> probe11/sb.log
+          mkdir -p probe12
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          curl -sSL -A "$UA" -o probe11/sbhome.html "https://www.standardbank.com/sbg/standard-bank-group/careers"
-          grep -o '[^"]*\(logo\|Logo\)[^"]*\.\(svg\|png\)' probe11/sbhome.html | sort -u | head > probe11/sblogos.txt
-          L=$(head -1 probe11/sblogos.txt); case "$L" in /*) L="https://www.standardbank.com$L";; esac
-          curl -sSL -A "$UA" -o probe11/sb_logo "$L" -w "sb logo %{content_type} $L\n" > probe11/logo.txt
-          tail -4 probe11/frb.log probe11/sb.log; cat probe11/sblogos.txt probe11/logo.txt
+          curl -sSL -A "$UA" -o probe12/sr.html "https://careers.smartrecruiters.com/StandardBankGroup"
+          grep -o 'https://[^"]*\(logo\|Logo\)[^"]*' probe12/sr.html | sort -u | head > probe12/urls.txt
+          grep -o 'https://c.smartrecruiters.com/[^"]*' probe12/sr.html | sort -u | head >> probe12/urls.txt
+          n=0; for u in $(cat probe12/urls.txt); do n=$((n+1)); curl -sSL -A "$UA" -o probe12/img$n "$u" -w "img$n %{content_type} $u\n" >> probe12/logo.txt; done
+          cat probe12/urls.txt probe12/logo.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe11; git commit -m "probe banks live" || true; git push
+          git add probe12; git commit -m "probe sb logo" || true; git push
