@@ -1,0 +1,53 @@
+name: probe transnet
+on:
+  push:
+    branches: [probe-transnet]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Capture
+        run: |
+          mkdir -p probe
+          cat > p.py <<'PY'
+          import json, re
+          from playwright.sync_api import sync_playwright
+          URL="https://transnettalentportal.csod.com/ux/ats/careersite/1/home?c=transnettalentportal"
+          log=[]
+          def on_resp(r):
+              try:
+                  ct=r.headers.get("content-type","")
+                  if "json" in ct:
+                      body=r.text()
+                      log.append({"url":r.url,"method":r.request.method,"status":r.status,
+                                  "req_headers":{k:v for k,v in r.request.headers.items() if k.lower() in ("authorization","content-type","csod-accept-language")},
+                                  "post":r.request.post_data,"body":body[:60000]})
+              except Exception as e: log.append({"url":r.url,"err":str(e)})
+          with sync_playwright() as p:
+              b=p.chromium.launch(); pg=b.new_page(); pg.on("response",on_resp)
+              pg.goto(URL,wait_until="networkidle",timeout=90000); pg.wait_for_timeout(5000)
+              open("probe/home.html","w").write(pg.content())
+              links=pg.eval_on_selector_all("a[href*='requisition']","els=>els.map(e=>e.href)")
+              json.dump(links,open("probe/links.json","w"),indent=1)
+              print("links",len(links))
+              if links:
+                  pg.goto(links[0],wait_until="networkidle",timeout=90000); pg.wait_for_timeout(5000)
+                  open("probe/detail.html","w").write(pg.content())
+                  open("probe/detail.txt","w").write(pg.inner_text("body"))
+              b.close()
+          json.dump(log,open("probe/network.json","w"),indent=1)
+          print(len(log),"json responses")
+          PY
+          python p.py
+          ls -la probe
+      - name: Commit
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git add probe; git commit -m "probe transnet" || true; git push
