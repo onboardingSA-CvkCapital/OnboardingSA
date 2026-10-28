@@ -16,22 +16,17 @@ jobs:
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe10
+          mkdir -p probe11
+          python scrape_workday.py --dry-run --only FirstRand > probe11/frb.json 2> probe11/frb.log
+          python scrape_smartrecruiters.py --dry-run > probe11/sb.json 2> probe11/sb.log
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          J='{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}'
-          curl -sS -A "$UA" -H "Content-Type: application/json" -H "Accept: application/json" -d "$J" -o probe10/frb_jobs.json -w "frb %{http_code}\n" "https://firstrand.wd3.myworkdayjobs.com/wday/cxs/firstrand/FRB/jobs" > probe10/status.txt
-          P=$(python3 -c "import json;print(json.load(open('probe10/frb_jobs.json'))['jobPostings'][0]['externalPath'])")
-          curl -sS -A "$UA" -H "Accept: application/json" -o probe10/frb_job.json -w "frb job %{http_code}\n" "https://firstrand.wd3.myworkdayjobs.com/wday/cxs/firstrand/FRB$P" >> probe10/status.txt
-          curl -sSL -A "$UA" -o probe10/frb_logo -w "frb logo %{content_type}\n" "https://firstrand.wd3.myworkdayjobs.com/FRB/assets/logo" >> probe10/status.txt
-          curl -sS -A "$UA" -o probe10/sb_list.json -w "sb %{http_code}\n" "https://api.smartrecruiters.com/v1/companies/StandardBankGroup/postings?limit=100&offset=0&country=za" >> probe10/status.txt
-          ID=$(python3 -c "import json;print(json.load(open('probe10/sb_list.json'))['content'][0]['id'])")
-          curl -sS -A "$UA" -o probe10/sb_job.json -w "sb job %{http_code}\n" "https://api.smartrecruiters.com/v1/companies/StandardBankGroup/postings/$ID" >> probe10/status.txt
-          L=$(python3 -c "import json;d=json.load(open('probe10/sb_job.json'));print((d.get('company') or {}).get('logo') or '')" 2>/dev/null)
-          echo "sb logo url $L" >> probe10/status.txt
-          [ -n "$L" ] && curl -sSL -A "$UA" -o probe10/sb_logo "$L" -w "sb logo %{content_type}\n" >> probe10/status.txt
-          cat probe10/status.txt
+          curl -sSL -A "$UA" -o probe11/sbhome.html "https://www.standardbank.com/sbg/standard-bank-group/careers"
+          grep -o '[^"]*\(logo\|Logo\)[^"]*\.\(svg\|png\)' probe11/sbhome.html | sort -u | head > probe11/sblogos.txt
+          L=$(head -1 probe11/sblogos.txt); case "$L" in /*) L="https://www.standardbank.com$L";; esac
+          curl -sSL -A "$UA" -o probe11/sb_logo "$L" -w "sb logo %{content_type} $L\n" > probe11/logo.txt
+          tail -4 probe11/frb.log probe11/sb.log; cat probe11/sblogos.txt probe11/logo.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe10; git commit -m "probe banks" || true; git push
+          git add probe11; git commit -m "probe banks live" || true; git push
