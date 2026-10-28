@@ -1,0 +1,3 @@
+p2 200
+detail 200
+detail2 200
