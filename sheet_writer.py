@@ -12,6 +12,7 @@ COLUMNS = ["id","job_title","employer","category","province","location","employm
            "responsibilities","requirements","official_apply_url","source_url","featured","status"]
 
 MAXCELL = 45000
+COMPANY_REF = re.compile(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB|TFG|OMNIA|HEINEKEN)-")
 
 def _today():
     return (datetime.datetime.utcnow() + datetime.timedelta(hours=2)).date().isoformat()   # SAST
@@ -58,12 +59,20 @@ def upsert_jobs(rows, update_fields=()):
     vals = ws.get_all_values()
     header = vals[0] if vals else COLUMNS
     col = {name: i for i, name in enumerate(header)}
-    where = {}
+    where, by_ref = {}, {}
     for n, r in enumerate(vals[1:], start=2):
         g = lambda name: r[col[name]] if name in col and col[name] < len(r) else ""
         where[fingerprint({"employer": g("employer"), "job_title": g("job_title"),
                            "location": g("location"), "reference_no": g("reference_no")})] = (n, r)
+        if COMPANY_REF.match(g("reference_no")) and g("status").lower() == "live":
+            by_ref.setdefault((g("employer"), g("reference_no")), []).append((n, r))
     to_write, updates, touched = [], [], set()
+    # company adverts have their own job number: the same number twice is the same job (e.g. after a title change)
+    for rows_same in by_ref.values():
+        for n, _ in rows_same[:-1]:                    # keep the newest row, close the older copies
+            if "status" in col:
+                updates.append({"range": rowcol_to_a1(n, col["status"] + 1), "values": [["closed"]]})
+                touched.add(n)
     for r in rows:
         privacy_clean.clean_job(r)
         for k, v in list(r.items()):
@@ -72,6 +81,15 @@ def upsert_jobs(rows, update_fields=()):
         if not r.get("posted_date"):
             r["posted_date"] = _today()      # first day we saw it; Google rejects jobs without datePosted
         fp = fingerprint(r)
+        key = (r.get("employer", ""), r.get("reference_no", ""))
+        if fp not in where and key in by_ref:
+            where[fp] = by_ref[key][-1]                # same company job number, title or place changed
+            for f in ("job_title", "location", "province", "employment_type"):
+                if f not in update_fields and f in col:
+                    old = by_ref[key][-1][1]
+                    if (old[col[f]] if col[f] < len(old) else "") != r.get(f, ""):
+                        updates.append({"range": rowcol_to_a1(by_ref[key][-1][0], col[f] + 1), "values": [[r.get(f, "")]]})
+                        touched.add(by_ref[key][-1][0])
         if fp in where:
             n, old = where[fp]
             if "posted_date" in col and n and not (old[col["posted_date"]] if col["posted_date"] < len(old) else "").strip():

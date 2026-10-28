@@ -15,7 +15,7 @@ H_RESP = re.compile(r"^(key roles?( &| and)? responsibilities|roles? and respons
 H_REQ = re.compile(r"^(requirements|minimum requirements|job requirements|qualifications?|education|experience|"
                    r"knowledge|skills|key competencies|competencies|personal attributes|behavioural|technical skills|"
                    r"what you need|what you will need|what you'll need|what we are looking for|what we're looking for|"
-                   r"the (successful|ideal) candidate|you will be an ideal candidate|additional requirements|we'?re looking for|we are looking for|who are we looking for|who you are|your profile|profile|candidate profile|about you|you have|must have|nice to have|"
+                   r"applicants must|must be based|the (successful|ideal) candidate|you will be an ideal candidate|additional requirements|we'?re looking for|we are looking for|who are we looking for|who you are|your profile|profile|candidate profile|about you|you have|must have|nice to have|"
                    r"advantageous|preferred|conditions of employment)\b", re.I)
 H_STOP = re.compile(r"^(thank you for your interest|important closing date|application process|candidates who do not receive|additional information|what we offer|we offer|what's in it for you|benefits|our offer|about us|about the company|"
                     r"who we are|why join|equal opportunit|employment equity|disclaimer|please note|note:|"
@@ -68,6 +68,11 @@ def sections(desc, skip=None):
                 sec = "req"
             elif H_ABOUT.match(head):
                 sec = "about"
+            elif sec == "req" and bold and any(not x.endswith(":") for x in req) and not resp:
+                # a bold heading after the requirements that is not a requirement heading (e.g. 'Sales Plan'):
+                # the advert has moved on to the duties without a 'Responsibilities' heading
+                sec = "resp"
+                resp.append((head.capitalize() if head.isupper() else head) + ":")
             elif sec in ("resp", "req") and looks_head:
                 (resp if sec == "resp" else req).append((head.capitalize() if head.isupper() else head) + ":")
             elif looks_head and sec is None:

@@ -90,6 +90,8 @@ def build_row(cfg, info, columns):
         title = f"{posts[0]}, {posts[1]} and {len(posts) - 2} more store posts"
     loc = re.sub(r"\s+-\s+", ", ", info.get("location") or "").strip()
     loc = re.sub(r"^HQ\s+", "", loc)
+    if re.fullmatch(r"South Africa|ZA|National|\d+ Locations?", loc, re.I):
+        loc = ""
     province = province_of(loc)
     plain = _h.unescape(re.sub(r"<[^>]+>", " ", desc))
     closing = info.get("endDate") or closing_from_text(plain)
@@ -134,7 +136,10 @@ def scrape_site(s, cfg, columns):
         if info.get("jobReqId") in seen:
             continue
         seen.add(info.get("jobReqId"))
-        if re.search(r"not for an active vacancy|build a talent pool", info.get("jobDescription", ""), re.I):
+        far = (datetime.date.today() + datetime.timedelta(days=370)).isoformat()
+        if (re.search(r"not for an active vacancy|build a talent pool|talent pipeline|register(ing)? your interest|"
+                      r"stay ahead of future opportunities|future opportunities", info.get("jobDescription", ""), re.I)
+                or (info.get("endDate") or "") > far or re.fullmatch(r"various jobs?", (info.get("title") or "").strip(), re.I)):
             print(f"  skipped (talent pool, not a real vacancy): {info.get('title')}", file=sys.stderr)
             continue
         row = build_row(cfg, info, columns)
