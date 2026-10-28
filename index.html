@@ -304,13 +304,35 @@ function avatarHTML(j){
   const list=candidates.map(u=>esc(u)).join('|');
   return `<div class="avatar${gold}"><img src="${esc(candidates[0])}" alt="${esc(j.employer)} logo" loading="lazy" data-fallbacks="${list}" data-i="0" data-ini="${ini}" onerror="(function(el){const f=el.getAttribute('data-fallbacks').split('|');let i=+el.getAttribute('data-i')+1;if(i<f.length){el.setAttribute('data-i',i);el.src=f[i];}else{el.parentNode.textContent=el.getAttribute('data-ini');}})(this)"></div>`;
 }
+// Short names people actually search for (e.g. "SAPS" finds South African Police Service).
+const ALIASES=[
+  [/south african police service/i,'SAPS'],
+  [/correctional services/i,'DCS'],
+  [/independent police investigative/i,'IPID'],
+  [/civilian secretariat for police/i,'CSPS'],
+  [/office of the chief justice/i,'OCJ'],
+  [/government printing works/i,'GPW'],
+  [/higher education and training/i,'DHET'],
+  [/basic education/i,'DBE'],
+  [/employment and labour/i,'DEL'],
+  [/water and sanitation/i,'DWS'],
+  [/forestry, fisheries and the environment/i,'DFFE'],
+  [/co-?operative governance/i,'COGTA'],
+  [/public works and infrastructure/i,'DPWI'],
+  [/land reform and rural development/i,'DLRRD'],
+  [/home affairs/i,'DHA'],
+  [/^department of health/i,'DOH'],
+  [/social development/i,'DSD'],
+  [/national treasury/i,'NT']
+];
+function aliasOf(emp){ return ALIASES.filter(a=>a[0].test(emp||'')).map(a=>a[1]).join(' '); }
 function loadFilters(){
   const cats=[...new Set(JOBS.map(j=>j.category).filter(Boolean))].sort();
   const provs=[...new Set(JOBS.map(j=>j.province).filter(Boolean))].sort();
   const types=[...new Set(JOBS.map(j=>j.employment_type).filter(Boolean))].sort();
   const fill=(id,arr)=>{const s=document.getElementById(id);arr.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});};
   fill('fCategory',cats); fill('fProvince',provs); fill('fType',types);
-  window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer)].filter(Boolean))].sort();
+  window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer),...JOBS.map(j=>aliasOf(j.employer)).join(' ').split(' ')].filter(Boolean))].sort();
   window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
 }
 function apply(){
@@ -322,7 +344,7 @@ function apply(){
   const t=document.getElementById('fType').value;
   const sort=document.getElementById('fSort').value;
   let out=JOBS.filter(j=>{
-    const hay=(j.job_title+' '+j.employer+' '+j.category+' '+j.snippet+' '+j.about_role+' '+j.requirements+' '+j.location).toLowerCase();
+    const hay=(j.job_title+' '+j.employer+' '+aliasOf(j.employer)+' '+j.category+' '+j.snippet+' '+j.about_role+' '+j.requirements+' '+j.location).toLowerCase();
     const loc=(j.province+' '+j.location).toLowerCase();
     return (!q||hay.includes(q))&&(!ql||loc.includes(ql))&&(!c||j.category===c)&&(!p||j.province===p)&&(!t||j.employment_type===t);
   });
