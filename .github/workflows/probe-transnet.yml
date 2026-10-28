@@ -12,18 +12,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch
         run: |
-          mkdir -p probe4
+          mkdir -p probe5
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          J='{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}'
-          curl -sS -A "$UA" -H "Content-Type: application/json" -H "Accept: application/json" -d "$J" -o probe4/sab_jobs.json -w "sab %{http_code}\n" "https://wd1.myworkdaysite.com/wday/cxs/abinbev/SAB/jobs" > probe4/status.txt
-          curl -sS -A "$UA" -H "Content-Type: application/json" -H "Accept: application/json" -d "$J" -o probe4/pnp_jobs.json -w "pnp %{http_code}\n" "https://picknpay.wd3.myworkdayjobs.com/wday/cxs/picknpay/PNP_Careers/jobs" >> probe4/status.txt
-          P=$(python3 -c "import json;print(json.load(open('probe4/sab_jobs.json'))['jobPostings'][0]['externalPath'])" 2>/dev/null)
-          curl -sS -A "$UA" -H "Accept: application/json" -o probe4/sab_job.json -w "sab job %{http_code} $P\n" "https://wd1.myworkdaysite.com/wday/cxs/abinbev/SAB$P" >> probe4/status.txt
-          P=$(python3 -c "import json;print(json.load(open('probe4/pnp_jobs.json'))['jobPostings'][0]['externalPath'])" 2>/dev/null)
-          curl -sS -A "$UA" -H "Accept: application/json" -o probe4/pnp_job.json -w "pnp job %{http_code} $P\n" "https://picknpay.wd3.myworkdayjobs.com/wday/cxs/picknpay/PNP_Careers$P" >> probe4/status.txt
-          curl -sSL -A "$UA" -o probe4/heineken.html -w "heineken %{http_code}\n" "https://careers.theheinekencompany.com/Job-Listing?field_location_country_code_1[]=ZA" >> probe4/status.txt
-          cat probe4/status.txt; ls -la probe4
+          B="https://careers.theheinekencompany.com"
+          curl -sSL -A "$UA" -o probe5/h_p2.html -w "p2 %{http_code}\n" "$B/Job-Listing?field_location_country_code_1%5B0%5D=ZA&page=0%2C0%2C1" > probe5/status.txt
+          curl -sSL -A "$UA" -o probe5/h_detail.html -w "detail %{http_code}\n" "$B/job/heineken-beverages/south-africa/electrical-technician" >> probe5/status.txt
+          curl -sSL -A "$UA" -o probe5/h_detail2.html -w "detail2 %{http_code}\n" "$B/job/heineken-beverages/south-africa/global-graduate-marketing" >> probe5/status.txt
+          curl -sSL -A "$UA" -o probe5/h_logo.svg "$B/sites/heineken-careers/files/heineken-careers/listing-page-logo/heineken-new-listing-page-logo.svg"
+          curl -sSL -A "$UA" -o probe5/pnp_home.html "https://picknpay.wd3.myworkdayjobs.com/PNP_Careers"
+          curl -sSL -A "$UA" -o probe5/sab_home.html "https://wd1.myworkdaysite.com/recruiting/abinbev/SAB"
+          cat probe5/status.txt; ls -la probe5
       - name: Commit
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe4; git commit -m "probe workday+heineken" || true; git push
+          git add probe5; git commit -m "probe heineken detail" || true; git push
