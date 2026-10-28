@@ -10,19 +10,23 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests gspread google-auth
       - name: Fetch
         run: |
-          mkdir -p probe5
+          mkdir -p probe6/pages
+          python scrape_workday.py --dry-run > probe6/workday.json 2> probe6/workday.log || true
+          python scrape_heineken.py --dry-run > probe6/heineken.json 2> probe6/heineken.log || true
+          SAVE_PAGES=probe6/pages python scrape_successfactors.py --dry-run > probe6/sf.json 2> probe6/sf.log || true
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          B="https://careers.theheinekencompany.com"
-          curl -sSL -A "$UA" -o probe5/h_p2.html -w "p2 %{http_code}\n" "$B/Job-Listing?field_location_country_code_1%5B0%5D=ZA&page=0%2C0%2C1" > probe5/status.txt
-          curl -sSL -A "$UA" -o probe5/h_detail.html -w "detail %{http_code}\n" "$B/job/heineken-beverages/south-africa/electrical-technician" >> probe5/status.txt
-          curl -sSL -A "$UA" -o probe5/h_detail2.html -w "detail2 %{http_code}\n" "$B/job/heineken-beverages/south-africa/global-graduate-marketing" >> probe5/status.txt
-          curl -sSL -A "$UA" -o probe5/h_logo.svg "$B/sites/heineken-careers/files/heineken-careers/listing-page-logo/heineken-new-listing-page-logo.svg"
-          curl -sSL -A "$UA" -o probe5/pnp_home.html "https://picknpay.wd3.myworkdayjobs.com/PNP_Careers"
-          curl -sSL -A "$UA" -o probe5/sab_home.html "https://wd1.myworkdaysite.com/recruiting/abinbev/SAB"
-          cat probe5/status.txt; ls -la probe5
+          curl -sSL -A "$UA" -o probe6/sab_logo "https://wd1.myworkdaysite.com/recruiting/abinbev/SAB/assets/logo" -w "sab %{content_type}\n" > probe6/logos.txt
+          curl -sSL -A "$UA" -o probe6/pnp_logo "https://picknpay.wd3.myworkdayjobs.com/PNP_Careers/assets/logo" -w "pnp %{content_type}\n" >> probe6/logos.txt
+          curl -sSL -A "$UA" -o probe6/capitec_home.html "https://careers.capitecbank.co.za/"
+          L=$(grep -o 'class="logo" src="[^"]*"' probe6/capitec_home.html | head -1 | sed 's/.*src="//;s/"$//')
+          curl -sSL -A "$UA" -o probe6/capitec_logo "https:$L" -w "capitec %{content_type} $L\n" >> probe6/logos.txt
+          tail -3 probe6/*.log; cat probe6/logos.txt
       - name: Commit
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe5; git commit -m "probe heineken detail" || true; git push
+          git add probe6; git commit -m "probe all new" || true; git push
