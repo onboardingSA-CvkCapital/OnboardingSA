@@ -149,7 +149,7 @@ def render_index(rows):
     return page
 
 
-def update_homepage(rows):
+def update_homepage(rows, total=None):
     if not os.path.exists(INDEX_FILE):
         return
     h = open(INDEX_FILE, encoding="utf-8").read()
@@ -160,6 +160,8 @@ def update_homepage(rows):
                            f'<p>{n} open post{"s" if n != 1 else ""}</p></a>' for g, n in rows)
     block = f"<!--EMPLOYERS_START-->\n      {cards}\n      <!--EMPLOYERS_END-->"
     h = re.sub(r"<!--EMPLOYERS_START-->.*?<!--EMPLOYERS_END-->", lambda _m: block, h, flags=re.S)
+    if total is not None:   # live job count in the hero
+        h = re.sub(r"<!--LIVECOUNT-->.*?<!--/LIVECOUNT-->", f"<!--LIVECOUNT-->{total:,}<!--/LIVECOUNT-->", h, flags=re.S)
     open(INDEX_FILE, "w", encoding="utf-8").write(h)
 
 
@@ -193,7 +195,7 @@ def main():
             urls.append(f"{SITE}/{OUT_DIR}/{g['slug']}.html")
     rows.sort(key=lambda r: -r[1])
     open(os.path.join(OUT_DIR, "index.html"), "w", encoding="utf-8").write(render_index(rows))
-    update_homepage(rows)
+    update_homepage(rows, len(jobs))
     update_sitemap(urls)
     print(f"Employer pages: {len(GROUPS)} built, {len(rows)} indexable.", file=sys.stderr)
     for g, n in rows:
