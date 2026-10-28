@@ -81,7 +81,7 @@ HEAD = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title} — {employer} | OnboardingSA</title>
+<title>{title} at {employer} | OnboardingSA</title>
 <meta name="description" content="{metadesc}">
 <link rel="canonical" href="{canonical}">
 {robots}<link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -269,7 +269,7 @@ def render(j):
                f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>')
     if is_pdf:
         handoff=('<p class="handoff">Follow the “How to apply” instructions below and quote the reference number. '
-                 'Government posts are free to apply for — OnboardingSA never charges you and never collects your application.</p>')
+                 'Government posts are free to apply for. OnboardingSA never charges you and never collects your application.</p>')
     else:
         handoff=(f'<p class="handoff">You\'ll be taken to {employer}\'s official careers page to apply. '
                  f'OnboardingSA never charges you and never collects your application.</p>') if apply_url else ""

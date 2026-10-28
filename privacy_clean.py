@@ -30,7 +30,7 @@ Run on its own to clean the existing JSON files in place:
 
 import json, re, sys
 
-NOTE = "[Contact details removed — please apply using the official Apply link.]"
+NOTE = "[Contact details removed. Please apply using the official Apply link.]"
 
 # Long free-text fields: whole sentences/lines containing contact data are dropped.
 TEXT_FIELDS = ("about_role", "responsibilities", "requirements", "snippet")

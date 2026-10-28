@@ -361,7 +361,7 @@ def money(salary_text):
     if not m:
         return ""
     fmt = lambda x: "R" + f"{int(re.sub(r'[ ,]', '', x)):,}"
-    amt = fmt(m.group(1)) + (f" – {fmt(m.group(2))}" if m.group(2) else "")
+    amt = fmt(m.group(1)) + (f" to {fmt(m.group(2))}" if m.group(2) else "")
     per = (m.group(3) or "").lower()
     return amt + (" a month" if "month" in per or per == "pm" else " a year" if per else "")
 

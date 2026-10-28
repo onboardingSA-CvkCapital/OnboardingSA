@@ -69,7 +69,7 @@ def head(title, metadesc, canonical, schema, noindex):
     h = HEAD.format(title=esc(title), employer="", metadesc=esc(metadesc), canonical=canonical,
                     schema=json.dumps(schema, ensure_ascii=False),
                     robots='<meta name="robots" content="noindex,follow">\n' if noindex else "")
-    h = h.replace(" —  | OnboardingSA</title>", " | OnboardingSA</title>")
+    h = h.replace(" at  | OnboardingSA</title>", " | OnboardingSA</title>")
     h = h.replace("</style>", EXTRA_CSS + "</style>", 1)
     h = h.replace('<nav class="nav"><a href="../about.html">About</a></nav>',
                   '<nav class="nav"><a href="index.html">Employers</a><a href="../about.html">About</a></nav>')
@@ -99,7 +99,7 @@ def stats_line(jobs):
 def render_group(g, jobs):
     url = f"{SITE}/{OUT_DIR}/{g['slug']}.html"
     n = len(jobs)
-    title = f"{g['short']} Jobs — Current Vacancies {month_year()}"
+    title = f"{g['short']} Jobs: Current Vacancies {month_year()}"
     metadesc = (f"{n} open {g['name']} vacancies, updated daily, with the official way to apply. "
                 + re.sub(r"<[^>]+>", "", g["intro"][0]))[:155]
     logo = (f'<div class="avatar"><img src="{LOGO_BASE}{esc(g["logo"])}.png" alt="{esc(g["name"])} logo" loading="lazy"></div>'
@@ -136,7 +136,7 @@ def render_group(g, jobs):
 
 def render_index(rows):
     url = f"{SITE}/{OUT_DIR}/index.html"
-    title = f"Jobs by Employer — SAPS, Eskom, Health and more ({month_year()})"
+    title = f"Jobs by Employer: SAPS, Eskom, Health and more ({month_year()})"
     metadesc = "Browse current vacancies by employer: SAPS, Eskom, Sasol, Correctional Services, Health and other government departments. Updated daily."
     cards = "".join(f'<li><a href="{g["slug"]}.html"><b>{esc(g["short"])} jobs</b><span>{n} open post{"s" if n != 1 else ""}</span></a></li>'
                     for g, n in rows)

@@ -1,6 +1,15 @@
 import json, sys, csv, io, datetime, urllib.request
 import privacy_clean
 from sa_places import province_of
+import re as _re
+
+def no_dashes(v):
+    """Long dashes look machine-written; use 'to' for ranges and a plain hyphen elsewhere."""
+    if not isinstance(v, str) or ("\u2014" not in v and "\u2013" not in v):
+        return v
+    v = _re.sub(r"(?<=\d)\s*[\u2013\u2014]\s*(?=R?\s?\d)", " to ", v)
+    v = _re.sub(r"\s+[\u2013\u2014]\s+", " - ", v)
+    return _re.sub(r"[\u2013\u2014]", "-", v)
 
 CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-Z3HaB9wPDOljgg7vORWjLhZr-vX8zRUjzsfN972jgdzdnIfFUZqQff2U9bwlv9I4XCnXG1T20xj/pub?output=csv"
 
@@ -31,6 +40,7 @@ def main():
         status=r.get("status","").lower()
         if not title or status!="live" or is_expired(r.get("closing_date","")):
             continue
+        r={k:(v if k in ("official_apply_url","source_url") else no_dashes(v)) for k,v in r.items()}
         if not r.get("province"):
             r["province"]=province_of(r.get("location",""))   # e.g. Eskom gives only the town
         r["id"]=stable_id(r.get("reference_no",""), title, r.get("employer",""))

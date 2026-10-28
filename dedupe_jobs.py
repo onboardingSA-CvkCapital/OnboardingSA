@@ -81,7 +81,7 @@ def same_post_elsewhere(jobs):
 
 def tidy_title(t):
     """'Professional Nurse- Specialty' / 'A - B' -> 'A – B' (leaves 'Pre-Audit' and 'Grade 1 -3' alone)."""
-    t = re.sub(r"(?<=[A-Za-z)])-\s+(?=[A-Za-z])|(?<=\w)\s+-\s+(?=\w)", " – ", str(t or ""))
+    t = re.sub(r"(?<=[A-Za-z)])-\s+(?=[A-Za-z])|(?<=\w)\s+-\s+(?=\w)", " - ", str(t or ""))
     return re.sub(r"\s{2,}", " ", t).strip()
 
 

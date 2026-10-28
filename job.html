@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Job — OnboardingSA</title>
+<title>Job | OnboardingSA</title>
 <meta name="description" content="Job details and how to apply, on OnboardingSA.">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -172,7 +172,7 @@ function schema(j){
   const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(data); document.head.appendChild(s);
 }
 function renderJob(j){
-  document.title = `${j.job_title} — ${j.employer} | OnboardingSA`;
+  document.title = `${j.job_title} at ${j.employer} | OnboardingSA`;
   schema(j);
   const resp=toList(j.responsibilities), reqs=toList(j.requirements);
   const dl=daysLeft(j.closing_date), soon=dl!==null&&dl<=7;
@@ -212,7 +212,7 @@ function renderJob(j){
   const btn=document.getElementById('shareBtn');
   btn.addEventListener('click',async()=>{
     const url=location.href;
-    const shareData={title:`${j.job_title} at ${j.employer}`,text:`${j.job_title} — ${j.employer}`,url};
+    const shareData={title:`${j.job_title} at ${j.employer}`,text:`${j.job_title} at ${j.employer}`,url};
     if(navigator.share){ try{ await navigator.share(shareData); return; }catch(e){} }
     try{ await navigator.clipboard.writeText(url); }catch(e){}
     btn.classList.add('copied');
