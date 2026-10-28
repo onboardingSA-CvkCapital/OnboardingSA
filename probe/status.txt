@@ -1,0 +1,6 @@
+list 200
+p2 200
+detail 200
+detail2 200
+https://core.api.manatal.com/open/v3/career-page/omnia-holdings/jobs/?page_size=100 404
+https://api.manatal.com/open/v3/career-page/omnia-holdings/jobs/?page_size=100 404
