@@ -38,6 +38,10 @@ jobs:
         run: python scrape_sasol.py
         continue-on-error: true
 
+      - name: Omnia
+        run: python scrape_omnia.py
+        continue-on-error: true
+
       - name: DPSA Public Service Vacancy Circular
         run: python scrape_dpsa.py
         continue-on-error: true

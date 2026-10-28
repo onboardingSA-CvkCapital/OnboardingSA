@@ -85,6 +85,16 @@ GROUPS = [
         ],
     },
     {
+        "slug": "omnia-jobs", "short": "Omnia", "name": "Omnia Holdings",
+        "match": r"^Omnia\b",
+        "logo": "Omnia",
+        "official": ("Omnia careers page", "https://omnia-holdings.careers-page.com/"),
+        "intro": ["Omnia Holdings is a chemicals group working in agriculture, mining (through BME) and industrial chemicals, "
+                  "with plants in Sasolburg, Fochville and other sites around South Africa."],
+        "apply": ["Apply on the Omnia careers page. Each job has its own Apply button."],
+        "tips": ["Omnia never charges application fees."],
+    },
+    {
         "slug": "correctional-services-jobs", "short": "Correctional Services", "name": "Department of Correctional Services",
         "match": r"^Department of Correctional Services",
         "logo": "government",
