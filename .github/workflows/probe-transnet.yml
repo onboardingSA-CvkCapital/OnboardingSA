@@ -14,6 +14,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install requests gspread google-auth
       - name: Fetch
+        shell: bash {0}
         run: |
           mkdir -p probe6/pages
           python scrape_workday.py --dry-run > probe6/workday.json 2> probe6/workday.log || true
@@ -23,10 +24,11 @@ jobs:
           curl -sSL -A "$UA" -o probe6/sab_logo "https://wd1.myworkdaysite.com/recruiting/abinbev/SAB/assets/logo" -w "sab %{content_type}\n" > probe6/logos.txt
           curl -sSL -A "$UA" -o probe6/pnp_logo "https://picknpay.wd3.myworkdayjobs.com/PNP_Careers/assets/logo" -w "pnp %{content_type}\n" >> probe6/logos.txt
           curl -sSL -A "$UA" -o probe6/capitec_home.html "https://careers.capitecbank.co.za/"
-          L=$(grep -o 'class="logo" src="[^"]*"' probe6/capitec_home.html | head -1 | sed 's/.*src="//;s/"$//')
+          L=$(grep -o 'class="logo" src="[^"]*"' probe6/capitec_home.html | head -1 | sed "s/.*src=\"//;s/\"$//" || true)
           curl -sSL -A "$UA" -o probe6/capitec_logo "https:$L" -w "capitec %{content_type} $L\n" >> probe6/logos.txt
           tail -3 probe6/*.log; cat probe6/logos.txt
       - name: Commit
+        shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
           git add probe6; git commit -m "probe all new" || true; git push
