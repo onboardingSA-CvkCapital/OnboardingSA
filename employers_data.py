@@ -151,6 +151,16 @@ GROUPS = [
         "tips": ["Heineken never charges application fees."],
     },
     {
+        "slug": "tfg-jobs", "short": "TFG", "name": "TFG (The Foschini Group)",
+        "match": r"^TFG\b",
+        "logo": "TFG",
+        "official": ("TFG careers site", "https://fa-expc-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs"),
+        "intro": ["TFG (The Foschini Group) runs fashion and lifestyle brands such as Foschini, Markham, Totalsports, "
+                  "Sportscene, @home and Jet, with stores across South Africa."],
+        "apply": ["Apply on the TFG careers site. Each job has its own Apply button."],
+        "tips": ["TFG never charges application fees."],
+    },
+    {
         "slug": "correctional-services-jobs", "short": "Correctional Services", "name": "Department of Correctional Services",
         "match": r"^Department of Correctional Services",
         "logo": "government",

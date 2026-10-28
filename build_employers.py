@@ -254,7 +254,7 @@ GOVERNMENT = {   # all public-sector jobs on one page (the coat of arms on the h
 
 
 def is_government(j):
-    return not re.match(r"^(Eskom|Sasol|Omnia|Transnet|AECI|Capitec|Pick n Pay|SAB|Heineken)\b", j.get("employer") or "", re.I)
+    return not re.match(r"^(Eskom|Sasol|Omnia|Transnet|AECI|Capitec|Pick n Pay|SAB|Heineken|TFG)\b", j.get("employer") or "", re.I)
 
 
 def main():
