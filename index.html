@@ -45,7 +45,9 @@ header.site{position:sticky;top:0;z-index:40;background:var(--navy);border-botto
 .live .dot{width:8px;height:8px;border-radius:50%;background:#3DDC84;box-shadow:0 0 0 4px rgba(61,220,132,.18);flex:none}
 .logoband{background:#fff;border-bottom:1px solid var(--line)}
 .logoband .wrap{display:flex;align-items:center;gap:44px;padding-top:16px;padding-bottom:16px}
-.logoband a{display:block;line-height:0}
+.logoband button{display:block;line-height:0;background:none;border:0;padding:6px;border-radius:12px;cursor:pointer;opacity:1;transition:opacity .15s,background .15s}
+.logoband.picked button{opacity:.35}
+.logoband.picked button.on{opacity:1;background:var(--tint)}
 .logoband img{height:58px;width:auto;display:block}
 .searchbar{display:flex;gap:8px;background:#fff;border:0;border-radius:999px;
   padding:6px 6px 6px 8px;box-shadow:var(--shadow);align-items:center;flex-wrap:wrap}
@@ -192,12 +194,12 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <p class="live"><span class="dot"></span><span><b id="liveCount"><!--LIVECOUNT-->1,173<!--/LIVECOUNT--></b> open jobs · updated today</span></p>
   </div>
 </section>
-<section class="logoband" aria-label="Employers">
+<section class="logoband" aria-label="Show jobs from">
   <div class="wrap">
-    <a href="employers/index.html" title="Government jobs by department"><img src="government.png" alt="South African Government" width="58" height="58"></a>
-    <a href="employers/saps-jobs.html" title="SAPS jobs"><img src="saps.png" alt="South African Police Service" width="58" height="58"></a>
-    <a href="employers/eskom-jobs.html" title="Eskom jobs"><img src="Eskom.png" alt="Eskom" width="58" height="58"></a>
-    <a href="employers/sasol-jobs.html" title="Sasol jobs"><img src="Sasol.png" alt="Sasol" width="58" height="58"></a>
+    <button type="button" data-group="gov" title="Show government jobs"><img src="government.png" alt="Government jobs" width="58" height="58"></button>
+    <button type="button" data-group="saps" title="Show SAPS jobs"><img src="saps.png" alt="SAPS jobs" width="58" height="58"></button>
+    <button type="button" data-group="eskom" title="Show Eskom jobs"><img src="Eskom.png" alt="Eskom jobs" width="58" height="58"></button>
+    <button type="button" data-group="sasol" title="Show Sasol jobs"><img src="Sasol.png" alt="Sasol jobs" width="58" height="58"></button>
   </div>
 </section>
 <main>
@@ -399,6 +401,13 @@ function loadFilters(){
   window.KW=[...new Set([...JOBS.map(j=>j.job_title),...JOBS.map(j=>j.employer),...JOBS.map(j=>aliasOf(j.employer)).join(' ').split(' ')].filter(Boolean))].sort();
   window.LOC=[...new Set([...JOBS.map(j=>j.province),...JOBS.map(j=>j.location)].filter(Boolean))].sort();
 }
+let GROUP=null;   // set by tapping a logo: only that employer's jobs
+const GROUP_TEST={
+  gov:j=>!/^(Eskom|Sasol)\b/i.test(j.employer||''),
+  saps:j=>/South African Police Service/i.test(j.employer||''),
+  eskom:j=>/^Eskom\b/i.test(j.employer||''),
+  sasol:j=>/^Sasol\b/i.test(j.employer||'')
+};
 function apply(){
   PAGE=1;
   const q=document.getElementById('q').value.toLowerCase().trim();
@@ -410,7 +419,7 @@ function apply(){
   let out=JOBS.filter(j=>{
     const hay=(j.job_title+' '+j.employer+' '+aliasOf(j.employer)+' '+j.category+' '+j.snippet+' '+j.about_role+' '+j.requirements+' '+j.location).toLowerCase();
     const loc=(j.province+' '+j.location).toLowerCase();
-    return (!q||hay.includes(q))&&(!ql||loc.includes(ql))&&(!c||j.category===c)&&(!p||j.province===p)&&(!t||j.employment_type===t);
+    return (!GROUP||GROUP_TEST[GROUP](j))&&(!q||hay.includes(q))&&(!ql||loc.includes(ql))&&(!c||j.category===c)&&(!p||j.province===p)&&(!t||j.employment_type===t);
   });
   out.sort((a,b)=>{
     if(sort==='newest') return new Date(b.posted_date||0)-new Date(a.posted_date||0);
@@ -542,7 +551,18 @@ setupAC('q','qAc',()=>window.KW||[]);
 setupAC('qloc','locAc',()=>window.LOC||[]);
 document.getElementById('searchBtn').addEventListener('click',apply);
 ['fCategory','fProvince','fType','fSort'].forEach(id=>document.getElementById(id).addEventListener('change',apply));
+function markLogos(){
+  const band=document.querySelector('.logoband');
+  band.classList.toggle('picked',!!GROUP);
+  band.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.group===GROUP));
+}
+document.querySelectorAll('.logoband button').forEach(b=>b.addEventListener('click',()=>{
+  GROUP=(GROUP===b.dataset.group)?null:b.dataset.group;   // tap again to show all jobs
+  markLogos(); apply();
+  document.getElementById('count').scrollIntoView({behavior:'smooth',block:'start'});
+}));
 document.getElementById('clearBtn').addEventListener('click',()=>{
+  GROUP=null; markLogos();
   ['q','qloc'].forEach(id=>document.getElementById(id).value='');
   ['fCategory','fProvince','fType'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fSort').value='closing'; apply();
