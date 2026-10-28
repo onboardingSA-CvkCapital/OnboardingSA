@@ -15,19 +15,12 @@ jobs:
       - run: pip install requests gspread google-auth
       - name: Run
         run: |
-          mkdir -p probe2
-          python scrape_transnet.py --dry-run > probe2/transnet.json 2> probe2/transnet.log || true
-          tail -5 probe2/transnet.log
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          curl -sSL -A "$UA" -o probe2/transnet_logo.png "https://transnettalentportal.csod.com/clientimg/transnettalentportal/careersite/Final_Logo_CareerSite-_128x106.png"
-          curl -sSL -A "$UA" -o probe2/aeci_search.html -w "aeci search %{http_code}\n" "https://jobs.aeciworld.com/search/?createNewAlert=false&q=&optionsFacetsDD_location=&optionsFacetsDD_customfield1=&optionsFacetsDD_department=" > probe2/status.txt
-          curl -sSL -A "$UA" -o probe2/aeci_search2.html -w "aeci p2 %{http_code}\n" "https://jobs.aeciworld.com/search/?q=&sortColumn=referencedate&sortDirection=desc&startrow=25" >> probe2/status.txt
-          U=$(grep -o 'href="/job/[^"]*"' probe2/aeci_search.html | head -1 | cut -d'"' -f2)
-          echo "first $U" >> probe2/status.txt
-          curl -sSL -A "$UA" -o probe2/aeci_detail.html -w "aeci detail %{http_code}\n" "https://jobs.aeciworld.com$U" >> probe2/status.txt
-          curl -sSL -A "$UA" -o probe2/aeci_home.html "https://jobs.aeciworld.com/" 
-          cat probe2/status.txt; ls -la probe2
+          mkdir -p probe3
+          python scrape_aeci.py --dry-run > probe3/aeci.json 2> probe3/aeci.log || true
+          tail -15 probe3/aeci.log
+          curl -sSL -o probe3/aeci_logo.jpg "https://rmkcdn.successfactors.com/413fa29d/ea3441ed-b5ca-44d1-998c-7.jpg"
+          ls -la probe3
       - name: Commit
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe2; git commit -m "probe transnet+aeci" || true; git push
+          git add probe3; git commit -m "probe aeci live" || true; git push
