@@ -10,21 +10,24 @@ MIN_JOBS = 5          # fewer live jobs than this: page stays up but is hidden f
 INDEX_FILE = "index.html"
 
 EXTRA_CSS = """
-.e-intro p{font-size:15px;margin:0 0 12px}
+.e-intro p{font-size:15px;margin:0 0 12px;white-space:normal}
 .e-stats{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
-.e-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.e-job{display:block;border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;background:#fff}
-.e-job:hover{box-shadow:0 4px 14px rgba(18,41,77,.08)}
+.e-list{display:block;margin-top:4px}
+.e-job{display:block;border-bottom:1px solid var(--line);padding:14px 0;text-decoration:none;color:inherit}
+.e-job:last-child{border-bottom:0}
+.e-job:hover h3{text-decoration:underline}
 .e-job h3{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy);margin:0 0 3px;line-height:1.3}
 .e-job .loc{font-size:13.5px;color:var(--muted);margin-bottom:8px}
 .e-job .chips{margin:0}
 .e-prov{font-family:Poppins;font-weight:600;font-size:14px;color:var(--navy);margin:22px 0 2px}
 .e-empty{font-size:14.5px;color:var(--muted)}
-.e-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:10px;margin-top:10px}
-.e-grid a{display:block;border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;background:#fff}
-.e-grid a:hover{box-shadow:0 4px 14px rgba(18,41,77,.08)}
-.e-grid b{display:block;font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy)}
-.e-grid span{font-size:13px;color:var(--muted)}
+.section ul.e-grid{list-style:none;margin:4px 0 0;padding:0}
+.e-grid li{border-bottom:1px solid var(--line)}
+.e-grid li:last-child{border-bottom:0}
+.e-grid a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:13px 0;text-decoration:none}
+.e-grid a:hover b{text-decoration:underline}
+.e-grid b{font-family:Poppins;font-weight:600;font-size:15px;color:var(--navy)}
+.e-grid span{font-size:13.5px;color:var(--muted);white-space:nowrap}
 .nav{display:flex;gap:22px}
 """
 
@@ -135,14 +138,14 @@ def render_index(rows):
     url = f"{SITE}/{OUT_DIR}/index.html"
     title = f"Jobs by Employer — SAPS, Eskom, Health and more ({month_year()})"
     metadesc = "Browse current vacancies by employer: SAPS, Eskom, Sasol, Correctional Services, Health and other government departments. Updated daily."
-    cards = "".join(f'<a href="{g["slug"]}.html"><b>{esc(g["short"])} jobs</b><span>{n} open post{"s" if n != 1 else ""}</span></a>'
+    cards = "".join(f'<li><a href="{g["slug"]}.html"><b>{esc(g["short"])} jobs</b><span>{n} open post{"s" if n != 1 else ""}</span></a></li>'
                     for g, n in rows)
     body = f'''      <div class="d-head"><div><h1>Jobs by employer</h1>
         <div class="d-loc">Updated {esc(fmt_date(datetime.date.today().isoformat()))}</div></div></div>
       <div class="section e-intro"><p>Pick an employer to see all its open posts in one place, with a short guide to how that employer recruits
         and what its applications need. The lists are refreshed every day from the official sources: the DPSA Public Service Vacancy Circular,
         the SAPS careers pages and e-Recruitment portal, provincial health departments, and the Eskom and Sasol careers sites.</p></div>
-      <div class="section"><h2>Employers</h2><div class="e-grid">{cards}</div></div>
+      <div class="section"><h2>Employers</h2><ul class="e-grid">{cards}</ul></div>
 '''
     page = head(title, metadesc, url, breadcrumb([("Home", SITE + "/"), ("Employers", url)]), False) + body + \
         FOOT.format(year=datetime.date.today().year)
@@ -156,8 +159,8 @@ def update_homepage(rows, total=None):
     if "<!--EMPLOYERS_START-->" not in h or "<!--EMPLOYERS_END-->" not in h:
         print("Homepage has no EMPLOYERS markers; skipped.", file=sys.stderr)
         return
-    cards = "\n      ".join(f'<a class="gcard" href="employers/{g["slug"]}.html"><h3>{_html.escape(g["short"])} jobs</h3>'
-                           f'<p>{n} open post{"s" if n != 1 else ""}</p></a>' for g, n in rows)
+    cards = "\n      ".join(f'<li><a href="employers/{g["slug"]}.html"><b>{_html.escape(g["short"])} jobs</b>'
+                           f'<span>{n} open post{"s" if n != 1 else ""}</span></a></li>' for g, n in rows)
     block = f"<!--EMPLOYERS_START-->\n      {cards}\n      <!--EMPLOYERS_END-->"
     h = re.sub(r"<!--EMPLOYERS_START-->.*?<!--EMPLOYERS_END-->", lambda _m: block, h, flags=re.S)
     if total is not None:   # live job count in the hero
