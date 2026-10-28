@@ -8,7 +8,7 @@ AECI careers (SAP SuccessFactors career site): https://jobs.aeciworld.com/search
 Fixed rules, no AI. Never fails the daily run.
 Usage:  python scrape_aeci.py [--dry-run]
 """
-import re, sys, json, html, time, argparse, datetime
+import re, sys, json, html, time, argparse, datetime, os
 
 BASE = "https://jobs.aeciworld.com"
 SEARCH = BASE + "/search/?q=&sortColumn=referencedate&sortDirection=desc&startrow={start}"
@@ -163,11 +163,14 @@ def scrape(columns):
     print(f"AECI: {len(items)} jobs on the careers site", file=sys.stderr)
     rows, today = [], datetime.date.today().isoformat()
     for it in items:
-        if it["loc"] and not re.search(r",\s*ZA\b", it["loc"]):
+        if it["loc"] and not re.search(r"\bZA\b|South Africa", it["loc"]):
             print(f"  skip (outside SA): {it['title']} - {it['loc']}", file=sys.stderr)
             continue
         try:
-            row = build_row(it, get(s, BASE + it["path"]), columns)
+            page = get(s, BASE + it["path"])
+            if os.environ.get("SAVE_PAGES"):                 # for checking the advert layout
+                open(os.path.join(os.environ["SAVE_PAGES"], it["id"] + ".html"), "w", encoding="utf-8").write(page)
+            row = build_row(it, page, columns)
             time.sleep(1)
         except Exception as e:
             print(f"  skipped {it['title']}: {e}", file=sys.stderr)

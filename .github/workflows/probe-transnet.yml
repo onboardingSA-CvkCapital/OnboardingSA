@@ -16,7 +16,7 @@ jobs:
       - name: Run
         run: |
           mkdir -p probe3
-          python scrape_aeci.py --dry-run > probe3/aeci.json 2> probe3/aeci.log || true
+          mkdir -p probe3/pages; SAVE_PAGES=probe3/pages python scrape_aeci.py --dry-run > probe3/aeci.json 2> probe3/aeci.log || true
           tail -15 probe3/aeci.log
           curl -sSL -o probe3/aeci_logo.jpg "https://rmkcdn.successfactors.com/413fa29d/ea3441ed-b5ca-44d1-998c-7.jpg"
           ls -la probe3
