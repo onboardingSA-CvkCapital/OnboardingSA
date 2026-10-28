@@ -16,6 +16,14 @@ EXTRA_CSS = """
 .section ol{margin:0;padding-left:24px}
 .section ol li{font-size:14.5px;color:var(--text);margin-bottom:6px;padding-left:4px}
 .section ol li::marker{color:var(--muted);font-weight:600}
+.detail{background:none;border:0;padding:0}
+.e-title{font-family:Poppins;font-weight:700;font-size:28px;color:var(--navy);margin:0;line-height:1.2}
+.e-body{margin-top:14px}
+ol.e-grid{margin:14px 0 0;padding-left:30px}
+ol.e-grid li{border-bottom:1px solid var(--line)}
+ol.e-list{margin:4px 0 0;padding-left:30px}
+ol.e-list li{margin:0;padding:11px 0 11px 4px;border-bottom:1px solid var(--line-2)}
+ol li::marker{color:var(--muted);font-weight:600}
 .section ol.e-list{margin:4px 0 0;padding-left:30px}
 .section ol.e-list li{margin:0;padding:11px 0 11px 4px;border-bottom:1px solid var(--line-2)}
 .section ol.e-list li:last-child{border-bottom:0}
@@ -106,15 +114,9 @@ def render_group(g, jobs):
             if g.get("logo") else "")
     parts = [head(title, metadesc, url, breadcrumb([("Home", SITE + "/"), ("Employers", f"{SITE}/{OUT_DIR}/index.html"),
                                                      (f"{g['short']} jobs", url)]), n < MIN_JOBS)]
-    parts.append(f'''      <div class="d-head">{logo}<div><h1>{esc(g["short"])} jobs</h1>
-        <div class="d-emp">{esc(g["name"])}</div><div class="d-loc">Updated {esc(fmt_date(datetime.date.today().isoformat()))}</div></div></div>
+    parts.append(f'''      <h1 class="e-title">{esc(g["short"])} jobs</h1>
       {stats_line(jobs) if jobs else ""}
-      <div class="section e-intro">{"".join(f"<p>{p}</p>" for p in g["intro"])}</div>
-      <div class="section"><h2>How to apply</h2><ol>{"".join(f"<li>{a}</li>" for a in g["apply"])}</ol>
-        <p style="margin-top:10px">Official source: <a href="{esc(g["official"][1])}" target="_blank" rel="noopener">{esc(g["official"][0])}</a></p></div>
-      <div class="section"><h2>Before you apply</h2><ol>{"".join(f"<li>{t}</li>" for t in g["tips"])}
-        <li>OnboardingSA is free and never collects your application. Every job below links to the official advert.</li></ol></div>
-      <div class="section"><h2>Open {esc(g["short"])} posts</h2>''')
+      <div class="e-body">''')
     if not jobs:
         parts.append('<p class="e-empty">There are no open posts right now. New posts are added every day, so check back soon.</p>')
     elif g.get("by_province") and len({j.get("province") for j in jobs}) > 1:
@@ -140,12 +142,8 @@ def render_index(rows):
     metadesc = "Browse current vacancies by employer: SAPS, Eskom, Sasol, Correctional Services, Health and other government departments. Updated daily."
     cards = "".join(f'<li><a href="{g["slug"]}.html"><b>{esc(g["short"])} jobs</b><span>{n} open post{"s" if n != 1 else ""}</span></a></li>'
                     for g, n in rows)
-    body = f'''      <div class="d-head"><div><h1>Jobs by employer</h1>
-        <div class="d-loc">Updated {esc(fmt_date(datetime.date.today().isoformat()))}</div></div></div>
-      <div class="section e-intro"><p>Pick an employer to see all its open posts in one place, with a short guide to how that employer recruits
-        and what its applications need. The lists are refreshed every day from the official sources: the DPSA Public Service Vacancy Circular,
-        the SAPS careers pages and e-Recruitment portal, provincial health departments, and the Eskom and Sasol careers sites.</p></div>
-      <div class="section"><h2>Employers</h2><ol class="e-grid">{cards}</ol></div>
+    body = f'''      <h1 class="e-title">Jobs by employer</h1>
+      <ol class="e-grid">{cards}</ol>
 '''
     page = head(title, metadesc, url, breadcrumb([("Home", SITE + "/"), ("Employers", url)]), False) + body + \
         FOOT.format(year=datetime.date.today().year)
