@@ -16,7 +16,7 @@ H_REQ = re.compile(r"^(requirements|minimum requirements|job requirements|qualif
                    r"knowledge|skills|key competencies|competencies|personal attributes|behavioural|technical skills|"
                    r"what you need|what you will need|what you'll need|what we are looking for|what we're looking for|"
                    r"the (successful|ideal) candidate|we'?re looking for|we are looking for|who are we looking for|who you are|your profile|profile|candidate profile|about you|you have|must have|nice to have|"
-                   r"advantageous|preferred)\b", re.I)
+                   r"advantageous|preferred|conditions of employment)\b", re.I)
 H_STOP = re.compile(r"^(application process|candidates who do not receive|additional information|what we offer|we offer|what's in it for you|benefits|our offer|about us|about the company|"
                     r"who we are|why join|equal opportunit|employment equity|disclaimer|please note|note:|"
                     r"if you do not hear|only shortlisted|closing date|how to apply|privacy|discover who we are|"
@@ -28,7 +28,7 @@ def lines_of(desc):
     d = re.sub(r"<(strong|b)\b[^>]*>", "\x01", desc or "", flags=re.I)
     d = re.sub(r"</(strong|b)>", "\x02", d, flags=re.I)
     d = re.sub(r"<br\s*/?>|</p>|</li>|</div>|</h\d>|<li\b[^>]*>|<p\b[^>]*>|<h\d\b[^>]*>", "\n", d, flags=re.I)
-    d = html.unescape(re.sub(r"<[^>]+>", "", d)).replace("\xa0", " ").replace("​", "")
+    d = html.unescape(re.sub(r"<[^>]+>", "", d)).replace("\xa0", " ").replace("\u200b", "").replace("\ufeff", "")
     out = []
     for raw in d.split("\n"):
         t = raw.strip()
@@ -45,7 +45,7 @@ def lines_of(desc):
 
 def sections(desc, skip=None):
     """Return (about, duties, requirements) as lists of lines. `skip` is an optional regex of company boilerplate lines."""
-    about, resp, req, pre, sec = [], [], [], [], None
+    about, resp, req, pre, body, sec = [], [], [], [], [], None
     for t, bold in lines_of(desc):
         head = t.rstrip(":.").strip()
         short = len(head) <= 90
@@ -59,7 +59,7 @@ def sections(desc, skip=None):
             if H_RESP.match(head):
                 sec = "resp"
             elif H_REQ.match(head):
-                if sec == "req":
+                if sec == "req" or not re.match(r"^(minimum |job )?requirements$|^qualifications?( and experience)?$", head, re.I):
                     req.append((head.capitalize() if head.isupper() else head) + ":")
                 sec = "req"
             elif H_ABOUT.match(head):
@@ -71,6 +71,8 @@ def sections(desc, skip=None):
             continue
         if skip is not None and skip.search(t):
             continue
+        if sec != "stop":
+            body.append(t)
         if sec is None and len(t) > 60:
             pre.append(t)                              # text before the first heading: usually the role summary
         elif sec == "about":
@@ -82,4 +84,11 @@ def sections(desc, skip=None):
     for lst in (resp, req):
         while lst and lst[-1].endswith(":"):
             lst.pop()
+    if not resp and not req:
+        return body, resp, req                         # no headings we know: keep the whole advert text as written
     return (about or pre[-2:]), resp, req
+
+
+def usable(about, resp, req):
+    """Enough real content to publish: duties or requirements, or a full advert text of 60+ words."""
+    return bool(resp or req) or len(" ".join(about).split()) >= 60

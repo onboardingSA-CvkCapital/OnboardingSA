@@ -16,17 +16,13 @@ jobs:
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe7
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          H="https://fa-expc-saasfaprod1.fa.ocs.oraclecloud.com"
-          curl -sS -A "$UA" -H "Accept: application/json" -o probe7/list.json -w "list %{http_code}\n" "$H/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1,limit=25,offset=0,sortBy=POSTING_DATES_DESC" > probe7/status.txt
-          ID=$(python3 -c "import json;print(json.load(open('probe7/list.json'))['items'][0]['requisitionList'][0]['Id'])" 2>/dev/null)
-          echo "first id $ID" >> probe7/status.txt
-          curl -sS -A "$UA" -H "Accept: application/json" -o probe7/detail.json -w "detail %{http_code}\n" "$H/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails?expand=all&onlyData=true&finder=ById;Id=%22$ID%22,siteNumber=CX_1" >> probe7/status.txt
-          curl -sSL -A "$UA" -o probe7/site.html -w "site %{http_code}\n" "$H/hcmUI/CandidateExperience/en/sites/CX_1/jobs" >> probe7/status.txt
-          cat probe7/status.txt; ls -la probe7
+          mkdir -p probe8
+          python scrape_oracle.py --dry-run > probe8/tfg.json 2> probe8/tfg.log
+          curl -sSL -o probe8/tfg_logo.png -w "%{http_code} %{content_type}\n" "https://stg-tfglimited-staging.kinsta.cloud/wp-content/uploads/2023/09/TFG_Logo_150x40px-1.png" > probe8/logo.txt
+          curl -sSL -o probe8/tfg_logo2.png -w "%{http_code} %{content_type}\n" "https://www.tfglimited.co.za/wp-content/uploads/2023/09/TFG_Logo_150x40px-1.png" >> probe8/logo.txt
+          tail -5 probe8/tfg.log; cat probe8/logo.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe7; git commit -m "probe tfg" || true; git push
+          git add probe8; git commit -m "probe tfg live" || true; git push
