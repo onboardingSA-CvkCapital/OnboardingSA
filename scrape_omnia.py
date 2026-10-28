@@ -49,7 +49,7 @@ def get(url, tries=3):
 
 def text(s):
     s = re.sub(r"<br\s*/?>", "\n", s or "", flags=re.I)
-    s = html.unescape(re.sub(r"<[^>]+>", "", s)).replace("\xa0", " ")
+    s = html.unescape(re.sub(r"<[^>]+>", "", s)).replace("\xa0", " ").replace("\ufeff", "").replace("\u200b", "")
     return re.sub(r"[ \t]+", " ", s).strip()
 
 
@@ -160,7 +160,7 @@ def build_row(item, page, columns):
     ld, fields, about, resp, req, loc = parse_detail(page)
     title = re.sub(r"\s+", " ", ld.get("title") or item["title"]).strip()
     place = fields.get("location") or ", ".join(x for x in (loc.get("addressLocality"), item.get("city")) if x)
-    place = re.sub(r",?\s*South Africa\.?$", "", place, flags=re.I).strip(" ,")
+    place = re.sub(r",?\s*South Africa\.?$", "", place.replace("\ufeff", ""), flags=re.I).strip(" ,")
     place = re.sub(r"(?<!,)\s+(Mpumalanga|Gauteng|Limpopo|Free State|North West|Northern Cape|Western Cape|Eastern Cape|KwaZulu-Natal)$",
                    r", \1", place)
     province = province_of(place) or province_of(item.get("city", ""))
@@ -182,8 +182,8 @@ def build_row(item, page, columns):
         "closing_date": closing,
         "reference_no": "OMNIA-" + item["id"][:8].upper(),
         "about_role": "\n".join([intro] + about),
-        "responsibilities": "\n".join(resp[:30]),
-        "requirements": "\n".join(req[:30]),
+        "responsibilities": "\n".join(resp[:80]),
+        "requirements": "\n".join(req[:80]),
         "official_apply_url": f"{BASE}/jobs/{item['id']}",
         "source_url": f"{BASE}/jobs/{item['id']}",
         "status": "live",

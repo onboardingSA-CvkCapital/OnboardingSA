@@ -42,6 +42,22 @@ jobs:
         run: python scrape_omnia.py
         continue-on-error: true
 
+      - name: Transnet
+        run: python scrape_transnet.py
+        continue-on-error: true
+
+      - name: AECI and Capitec (SuccessFactors sites)
+        run: python scrape_successfactors.py
+        continue-on-error: true
+
+      - name: SAB and Pick n Pay (Workday sites)
+        run: python scrape_workday.py
+        continue-on-error: true
+
+      - name: Heineken
+        run: python scrape_heineken.py
+        continue-on-error: true
+
       - name: DPSA Public Service Vacancy Circular
         run: python scrape_dpsa.py
         continue-on-error: true

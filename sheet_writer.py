@@ -102,3 +102,26 @@ def append_jobs(rows):
     """Add new jobs; rows already in the sheet are left as they are (except a blank posted_date gets filled)."""
     new, _ = upsert_jobs(rows)
     return new
+
+def retire_missing(employer, live_refs):
+    """Jobs from `employer` that are no longer on its careers site get status 'closed' (they drop off the site).
+    Only call this after a scrape that actually found jobs, so a site outage never closes everything."""
+    if not live_refs:
+        return 0
+    from gspread.utils import rowcol_to_a1
+    ws = _sheet()
+    vals = ws.get_all_values()
+    if not vals:
+        return 0
+    header = vals[0]
+    col = {name: i for i, name in enumerate(header)}
+    if not all(c in col for c in ("employer", "reference_no", "status")):
+        return 0
+    g = lambda r, c: r[col[c]] if col[c] < len(r) else ""
+    updates = []
+    for n, r in enumerate(vals[1:], start=2):
+        if g(r, "employer") == employer and g(r, "status").lower() == "live" and g(r, "reference_no") not in live_refs:
+            updates.append({"range": rowcol_to_a1(n, col["status"] + 1), "values": [["closed"]]})
+    if updates:
+        ws.batch_update(updates, value_input_option="RAW")
+    return len(updates)

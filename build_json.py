@@ -11,6 +11,8 @@ def clean_title(t):
 
 def no_dashes(v):
     """Long dashes look machine-written; use 'to' for ranges and a plain hyphen elsewhere."""
+    if isinstance(v, str):
+        v = v.replace("\ufeff", "").replace("\u200b", "")          # invisible characters some sites leave in
     if not isinstance(v, str) or ("\u2014" not in v and "\u2013" not in v):
         return v
     v = _re.sub(r"(?<=\d)\s*[\u2013\u2014]\s*(?=R?\s?\d)", " to ", v)
