@@ -6,6 +6,11 @@ THIN_WORDS = 40   # pages with fewer unique content words get noindex + no sitem
 TODAY_ISO = (datetime.datetime.utcnow() + datetime.timedelta(hours=2)).date().isoformat()   # SAST
 
 try:
+    from employers_data import group_for
+except Exception:
+    group_for = lambda emp: None
+
+try:
     from sa_places import province_of
 except Exception:
     province_of = lambda loc: ""
@@ -98,6 +103,7 @@ a{{color:inherit}}
 header.site{{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}}
 .site .wrap{{max-width:1160px;display:flex;align-items:center;justify-content:space-between;height:64px}}
 .brand svg{{height:34px;width:auto;display:block}}
+.nav{{display:flex;gap:22px}}
 .nav a{{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}}
 .nav a:hover{{color:var(--navy)}}
 main{{padding:22px 0 60px}}
@@ -149,7 +155,7 @@ footer.site a{{color:var(--navy);text-decoration:none;font-weight:500}}
         <text x="150" y="101" font-family="Poppins,Arial,sans-serif" font-size="60" font-weight="600" letter-spacing="-0.5"><tspan fill="#12294D">Onboarding</tspan><tspan fill="#E8A33D">SA</tspan></text>
       </svg>
     </a>
-    <nav class="nav"><a href="../about.html">About</a></nav>
+    <nav class="nav"><a href="../employers/index.html">Employers</a><a href="../about.html">About</a></nav>
   </div>
 </header>
 <main>
@@ -286,6 +292,9 @@ def render(j):
     featured_badge=('<div style="font-family:Poppins;font-weight:600;font-size:11px;color:var(--gold-600);margin-bottom:4px">★ FEATURED</div>'
                     if j.get("featured","").lower()=="yes" else "")
 
+    grp=group_for(j.get("employer"))
+    more=(f'<div class="section"><a href="../employers/{grp["slug"]}.html" style="font-family:Poppins;font-weight:600;font-size:14.5px;color:var(--navy)">'
+          f'See all {esc(grp["short"])} jobs →</a></div>') if grp else ""
     body=f"""      <div class="d-head">
         {avatar}
         <div>
@@ -299,6 +308,7 @@ def render(j):
       <div class="actions">{apply}<button class="share" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span id="shareLabel">Share this job</span></button></div>
       {handoff}
       {sections}
+      {more}
       <div class="d-foot">{foot_meta}</div>
 """
     foot=FOOT.format(year=datetime.date.today().year)

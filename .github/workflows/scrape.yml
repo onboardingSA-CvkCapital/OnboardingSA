@@ -66,6 +66,10 @@ jobs:
       - name: Build static job pages
         run: python build_static.py
 
+      - name: Build employer pages
+        run: python build_employers.py
+        continue-on-error: true
+
       - name: Clean up credentials
         if: always()
         run: rm -f credentials.json
@@ -74,6 +78,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add jobs.json jobs-lite.json jobs-page-1.json index.html sitemap.xml jobs/
+          git add jobs.json jobs-lite.json jobs-page-1.json index.html sitemap.xml jobs/ employers/
           git commit -m "Update jobs, static pages, sitemap" || echo "no changes"
           git push
