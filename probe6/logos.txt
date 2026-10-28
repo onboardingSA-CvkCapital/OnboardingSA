@@ -1,0 +1,3 @@
+sab image/jpeg
+pnp image/svg+xml
+capitec image/png //rmkcdn.successfactors.com/05298491/24cdd26a-2959-4419-8350-6.png
