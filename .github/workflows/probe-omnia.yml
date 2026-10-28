@@ -1,0 +1,27 @@
+name: probe omnia
+on:
+  push:
+    branches: [probe-omnia]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch pages
+        run: |
+          mkdir -p probe
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
+          curl -sSL -A "$UA" -o probe/list.html -w "list %{http_code}\n" "https://omnia-holdings.careers-page.com/" > probe/status.txt
+          curl -sSL -A "$UA" -o probe/list_p2.html -w "p2 %{http_code}\n" "https://omnia-holdings.careers-page.com/?page=2" >> probe/status.txt
+          curl -sSL -A "$UA" -o probe/detail.html -w "detail %{http_code}\n" "https://omnia-holdings.careers-page.com/jobs/8c6a5192-b49b-49ab-a9ff-c1bf6f844f12" >> probe/status.txt
+          curl -sSL -A "$UA" -o probe/detail2.html -w "detail2 %{http_code}\n" "https://omnia-holdings.careers-page.com/jobs/cbb3d974-de5c-4d65-995c-4449c5525f46" >> probe/status.txt
+          for u in "https://core.api.manatal.com/open/v3/career-page/omnia-holdings/jobs/?page_size=100" "https://api.manatal.com/open/v3/career-page/omnia-holdings/jobs/?page_size=100"; do
+            curl -sSL -A "$UA" -o "probe/api_$(echo $u | cut -d/ -f3).json" -w "$u %{http_code}\n" "$u" >> probe/status.txt || true
+          done
+          ls -la probe; cat probe/status.txt
+      - name: Commit
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git add probe; git commit -m "probe omnia" || true; git push
