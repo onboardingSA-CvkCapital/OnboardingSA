@@ -11,17 +11,21 @@ INDEX_FILE = "index.html"
 
 EXTRA_CSS = """
 .e-intro p{font-size:15px;margin:0 0 12px;white-space:normal}
-.e-stats{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
-.section ul.e-list{list-style:none;margin:4px 0 0;padding:0}
-.section ul.e-list li{margin:0;padding:11px 0;border-bottom:1px solid var(--line-2)}
-.section ul.e-list li:last-child{border-bottom:0}
+.e-stats{font-size:14px;color:var(--muted);margin:10px 0 0}
+.e-stats .soon{color:#B23B3B;font-weight:600}
+.section ol{margin:0;padding-left:24px}
+.section ol li{font-size:14.5px;color:var(--text);margin-bottom:6px;padding-left:4px}
+.section ol li::marker{color:var(--muted);font-weight:600}
+.section ol.e-list{margin:4px 0 0;padding-left:30px}
+.section ol.e-list li{margin:0;padding:11px 0 11px 4px;border-bottom:1px solid var(--line-2)}
+.section ol.e-list li:last-child{border-bottom:0}
 .e-list a{font-weight:600;font-size:15px;color:var(--navy);text-decoration:none}
 .e-list a:hover{text-decoration:underline}
 .e-list .meta{font-size:13.5px;color:var(--muted);margin-top:2px}
 .e-list .soon{color:#B23B3B;font-weight:600}
 .e-prov{font-family:Poppins;font-weight:600;font-size:14px;color:var(--navy);margin:22px 0 2px}
 .e-empty{font-size:14.5px;color:var(--muted)}
-.section ul.e-grid{list-style:none;margin:4px 0 0;padding:0}
+.section ol.e-grid{margin:4px 0 0;padding-left:30px}
 .e-grid li{border-bottom:1px solid var(--line)}
 .e-grid li:last-child{border-bottom:0}
 .e-grid a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:13px 0;text-decoration:none}
@@ -84,15 +88,12 @@ def breadcrumb(items):
 def stats_line(jobs):
     provs = {j.get("province") for j in jobs if j.get("province") and j.get("province") != "National"}
     week = sum(1 for j in jobs if (lambda d: d is not None and 0 <= d <= 7)(days_left(j.get("closing_date"))))
-    cats = collections.Counter(j.get("category") for j in jobs if j.get("category") and j.get("category") != "Government")
-    out = [f'<span class="chip">{len(jobs)} open post{"s" if len(jobs) != 1 else ""}</span>']
+    bits = [f'{len(jobs)} open post{"s" if len(jobs) != 1 else ""}']
     if provs:
-        out.append(f'<span class="chip">{len(provs)} province{"s" if len(provs) != 1 else ""}</span>')
+        bits.append(f'{len(provs)} province{"s" if len(provs) != 1 else ""}')
     if week:
-        out.append(f'<span class="chip close-soon">{week} closing this week</span>')
-    for c, _ in cats.most_common(3):
-        out.append(f'<span class="chip">{esc(c)}</span>')
-    return '<div class="e-stats">' + "".join(out) + "</div>"
+        bits.append(f'<span class="soon">{week} closing this week</span>')
+    return '<p class="e-stats">' + " · ".join(bits) + "</p>"
 
 
 def render_group(g, jobs):
@@ -109,10 +110,10 @@ def render_group(g, jobs):
         <div class="d-emp">{esc(g["name"])}</div><div class="d-loc">Updated {esc(fmt_date(datetime.date.today().isoformat()))}</div></div></div>
       {stats_line(jobs) if jobs else ""}
       <div class="section e-intro">{"".join(f"<p>{p}</p>" for p in g["intro"])}</div>
-      <div class="section"><h2>How to apply</h2><ul>{"".join(f"<li>{a}</li>" for a in g["apply"])}</ul>
+      <div class="section"><h2>How to apply</h2><ol>{"".join(f"<li>{a}</li>" for a in g["apply"])}</ol>
         <p style="margin-top:10px">Official source: <a href="{esc(g["official"][1])}" target="_blank" rel="noopener">{esc(g["official"][0])}</a></p></div>
-      <div class="section"><h2>Before you apply</h2><ul>{"".join(f"<li>{t}</li>" for t in g["tips"])}
-        <li>OnboardingSA is free and never collects your application. Every job below links to the official advert.</li></ul></div>
+      <div class="section"><h2>Before you apply</h2><ol>{"".join(f"<li>{t}</li>" for t in g["tips"])}
+        <li>OnboardingSA is free and never collects your application. Every job below links to the official advert.</li></ol></div>
       <div class="section"><h2>Open {esc(g["short"])} posts</h2>''')
     if not jobs:
         parts.append('<p class="e-empty">There are no open posts right now. New posts are added every day, so check back soon.</p>')
@@ -121,10 +122,10 @@ def render_group(g, jobs):
         for j in jobs:
             byp[j.get("province") or "Other"].append(j)
         for p in sorted(byp, key=lambda p: (PROV_ORDER.index(p) if p in PROV_ORDER else 99, p)):
-            parts.append(f'<div class="e-prov">{esc(p)} ({len(byp[p])})</div><ul class="e-list">'
-                         + "".join(job_card(j) for j in byp[p]) + "</ul>")
+            parts.append(f'<div class="e-prov">{esc(p)} ({len(byp[p])})</div><ol class="e-list">'
+                         + "".join(job_card(j) for j in byp[p]) + "</ol>")
     else:
-        parts.append('<ul class="e-list">' + "".join(job_card(j) for j in jobs) + "</ul>")
+        parts.append('<ol class="e-list">' + "".join(job_card(j) for j in jobs) + "</ol>")
     parts.append("</div>\n")
     parts.append(FOOT.format(year=datetime.date.today().year))
     page = "".join(parts)
@@ -144,7 +145,7 @@ def render_index(rows):
       <div class="section e-intro"><p>Pick an employer to see all its open posts in one place, with a short guide to how that employer recruits
         and what its applications need. The lists are refreshed every day from the official sources: the DPSA Public Service Vacancy Circular,
         the SAPS careers pages and e-Recruitment portal, provincial health departments, and the Eskom and Sasol careers sites.</p></div>
-      <div class="section"><h2>Employers</h2><ul class="e-grid">{cards}</ul></div>
+      <div class="section"><h2>Employers</h2><ol class="e-grid">{cards}</ol></div>
 '''
     page = head(title, metadesc, url, breadcrumb([("Home", SITE + "/"), ("Employers", url)]), False) + body + \
         FOOT.format(year=datetime.date.today().year)
