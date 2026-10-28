@@ -25,6 +25,8 @@ def base_salary(text):
     low = t.lower()
     unit = ("HOUR" if "hour" in low else "DAY" if re.search(r"\bday\b|daily", low) else
             "WEEK" if "week" in low else "MONTH" if re.search(r"month|p\.?m\.?\b", low) else "YEAR")
+    if unit == "YEAR" and max(nums) < 30000:   # a misread figure (e.g. 'R280 27'), not a real yearly salary
+        return None
     val = {"@type": "QuantitativeValue", "unitText": unit}
     if len(nums) >= 2 and nums[1] > nums[0]:
         val.update(minValue=nums[0], maxValue=nums[1])
