@@ -17,20 +17,21 @@ jobs:
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe14
+          mkdir -p probe15
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
           B="https://randwater.erecruit.co"
-          curl -sSL -A "$UA" -o probe14/browse.html -w "browse %{http_code} %{url_effective}\n" "$B/candidateapp/Jobs/Browse" > probe14/status.txt
-          U=$(grep -o 'href="[^"]*Jobs/View[^"]*"' probe14/browse.html | head -1 | sed 's/href="//;s/"$//')
-          echo "first $U" >> probe14/status.txt
+          curl -sSL -A "$UA" -o probe15/cat.html -w "cat %{http_code}\n" "$B/candidateapp/Jobs/Categories/Human_Resources/d9f2eb98b9b74492a51978925302aa89" > probe15/status.txt
+          curl -sSL -A "$UA" -o probe15/results.html -w "results %{http_code}\n" "$B/candidateapp/jobs/search/results/" >> probe15/status.txt
+          U=$(grep -o 'href="[^"]*/[Jj]obs/[Vv]iew/[^"]*"' probe15/cat.html | head -1 | sed 's/href="//;s/"$//')
+          [ -z "$U" ] && U=$(grep -io 'href="/candidateapp/jobs/[^"]*"' probe15/cat.html | grep -iv "categor\|browse\|search" | head -1 | sed 's/href="//I;s/"$//')
+          echo "first $U" >> probe15/status.txt
           case "$U" in /*) U="$B$U";; esac
-          [ -n "$U" ] && curl -sSL -A "$UA" -o probe14/detail.html -w "detail %{http_code}\n" "$U" >> probe14/status.txt
-          curl -sSL -A "$UA" -o probe14/rw_home.html -w "home %{http_code}\n" "https://www.randwater.co.za/" >> probe14/status.txt
-          grep -o 'https\?://[^"]*\(career\|vacanc\|erecruit\)[^"]*' probe14/rw_home.html | sort -u | head >> probe14/status.txt
-          grep -o '<img[^>]*logo[^>]*>' probe14/rw_home.html | head -3 >> probe14/status.txt
-          cat probe14/status.txt; ls -la probe14
+          [ -n "$U" ] && curl -sSL -A "$UA" -o probe15/detail.html -w "detail %{http_code}\n" "$U" >> probe15/status.txt
+          curl -sSL -A "$UA" -o probe15/logo -w "logo %{content_type}\n" "$B/candidateapp/Theme/logo.png" >> probe15/status.txt
+          grep -io '<img[^>]*>' probe15/cat.html | head -3 >> probe15/status.txt
+          cat probe15/status.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe14; git commit -m "probe rand water" || true; git push
+          git add probe15; git commit -m "probe rand water 2" || true; git push
