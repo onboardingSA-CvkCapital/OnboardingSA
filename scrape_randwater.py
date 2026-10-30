@@ -75,6 +75,8 @@ def build_row(ref, page, columns):
     f = fields(page)
     one = lambda k: " ".join(lines(f.get(k, ""))).strip()
     title = one("job title")
+    if title.isupper():                                  # 'SENIOR ELECTRICAL ENGINEER X3' -> 'Senior Electrical Engineer x3'
+        title = re.sub(r"\bX(\d+)\b", r"x\1", title.title())
     town, site = one("location - town / city"), one("location - site")
     province = PROVINCES.get(one("location - province").lower(), "") or province_of(town)
     place = ", ".join(x for x in (site if site and site.lower() != town.lower() else "", town) if x)
