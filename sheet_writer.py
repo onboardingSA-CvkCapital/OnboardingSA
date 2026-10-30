@@ -95,7 +95,8 @@ def upsert_jobs(rows, update_fields=()):
             if "posted_date" in col and n and not (old[col["posted_date"]] if col["posted_date"] < len(old) else "").strip():
                 updates.append({"range": rowcol_to_a1(n, col["posted_date"] + 1), "values": [[r["posted_date"]]]})
                 touched.add(n)
-            for f in update_fields:
+            extra = ("job_title",) if COMPANY_REF.match(r.get("reference_no", "")) and "job_title" not in update_fields else ()
+            for f in tuple(update_fields) + extra:          # company titles: pick up tidied wording/capitals
                 if f in col and (old[col[f]] if col[f] < len(old) else "") != r.get(f, ""):
                     updates.append({"range": rowcol_to_a1(n, col[f] + 1), "values": [[r.get(f, "")]]})
                     touched.add(n)

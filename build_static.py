@@ -270,7 +270,7 @@ def render(j):
     chips=""
     if j.get("employment_type"): chips+=f'<span class="chip">{esc(j.get("employment_type"))}</span>'
     if j.get("salary"): chips+=f'<span class="chip">{esc(j.get("salary"))}</span>'
-    if j.get("category"): chips+=f'<span class="chip">{esc(j.get("category"))}</span>'
+    if j.get("category") and j.get("category","").lower()!=(j.get("employment_type") or "").lower(): chips+=f'<span class="chip">{esc(j.get("category"))}</span>'
     if j.get("closing_date"):
         cd=esc(fmt_date(j.get("closing_date")))
         extra=(" · closes today" if dl==0 else f" · {dl} day{'s' if dl!=1 else ''} left") if (soon and dl is not None and dl>=0) else ""
