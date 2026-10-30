@@ -79,6 +79,8 @@ def build_row(ref, page, columns):
         title = re.sub(r"\bX(\d+)\b", r"x\1", title.title())
     town, site = one("location - town / city"), one("location - site")
     province = PROVINCES.get(one("location - province").lower(), "") or province_of(town)
+    if re.search(r"services|division|department|office|portfolio", site, re.I):
+        site = ""                                        # e.g. 'Scientific Services' is a unit, not a place
     place = ", ".join(x for x in (site if site and site.lower() != town.lower() else "", town) if x)
     closing = ""
     m = re.match(r"(\d{4})/(\d{1,2})/(\d{1,2})", one("closing date"))
@@ -97,7 +99,9 @@ def build_row(ref, page, columns):
            "Permanent" if "permanent" in jt.lower() else "Full-time")
     portfolio = one("portfolio")
     art = "an" if re.match(r"[AEIOU]", title) else "a"
-    intro = f"Rand Water is hiring {art} {title}" + (f" in {portfolio}" if portfolio else "") + \
+    lead = (f"Rand Water is offering the {title}" if re.match(r"(graduate )?(internship|learnership|bursary|apprenticeship)|.*programme", title, re.I)
+            else f"Rand Water is hiring {art} {title}")
+    intro = lead + (f" in {portfolio}" if portfolio else "") + \
             (f", based at {place}" if place else "") + "."
     cat = guess_category(title, EMPLOYER)
     url = f"{BASE}/Jobs/View/{ref}"
