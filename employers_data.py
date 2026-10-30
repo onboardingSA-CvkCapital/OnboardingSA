@@ -179,6 +179,16 @@ GROUPS = [
         "tips": ["Standard Bank never charges application fees."],
     },
     {
+        "slug": "rand-water-jobs", "short": "Rand Water", "name": "Rand Water",
+        "match": r"^Rand Water\b",
+        "logo": "Rand-Water",
+        "official": ("Rand Water careers portal", "https://randwater.erecruit.co/candidateapp/Jobs/Browse"),
+        "intro": ["Rand Water is South Africa's largest bulk water utility, supplying water to Gauteng and parts of "
+                  "Mpumalanga, the Free State and North West."],
+        "apply": ["Apply on the Rand Water careers portal. Each job has its own Apply button."],
+        "tips": ["Rand Water never charges application fees."],
+    },
+    {
         "slug": "correctional-services-jobs", "short": "Correctional Services", "name": "Department of Correctional Services",
         "match": r"^Department of Correctional Services",
         "logo": "government",

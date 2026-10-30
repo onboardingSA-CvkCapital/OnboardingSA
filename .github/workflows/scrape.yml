@@ -66,6 +66,10 @@ jobs:
         run: python scrape_smartrecruiters.py
         continue-on-error: true
 
+      - name: Rand Water
+        run: python scrape_randwater.py
+        continue-on-error: true
+
       - name: DPSA Public Service Vacancy Circular
         run: python scrape_dpsa.py
         continue-on-error: true

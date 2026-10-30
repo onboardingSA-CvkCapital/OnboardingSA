@@ -305,7 +305,7 @@ def render(j):
         sections+='<div class="section"><h2>Requirements</h2><ul>'+li_items(reqs)+'</ul></div>'
 
     foot_meta=""
-    if j.get("reference_no") and not str(j.get("reference_no")).startswith(("OMNIA-", "HEINEKEN-", "TFG-")): foot_meta+=f'<span>Ref: {esc(re.sub(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB)-", "", j.get("reference_no")))}</span>'
+    if j.get("reference_no") and not str(j.get("reference_no")).startswith(("OMNIA-", "HEINEKEN-", "TFG-")): foot_meta+=f'<span>Ref: {esc(re.sub(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB|RW)-", "", j.get("reference_no")))}</span>'
     else: foot_meta+="<span></span>"
     if j.get("posted_date"): foot_meta+=f'<span>Posted {esc(fmt_date(j.get("posted_date")))}</span>'
 

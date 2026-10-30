@@ -12,7 +12,7 @@ COLUMNS = ["id","job_title","employer","category","province","location","employm
            "responsibilities","requirements","official_apply_url","source_url","featured","status"]
 
 MAXCELL = 45000
-COMPANY_REF = re.compile(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB|TFG|OMNIA|HEINEKEN)-")
+COMPANY_REF = re.compile(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB|TFG|OMNIA|HEINEKEN|RW)-")
 
 def _today():
     return (datetime.datetime.utcnow() + datetime.timedelta(hours=2)).date().isoformat()   # SAST
