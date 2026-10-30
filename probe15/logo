@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+
+		<title>Page not found - 404</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta charset="utf-8">
+
+		<link href="https://fonts.googleapis.com" rel="preconnect">
+		<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+
+		<style>
+			
+			:root {
+
+				--global-font-family: 'Roboto', sans-serif;
+				--global-background-stop-a: #ffffff;
+				--global-background-stop-b: #f1f1f1;
+				--global-font-size: 3vh;
+
+				--heading-font-size: 1rem;
+				--heading-font-color: hsla(0, 0%, 0%, 50%);
+				--heading-font-weight: 700;
+				--heading-font-case: uppercase;
+				--heading-font-shadow: 0 0 0 hsla(0, 0%, 0%, 0.15);
+				--element-font-size: 10rem;
+				--element-font-color: hsla(0, 3%, 85%, 0.58);
+				--element-font-weight: 700;
+				--element-font-case: uppercase;
+				--element-font-shadow: -0.005em 0.005em 0 hsla(0, 0%, 100%, 1);
+
+			}
+
+			body,
+			html {
+
+				min-width: 100%;
+				width: 100%;
+				min-height: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				font-size: var(--global-font-size);
+				font-family: var(--global-font-family);
+
+			}
+
+			.pane {
+
+				position: relative;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				
+				background: linear-gradient(to bottom, var(--global-background-stop-a), var(--global-background-stop-b));				
+
+			}
+
+			.pane h2 {
+
+				margin: 0 0 0 0;
+				padding: 0 0 0 0;
+
+				z-index: 2;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translateX(-50%) translateY(-50%);				
+				
+				font-family: inherit;
+				line-height: 1;
+				font-size: var(--heading-font-size);
+				font-weight: var(--heading-font-weight);
+				color: var(--heading-font-color);
+				text-transform: var(--heading-font-case);
+				text-shadow: var(--heading-font-shadow);
+
+			}
+
+			.pane h3 {
+
+				margin: 0 0 0 0;
+				padding: 0 0 0 0;
+
+				z-index: 1;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translateX(-50%) translateY(-50%);		
+
+				font-family: inherit;
+				line-height: 1;
+				font-size: var(--element-font-size);
+				font-weight: var(--element-font-weight);
+				color: var(--element-font-color);
+				text-transform: var(--element-font-case);
+				text-shadow: var(--element-font-shadow);
+
+			}
+
+			@media (min-width:768px) and (max-width:1024px) {
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div id="not-found" class="screen pane">
+			<h2>Oops! That page can't be found</h2>
+			<h3>404</h3>
+		</div>
+
+	</body>
+
+</html>

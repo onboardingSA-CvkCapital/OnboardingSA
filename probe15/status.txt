@@ -1,0 +1,6 @@
+cat 200
+results 200
+first 
+logo text/html
+<img src="/candidateapp/theme/logo.jpg" />
+<img id="imgProcessing" src="../../../Images/loading.gif" style="vertical-align: middle;" />
