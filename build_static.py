@@ -264,7 +264,9 @@ def render(j):
 
     head=HEAD.format(title=title, employer=employer, metadesc=metadesc,
                      canonical=canonical, schema=schema_json, robots=robots)
-    if is_thin:   # adverts with hardly any detail: listed for job seekers, but no ads and kept out of Google
+    # Job pages carry the employer's own advert text, so they never carry ads (AdSense "low value content").
+    # Ads stay on pages with OnboardingSA's own writing: homepage, guides, employer pages.
+    if True:
         head=head.replace('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5134977183220630" crossorigin="anonymous"></script>\n','')
 
     chips=""
