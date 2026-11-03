@@ -102,6 +102,10 @@ jobs:
         run: python build_employers.py
         continue-on-error: true
 
+      - name: Build guides
+        run: python build_guides.py
+        continue-on-error: true
+
       - name: Clean up credentials
         if: always()
         run: rm -f credentials.json
@@ -110,6 +114,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add jobs.json jobs-lite.json jobs-page-1.json index.html sitemap.xml jobs/ employers/
+          git add jobs.json jobs-lite.json jobs-page-1.json index.html sitemap.xml jobs/ employers/ guide-*.html guides/
           git commit -m "Update jobs, static pages, sitemap" || echo "no changes"
           git push
