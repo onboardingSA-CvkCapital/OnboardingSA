@@ -292,8 +292,17 @@ def update_homepage(guides):
     h = open("index.html", encoding="utf-8").read()
     if "<!--GUIDES_START-->" not in h:
         return
-    pick = sorted(guides, key=lambda g: g.get("published", g["updated"]), reverse=True)[:6]
-    cards = "\n      ".join(f'<a class="gcard" href="{g["slug"]}.html"><h3>{esc(g["title"])}</h3><p>{esc(g["lede"][:120])}</p></a>' for g in pick)
+    featured = ["guide-dpsa-circular", "guide-z83-mistakes", "guide-saps-police-trainee",
+                "guide-learnerships", "guide-first-job-cv", "guide-real-job-advert"]
+    by = {g["slug"]: g for g in guides}
+    pick = [by[s] for s in featured if s in by]
+    pick += [g for g in sorted(guides, key=lambda g: g.get("published", g["updated"]), reverse=True) if g not in pick]
+    pick = pick[:6]
+    def short(s):
+        s = s.split(". ")[0].rstrip(".")
+        return s + "."
+    cards = "\n      ".join(f'<a class="gcard" href="{g["slug"]}.html"><h3>{esc(g["title"])}</h3><p>{esc(short(g["lede"]))}</p></a>' for g in pick)
+    cards += '\n      <a class="gcard" href="guide-index.html"><h3>All ' + str(len(guides)) + ' career guides</h3><p>Government jobs, CVs, interviews, learnerships, UIF and staying safe from scams.</p></a>'
     h = re.sub(r"<!--GUIDES_START-->.*?<!--GUIDES_END-->", lambda _m: f"<!--GUIDES_START-->\n      {cards}\n      <!--GUIDES_END-->", h, flags=re.S)
     open("index.html", "w", encoding="utf-8").write(h)
 
