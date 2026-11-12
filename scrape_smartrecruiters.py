@@ -15,7 +15,7 @@ API = "https://api.smartrecruiters.com/v1/companies/{company}/postings"
 SITES = [
     {"employer": "Standard Bank", "company": "StandardBankGroup", "ref": "SB",
      "skip": r"standard bank group is a leading africa-focused|we.re passionate about creating growth in africa"},
-    {"employer": "Valterra Platinum", "company": "ValterraPlatinum1", "ref": "VP",
+    {"employer": "Valterra Platinum", "company": "ValterraPlatinum1", "ref": "VP", "all_countries": True,
      "skip": r"valterra platinum, formerly|valterra platinum is one of the world|what we offer|equal opportunit|zero tolerance to dignity"},
 ]
 REGION = {"GP": "Gauteng", "WC": "Western Cape", "KZN": "KwaZulu-Natal", "NL": "KwaZulu-Natal", "EC": "Eastern Cape",
@@ -43,7 +43,8 @@ def get(s, url):
 def list_jobs(s, cfg):
     out, offset = [], 0
     while offset < 2000:
-        d = get(s, API.format(company=cfg["company"]) + f"?country=za&limit=100&offset={offset}")
+        cq = "" if cfg.get("all_countries") else "country=za&"
+        d = get(s, API.format(company=cfg["company"]) + f"?{cq}limit=100&offset={offset}")
         items = d.get("content") or []
         out += items
         offset += 100
@@ -78,7 +79,11 @@ def build_row(cfg, j, columns):
     title = re.sub(r"\s+", " ", j.get("name") or "").strip()
     loc = j.get("location") or {}
     city = (loc.get("city") or "").strip()
-    province = REGION.get((loc.get("region") or "").upper(), "") or province_of(city)
+    country = (loc.get("country") or "za").lower()
+    COUNTRY = {"zw": "Zimbabwe", "bw": "Botswana", "na": "Namibia", "zm": "Zambia", "mz": "Mozambique", "gb": "United Kingdom",
+               "sg": "Singapore", "cn": "China", "ls": "Lesotho", "sz": "Eswatini"}
+    province = (REGION.get((loc.get("region") or "").upper(), "") or province_of(city)) if country == "za" else \
+        COUNTRY.get(country, country.upper())
     place = ", ".join(x for x in (city, province) if x)
     te = ((j.get("typeOfEmployment") or {}).get("label") or "")
     typ = ("Internship" if re.search(r"intern|graduate|learnership|bursar|apprentice|trainee", title, re.I) else
@@ -108,7 +113,7 @@ def build_row(cfg, j, columns):
 
 def scrape_site(s, cfg, columns):
     items = list_jobs(s, cfg)
-    print(f"{cfg['employer']}: {len(items)} South African jobs on SmartRecruiters", file=sys.stderr)
+    print(f"{cfg['employer']}: {len(items)} jobs on SmartRecruiters", file=sys.stderr)
     rows, old = [], (datetime.date.today() - datetime.timedelta(days=120)).isoformat()
     for it in items:
         try:

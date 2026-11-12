@@ -15,6 +15,9 @@ try:
 except Exception:
     province_of = lambda loc: ""
 
+FOREIGN = {"Zimbabwe": "ZW", "Botswana": "BW", "Namibia": "NA", "Zambia": "ZM", "Mozambique": "MZ", "United Kingdom": "GB",
+           "Singapore": "SG", "China": "CN", "Lesotho": "LS", "Eswatini": "SZ"}
+
 def base_salary(text):
     """'R487,197 – R573,897 a year (Level 9)' -> schema.org MonetaryAmount; None when there's no number."""
     t = (text or "").replace("\u00a0", " ")
@@ -250,7 +253,7 @@ def render(j):
         "hiringOrganization":{"@type":"Organization","name":j.get("employer","")},
         "jobLocation":{"@type":"Place","address":{k:v for k,v in {"@type":"PostalAddress",
             "addressLocality":j.get("location","") or j.get("province",""),
-            "addressRegion":region,"addressCountry":"ZA"}.items() if v}},
+            "addressRegion":region if j.get("province","") not in FOREIGN else "","addressCountry":FOREIGN.get(j.get("province",""),"ZA")}.items() if v}},
         "baseSalary":base_salary(j.get("salary","")),
         "directApply":False,
     }
