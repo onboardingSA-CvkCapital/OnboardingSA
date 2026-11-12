@@ -1,0 +1,7 @@
+home 200 https://www.valterraplatinum.com/
+https://www.valterraplatinum.com/favicon.ico
+https://www.valterraplatinum.com/wp-content/themes/valterra/assets/images/icons/valterra-logo-colour.svg
+https://www.valterraplatinum.com/wp-content/themes/valterra/assets/images/icons/valterra-logo.svg
+logo1 200 image/vnd.microsoft.icon https://www.valterraplatinum.com/favicon.ico
+logo2 200 image/svg+xml https://www.valterraplatinum.com/wp-content/themes/valterra/assets/images/icons/valterra-logo-colour.svg
+logo3 200 image/svg+xml https://www.valterraplatinum.com/wp-content/themes/valterra/assets/images/icons/valterra-logo.svg
