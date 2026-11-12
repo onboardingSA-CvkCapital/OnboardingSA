@@ -7,7 +7,7 @@ Company careers sites on SmartRecruiters, e.g. Standard Bank Group:
 Only South African posts. Fixed rules, no AI. Never fails the daily run.
 Usage:  python scrape_smartrecruiters.py [--dry-run]
 """
-import re, sys, json, time, argparse, datetime
+import re, sys, json, time, html, argparse, datetime
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 API = "https://api.smartrecruiters.com/v1/companies/{company}/postings"
@@ -15,9 +15,15 @@ API = "https://api.smartrecruiters.com/v1/companies/{company}/postings"
 SITES = [
     {"employer": "Standard Bank", "company": "StandardBankGroup", "ref": "SB",
      "skip": r"standard bank group is a leading africa-focused|we.re passionate about creating growth in africa"},
+    {"employer": "Valterra Platinum", "company": "ValterraPlatinum1", "ref": "VP",
+     "skip": r"valterra platinum, formerly|valterra platinum is one of the world|what we offer|equal opportunit|zero tolerance to dignity"},
 ]
 REGION = {"GP": "Gauteng", "WC": "Western Cape", "KZN": "KwaZulu-Natal", "NL": "KwaZulu-Natal", "EC": "Eastern Cape",
-          "FS": "Free State", "NW": "North West", "NC": "Northern Cape", "LP": "Limpopo", "MP": "Mpumalanga"}
+          "FS": "Free State", "NW": "North West", "NC": "Northern Cape", "LP": "Limpopo", "MP": "Mpumalanga",
+          "GAUTENG": "Gauteng", "WESTERN CAPE": "Western Cape", "KWAZULU-NATAL": "KwaZulu-Natal", "KWAZULU NATAL": "KwaZulu-Natal",
+          "EASTERN CAPE": "Eastern Cape", "FREE STATE": "Free State", "NORTH WEST": "North West", "NORTHERN CAPE": "Northern Cape",
+          "LIMPOPO": "Limpopo", "MPUMALANGA": "Mpumalanga"}
+HEAD = re.compile(r"^(job )?(key )?responsibilit\w*( include)?\b.*:?$|^(key )?duties\b.*:?$", re.I)
 
 
 def get(s, url):
@@ -65,6 +71,10 @@ def build_row(cfg, j, columns):
             about = lines
     _, r2, req = sections("<p><b>Requirements</b></p>" + txt("qualifications") + txt("additionalInformation"), skip)
     req = req0 + r2 + req if not req0 else req0 + req
+    clean = lambda xs: [y for y in (re.sub(r"\s+", " ", html.unescape(x)).strip() for x in xs) if y]
+    about = [x for x in clean(about) if not HEAD.match(x)]
+    resp, req = clean(resp), [re.sub(r"\s+Section:?$", ":", x) for x in clean(req)]
+    about = [x for x in about if x not in resp]
     title = re.sub(r"\s+", " ", j.get("name") or "").strip()
     loc = j.get("location") or {}
     city = (loc.get("city") or "").strip()

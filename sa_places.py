@@ -18,7 +18,7 @@ TOWNS = {
                    "Bethal", "Piet Retief", "Mkhondo", "Lydenburg", "Barberton", "Delmas", "Hazyview",
                    "Sabie", "Mashishing", "KwaMhlanga", "Kwa- Mhlanga", "Kwa-Mhlanga", "Dryden"],
     "Limpopo": ["Lephalale", "Ellisras", "Polokwane", "Matimba", "Medupi", "Tzaneen", "Thohoyandou",
-                "Mokopane", "Musina", "Phalaborwa", "Bela-Bela", "Modimolle", "Giyani", "Louis Trichardt"],
+                "Mokopane", "Musina", "Phalaborwa", "Bela-Bela", "Modimolle", "Giyani", "Louis Trichardt", "Burgersfort", "Thabazimbi", "Steelpoort", "Lephalale"],
     "Free State": ["Deneysville", "Dealesville", "Bloemfontein", "Welkom", "Kroonstad", "Bethlehem",
                    "Sasolburg", "Parys", "Harrismith", "Phuthaditjhaba", "Virginia", "Wesselsbron",
                    "Wesselsbon", "Odendaalsrus", "Viljoenskroon"],

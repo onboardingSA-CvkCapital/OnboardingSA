@@ -179,6 +179,15 @@ GROUPS = [
         "tips": ["Standard Bank never charges application fees."],
     },
     {
+        "slug": "valterra-platinum-jobs", "short": "Valterra Platinum", "name": "Valterra Platinum",
+        "match": r"^Valterra Platinum\b",
+        "logo": "Valterra-Platinum",
+        "official": ("Valterra Platinum careers site", "https://careers.smartrecruiters.com/ValterraPlatinum1"),
+        "intro": ["Valterra Platinum, formerly Anglo American Platinum, mines, smelts and refines platinum group metals, with operations mainly in Limpopo and North West."],
+        "apply": ["Apply on the Valterra Platinum careers site. Each job has its own Apply button."],
+        "tips": ["Valterra Platinum never charges application fees."],
+    },
+    {
         "slug": "rand-water-jobs", "short": "Rand Water", "name": "Rand Water",
         "match": r"^Rand Water\b",
         "logo": "Rand-Water",

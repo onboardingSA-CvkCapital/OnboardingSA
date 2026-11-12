@@ -62,7 +62,7 @@ jobs:
         run: python scrape_oracle.py
         continue-on-error: true
 
-      - name: Standard Bank (SmartRecruiters)
+      - name: Standard Bank and Valterra Platinum (SmartRecruiters)
         run: python scrape_smartrecruiters.py
         continue-on-error: true
 
