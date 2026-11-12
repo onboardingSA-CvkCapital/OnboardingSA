@@ -10,24 +10,25 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
-      - run: pip install requests gspread google-auth
-      - run: pip install playwright && python -m playwright install --with-deps chromium
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe16
+          mkdir -p probe17
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          B="https://randwater.erecruit.co/candidateapp"
-          curl -sSL -A "$UA" -o probe16/d1.html -w "d1 %{http_code}\n" "$B/Jobs/View/RAN261029-9" > probe16/status.txt
-          curl -sSL -A "$UA" -o probe16/cat2.html -w "cat2 %{http_code}\n" "$B/Jobs/Categories/Artisans/cb0ec670979f42909303d65b786312b8" >> probe16/status.txt
-          U=$(grep -o "Jobs/View/[A-Z0-9-]*" probe16/cat2.html | head -1)
-          curl -sSL -A "$UA" -o probe16/d2.html -w "d2 %{http_code} $U\n" "$B/$U" >> probe16/status.txt
-          curl -sSL -A "$UA" -o probe16/logo.jpg -w "logo %{content_type}\n" "$B/theme/logo.jpg" >> probe16/status.txt
-          cat probe16/status.txt
+          A="https://api.smartrecruiters.com/v1/companies/ValterraPlatinum1/postings"
+          curl -sSL -A "$UA" -o probe17/list.json -w "list %{http_code}\n" "$A?limit=100" > probe17/status.txt
+          curl -sSL -A "$UA" -o probe17/listza.json -w "listza %{http_code}\n" "$A?country=za&limit=100" >> probe17/status.txt
+          n=0
+          for id in $(python3 -c "import json;print(' '.join(str(x['id']) for x in json.load(open('probe17/list.json')).get('content',[])[:4]))"); do
+            n=$((n+1)); curl -sSL -A "$UA" -o probe17/d$n.json -w "d$n %{http_code}\n" "$A/$id" >> probe17/status.txt
+          done
+          curl -sSL -A "$UA" -o probe17/page.html -w "page %{http_code}\n" "https://careers.smartrecruiters.com/ValterraPlatinum1" >> probe17/status.txt
+          L=$(grep -oE 'https://[^"'"'"' ]*(logo|c\.smartrecruiters\.com)[^"'"'"' ]*\.(png|jpg|jpeg|svg)' probe17/page.html | head -3)
+          echo "$L" >> probe17/status.txt
+          i=0; for u in $L; do i=$((i+1)); curl -sSL -A "$UA" -o probe17/logo$i.${u##*.} -w "logo$i %{http_code} %{content_type}\n" "$u" >> probe17/status.txt; done
+          cat probe17/status.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe16; git commit -m "probe rand water 3" || true; git push
+          git add probe17; git commit -m "probe valterra" || true; git push
