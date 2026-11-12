@@ -1,0 +1,13 @@
+list 200
+listza 200
+d1 200
+d2 200
+d3 200
+d4 200
+page 200
+https://av-www.smartrecruiters.com/sr-logo/1.0.19/winston/favicon.svg
+https://av-www.smartrecruiters.com/sr-logo/1.0.19/winston/apple-touch-icon.png
+https://av-www.smartrecruiters.com/sr-logo/1.0.19/sr-sap/wordmark.svg
+logo1 200 image/svg+xml
+logo2 200 image/png
+logo3 200 image/svg+xml
