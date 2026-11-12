@@ -13,22 +13,16 @@ jobs:
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe17
+          mkdir -p probe18
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          A="https://api.smartrecruiters.com/v1/companies/ValterraPlatinum1/postings"
-          curl -sSL -A "$UA" -o probe17/list.json -w "list %{http_code}\n" "$A?limit=100" > probe17/status.txt
-          curl -sSL -A "$UA" -o probe17/listza.json -w "listza %{http_code}\n" "$A?country=za&limit=100" >> probe17/status.txt
-          n=0
-          for id in $(python3 -c "import json;print(' '.join(str(x['id']) for x in json.load(open('probe17/list.json')).get('content',[])[:4]))"); do
-            n=$((n+1)); curl -sSL -A "$UA" -o probe17/d$n.json -w "d$n %{http_code}\n" "$A/$id" >> probe17/status.txt
-          done
-          curl -sSL -A "$UA" -o probe17/page.html -w "page %{http_code}\n" "https://careers.smartrecruiters.com/ValterraPlatinum1" >> probe17/status.txt
-          L=$(grep -oE 'https://[^"'"'"' ]*(logo|c\.smartrecruiters\.com)[^"'"'"' ]*\.(png|jpg|jpeg|svg)' probe17/page.html | head -3)
-          echo "$L" >> probe17/status.txt
-          i=0; for u in $L; do i=$((i+1)); curl -sSL -A "$UA" -o probe17/logo$i.${u##*.} -w "logo$i %{http_code} %{content_type}\n" "$u" >> probe17/status.txt; done
-          cat probe17/status.txt
+          curl -sSL -A "$UA" -o probe18/home.html -w "home %{http_code} %{url_effective}\n" "https://www.valterraplatinum.com/" > probe18/status.txt
+          L=$(grep -oiE '(src|href|content)="[^"]*(logo|og-image|favicon|apple-touch)[^"]*"' probe18/home.html | sed -E 's/^[a-z]+="//I; s/"$//' | sort -u | head -8)
+          echo "$L" >> probe18/status.txt
+          i=0; for u in $L; do i=$((i+1)); case "$u" in http*) U="$u";; //*) U="https:$u";; /*) U="https://www.valterraplatinum.com$u";; *) U="https://www.valterraplatinum.com/$u";; esac
+            curl -sSL -A "$UA" -o "probe18/logo$i.${U##*.}" -w "logo$i %{http_code} %{content_type} $U\n" "$U" >> probe18/status.txt; done
+          cat probe18/status.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe17; git commit -m "probe valterra" || true; git push
+          git add probe18; git commit -m "probe valterra logo" || true; git push
