@@ -53,6 +53,37 @@ def list_jobs(s, cfg):
     return out
 
 
+MONTHS = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
+
+
+def parse_date(s):
+    """'19/11/2026', '2026-11-19', '18 November 2026', '18 Nov 2026' -> '2026-11-19'."""
+    s = (s or "").strip()
+    m = re.search(r"\b(20\d\d)-(\d\d)-(\d\d)\b", s)
+    if m:
+        y, mo, d = map(int, m.groups())
+    else:
+        m = re.search(r"\b(\d{1,2})[/.\-](\d{1,2})[/.\-](20\d\d)\b", s)
+        if m:
+            d, mo, y = map(int, m.groups())
+        else:
+            m = re.search(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3})[a-z]*,?\s+(20\d\d)\b", s)
+            if not m or m.group(2).lower() not in MONTHS:
+                return ""
+            d, mo, y = int(m.group(1)), MONTHS[m.group(2).lower()], int(m.group(3))
+    try:
+        return datetime.date(y, mo, d).isoformat()
+    except ValueError:
+        return ""
+
+
+def custom(j, pattern):
+    for f in j.get("customField") or []:
+        if re.search(pattern, f.get("fieldLabel") or "", re.I):
+            return (f.get("valueLabel") or "").strip()
+    return ""
+
+
 def build_row(cfg, j, columns):
     from sa_places import province_of
     from scrape_dpsa import guess_category
@@ -85,13 +116,18 @@ def build_row(cfg, j, columns):
     province = (REGION.get((loc.get("region") or "").upper(), "") or province_of(city)) if country == "za" else \
         COUNTRY.get(country, country.upper())
     place = ", ".join(x for x in (city, province) if x)
-    te = ((j.get("typeOfEmployment") or {}).get("label") or "")
+    te = ((j.get("typeOfEmployment") or {}).get("label") or "") + " " + custom(j, r"employment class|contract type")
     typ = ("Internship" if re.search(r"intern|graduate|learnership|bursar|apprentice|trainee", title, re.I) else
            "Contract" if re.search(r"contract|temporary|fixed", te + " " + title, re.I) else
            "Part-time" if "part" in te.lower() else "Full-time")
     art = "an" if re.match(r"[AEIOU]", title) else "a"
     intro = f"{cfg['employer']} is hiring {art} {title}" + (f", based in {place}" if place else "") + "."
     cat = guess_category(title, cfg["employer"])
+    if cat in ("", "Government", "Other", "General"):
+        cat = custom(j, r"^discipline$|job family") or ((j.get("function") or {}).get("label") or "") or cat
+    alltext = " ".join(txt(k) for k in ("jobDescription", "qualifications", "additionalInformation"))
+    closing = parse_date(custom(j, r"clos\w* date|deadline|expir")) or \
+        parse_date((re.search(r"(?i)clos\w*\s*date\s*(?:<[^>]+>|\s|:|&nbsp;|&#xa0;)*([^<]{6,40})", alltext) or [None, ""])[1])
     url = j.get("postingUrl") or j.get("applyUrl") or ""
     row = {k: "" for k in columns}
     row.update({
@@ -100,7 +136,7 @@ def build_row(cfg, j, columns):
         "location": city, "province": province,
         "employment_type": typ,
         "posted_date": (j.get("releasedDate") or "")[:10],
-        "closing_date": "",
+        "closing_date": closing,
         "reference_no": f"{cfg['ref']}-{j.get('refNumber') or j.get('id')}",
         "about_role": "\n".join([intro] + about[:10]),
         "responsibilities": "\n".join(resp[:80]),
@@ -152,7 +188,7 @@ def main():
             print(f"{cfg['employer']}: {len(rows)} jobs", file=sys.stderr)
             continue
         try:
-            new, upd = sheet_writer.upsert_jobs(rows, update_fields=("about_role", "responsibilities", "requirements"))
+            new, upd = sheet_writer.upsert_jobs(rows, update_fields=("about_role", "responsibilities", "requirements", "closing_date", "category", "employment_type"))
             gone = sheet_writer.retire_missing(cfg["employer"], {r["reference_no"] for r in rows}) if rows else 0
             print(f"{cfg['employer']}: found {len(rows)}, wrote {new} new, updated {upd}, closed {gone} no longer listed.", file=sys.stderr)
         except Exception as e:
