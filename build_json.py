@@ -52,6 +52,8 @@ def main():
         r["job_title"]=clean_title(r.get("job_title",""))
         if not r.get("province"):
             r["province"]=province_of(r.get("location",""))   # e.g. Eskom gives only the town
+        if not r.get("salary"):
+            r["salary"]="Market related"                   # company adverts that don't publish pay
         r["id"]=stable_id(r.get("reference_no",""), title, r.get("employer",""))
         out.append(privacy_clean.clean_job(r))   # never publish personal contact details
     with open("jobs.json","w",encoding="utf-8") as f:
