@@ -116,4 +116,8 @@ jobs:
           git config user.email "actions@github.com"
           git add jobs.json jobs-lite.json jobs-page-1.json index.html sitemap.xml jobs/ employers/ guide-*.html guides/
           git commit -m "Update jobs, static pages, sitemap" || echo "no changes"
-          git push
+          for i in 1 2 3; do
+            git push && break
+            git pull --rebase -X theirs || { git rebase --abort; exit 1; }
+            sleep 5
+          done
