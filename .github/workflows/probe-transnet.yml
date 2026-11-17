@@ -14,7 +14,7 @@ jobs:
         shell: bash {0}
         run: |
           mkdir -p probe19
-          pip install -q playwright==1.47.0 && python -m playwright install --with-deps chromium >/dev/null 2>&1
+          python3 -m pip install -q --break-system-packages playwright==1.47.0 && python3 -m playwright install --with-deps chromium >/dev/null 2>&1
           cat > shot.py <<'PY'
           import time
           from playwright.sync_api import sync_playwright
@@ -28,7 +28,7 @@ jobs:
                   open(f"probe19/{k}.txt", "w").write(pg.url + "\n\n" + pg.inner_text("body"))
               b.close()
           PY
-          python shot.py; ls -la probe19
+          python3 shot.py > probe19/log.txt 2>&1; ls -la probe19
       - name: Commit
         shell: bash {0}
         run: |
