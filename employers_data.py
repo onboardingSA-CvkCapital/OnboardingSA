@@ -179,6 +179,15 @@ GROUPS = [
         "tips": ["Standard Bank never charges application fees."],
     },
     {
+        "slug": "outsurance-jobs", "short": "OUTsurance", "name": "OUTsurance",
+        "match": r"^OUTsurance\b",
+        "logo": "OUTsurance",
+        "official": ("OUTsurance careers site", "https://careers.smartrecruiters.com/OUTsurance"),
+        "intro": ["OUTsurance is a South African short-term insurer with offices in Centurion and other cities, and also hires for Youi, its Australian sister company, from South Africa."],
+        "apply": ["Apply on the OUTsurance careers site. Each job has its own Apply button."],
+        "tips": ["Sales and advice roles often ask for FAIS accreditation or the RE5 exam.", "OUTsurance never charges application fees."],
+    },
+    {
         "slug": "valterra-platinum-jobs", "short": "Valterra Platinum", "name": "Valterra Platinum",
         "match": r"^Valterra Platinum\b",
         "logo": "Valterra-Platinum",

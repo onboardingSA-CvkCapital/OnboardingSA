@@ -15,6 +15,12 @@ API = "https://api.smartrecruiters.com/v1/companies/{company}/postings"
 SITES = [
     {"employer": "Standard Bank", "company": "StandardBankGroup", "ref": "SB",
      "skip": r"standard bank group is a leading africa-focused|we.re passionate about creating growth in africa"},
+    {"employer": "OUTsurance", "company": "OUTsurance", "ref": "OUT", "all_countries": True,
+     "skip": r"propelling the south african insurance|youi prides itself|youi is a company within|challenged the australian insurance|"
+             r"commitment to being a great company|you can become a part of our success|what do you get out|voted top employer|"
+             r"people vision is to be a great company|continued success can be attributed|keen to grow your career in a vibrant|"
+             r"our value of human|inclusive and diverse workplace|persons with disabilities|employment equity|equal opportunities|"
+             r"align their personal work values|designated groups"},
     {"employer": "Valterra Platinum", "company": "ValterraPlatinum1", "ref": "VP", "all_countries": True,
      "skip": r"valterra platinum, formerly|valterra platinum is one of the world|what we offer|equal opportunit|zero tolerance to dignity"},
 ]
@@ -101,8 +107,9 @@ def build_row(cfg, j, columns):
             about = [l for l in lines if l not in resp]
         else:
             about = lines
-    _, r2, req = sections("<p><b>Requirements</b></p>" + txt("qualifications") + txt("additionalInformation"), skip)
-    req = req0 + r2 + req if not req0 else req0 + req
+    _, q1, q2 = sections("<p><b>Requirements</b></p>" + txt("qualifications"), skip)
+    _, a1, a2 = sections("<p><b>Requirements</b></p>" + txt("additionalInformation"), skip)
+    req = q1 + q2 + req0 + a1 + a2                   # formal qualifications first, then skills, then extras
     clean = lambda xs: [y for y in (re.sub(r"\s+", " ", html.unescape(x)).strip() for x in xs) if y]
     about = [x for x in clean(about) if not HEAD.match(x)]
     resp, req = clean(resp), [re.sub(r"\s+Section:?$", ":", x) for x in clean(req)]

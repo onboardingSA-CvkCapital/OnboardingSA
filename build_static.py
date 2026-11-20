@@ -280,6 +280,8 @@ def render(j):
         cd=esc(fmt_date(j.get("closing_date")))
         extra=(" · closes today" if dl==0 else f" · {dl} day{'s' if dl!=1 else ''} left") if (soon and dl is not None and dl>=0) else ""
         chips+=f'<span class="chip {"close-soon" if soon else ""}">Closes {cd}{extra}</span>'
+    else:
+        chips+='<span class="chip">Open until filled</span>'
 
     apply=""
     apply_url=j.get("official_apply_url","")
@@ -310,7 +312,7 @@ def render(j):
         sections+='<div class="section"><h2>Requirements</h2><ul>'+li_items(reqs)+'</ul></div>'
 
     foot_meta=""
-    if j.get("reference_no") and not str(j.get("reference_no")).startswith(("OMNIA-", "HEINEKEN-", "TFG-")): foot_meta+=f'<span>Ref: {esc(re.sub(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB|VP|RW)-", "", j.get("reference_no")))}</span>'
+    if j.get("reference_no") and not str(j.get("reference_no")).startswith(("OMNIA-", "HEINEKEN-", "TFG-")): foot_meta+=f'<span>Ref: {esc(re.sub(r"^(TRANSNET|AECI|CAPITEC|SAB|PNP|FRB|SB|VP|OUT|RW)-", "", j.get("reference_no")))}</span>'
     else: foot_meta+="<span></span>"
     if j.get("posted_date"): foot_meta+=f'<span>Posted {esc(fmt_date(j.get("posted_date")))}</span>'
 

@@ -224,6 +224,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
     <a href="employers/standard-bank-jobs.html" title="Standard Bank jobs"><img src="Standard-Bank.png" alt="Standard Bank jobs" width="58" height="58"></a>
     <a href="employers/capitec-jobs.html" title="Capitec jobs"><img class="wide" src="logos/Capitec.png" alt="Capitec jobs"></a>
     <a href="employers/pick-n-pay-jobs.html" title="Pick n Pay jobs"><img class="wide" src="logos/Pick-n-Pay.png" alt="Pick n Pay jobs"></a>
+    <a href="employers/outsurance-jobs.html" title="OUTsurance jobs"><img src="OUTsurance.png" alt="OUTsurance jobs" width="58" height="58"></a>
     <a href="employers/tfg-jobs.html" title="TFG jobs"><img src="TFG.png" alt="TFG jobs" width="58" height="58"></a>
     <a href="employers/sab-jobs.html" title="SAB jobs"><img src="SAB.png" alt="SAB jobs" width="58" height="58"></a>
     <a href="employers/heineken-jobs.html" title="Heineken jobs"><img class="wide" src="logos/Heineken.png" alt="Heineken jobs"></a>
@@ -414,7 +415,8 @@ const ALIASES=[
   [/^department of health/i,'DOH'],
   [/social development/i,'DSD'],
   [/national treasury/i,'NT'],
-  [/valterra/i,'Amplats Anglo American Platinum mining mine']
+  [/valterra/i,'Amplats Anglo American Platinum mining mine'],
+  [/outsurance/i,'OUT insurance Youi']
 ];
 function aliasOf(emp){ return ALIASES.filter(a=>a[0].test(emp||'')).map(a=>a[1]).join(' '); }
 function loadFilters(){
@@ -465,7 +467,7 @@ function render(list){
   el.innerHTML=slice.map(j=>{
     const dl=daysLeft(j.closing_date);
     const soon=dl!==null&&dl<=7;
-    const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl===0?'closes today':dl+(dl===1?' day left':' days left')}`:''}`:'';
+    const closeTxt=j.closing_date?`Closes ${fmtDate(j.closing_date)}${soon?` · ${dl<0?'closed':dl===0?'closes today':dl+(dl===1?' day left':' days left')}`:''}`:'Open until filled';
     return `<a class="jobcard" href="jobs/${j.id.replace(/[^A-Za-z0-9_-]/g,'-')}.html" aria-label="${esc(j.job_title)} at ${esc(j.employer)}">
       ${j.featured==='yes'?'<span class="badge">★ Featured</span>':''}
       <div class="card-head">
