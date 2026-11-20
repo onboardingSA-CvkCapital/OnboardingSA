@@ -1,0 +1,15 @@
+list 200
+d1 200
+d2 200
+d3 200
+d4 200
+d5 200
+home 200 https://www.outsurance.co.za/
+/favicon.ico
+/globalassets/images/logo.svg
+/globalassets/images/mobile-logo2.svg
+https://www.outsurance.co.za/globalassets/images/logo.svg
+logo1 200 image/x-icon https://www.outsurance.co.za/favicon.ico
+logo2 200 image/svg+xml https://www.outsurance.co.za/globalassets/images/logo.svg
+logo3 200 image/svg+xml https://www.outsurance.co.za/globalassets/images/mobile-logo2.svg
+logo4 200 image/svg+xml https://www.outsurance.co.za/globalassets/images/logo.svg
