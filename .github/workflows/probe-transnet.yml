@@ -10,30 +10,25 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
       - name: Fetch
         shell: bash {0}
         run: |
-          mkdir -p probe19
-          pip install -q playwright==1.47.0 > probe19/pip.txt 2>&1; python -m playwright install --with-deps chromium >> probe19/pip.txt 2>&1
-          cat > shot.py <<'PY'
-          import time
-          from playwright.sync_api import sync_playwright
-          U = {"projects": "https://eskomcareers.ci.hr/applicant/index.php?controller=Listings&method=view&listingid=9775ce5b-2d5f-4a7b-a76c-c47b5867f03f"}
-          with sync_playwright() as p:
-              b = p.chromium.launch()
-              pg = b.new_page(viewport={"width": 1100, "height": 1400}, user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36")
-              for k, u in U.items():
-                  pg.goto(u, wait_until="networkidle", timeout=90000); time.sleep(4)
-                  pg.screenshot(path=f"probe19/{k}.png", full_page=True)
-                  open(f"probe19/{k}.txt", "w").write(pg.url + "\n\n" + pg.inner_text("body"))
-              b.close()
-          PY
-          python shot.py > probe19/log.txt 2>&1; ls -la probe19
+          mkdir -p probe20
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
+          A="https://api.smartrecruiters.com/v1/companies/OUTsurance/postings"
+          curl -sSL -A "$UA" -o probe20/list.json -w "list %{http_code}\n" "$A?limit=100" > probe20/status.txt
+          n=0
+          for id in $(python3 -c "import json;c=json.load(open('probe20/list.json')).get('content',[]);print(' '.join(str(x['id']) for x in c[:3]+c[-2:]))"); do
+            n=$((n+1)); curl -sSL -A "$UA" -o probe20/d$n.json -w "d$n %{http_code}\n" "$A/$id" >> probe20/status.txt
+          done
+          curl -sSL -A "$UA" -o probe20/home.html -w "home %{http_code} %{url_effective}\n" "https://www.outsurance.co.za/" >> probe20/status.txt
+          L=$(grep -oiE '(src|href|content)="[^"]*(logo|og-image|apple-touch|favicon)[^"]*"' probe20/home.html | sed -E 's/^[a-z]+="//I; s/"$//' | sort -u | head -10)
+          echo "$L" >> probe20/status.txt
+          i=0; for u in $L; do i=$((i+1)); case "$u" in http*) U="$u";; //*) U="https:$u";; /*) U="https://www.outsurance.co.za$u";; *) U="https://www.outsurance.co.za/$u";; esac
+            curl -sSL -A "$UA" -o "probe20/logo$i.${U##*.}" -w "logo$i %{http_code} %{content_type} $U\n" "$U" >> probe20/status.txt; done
+          cat probe20/status.txt
       - name: Commit
         shell: bash {0}
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add probe19; git commit -m "probe eskom advert" || true; git push
+          git add probe20; git commit -m "probe outsurance" || true; git push
