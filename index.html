@@ -34,6 +34,7 @@ header.site{position:sticky;top:0;z-index:40;background:var(--navy);border-botto
 .nav{display:flex;align-items:center;gap:26px}
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:#C9D4E8;text-decoration:none}
 .nav a:hover{color:#fff}
+.acct-t{display:none}
 .burger{display:none;width:42px;height:42px;border:1px solid rgba(255,255,255,.25);border-radius:10px;background:transparent;cursor:pointer;place-items:center;padding:0}
 .burger span{display:block;width:18px;height:2px;background:#fff;box-shadow:0 6px 0 #fff,0 -6px 0 #fff}
 .search-band{background:var(--navy);color:#fff}
@@ -130,6 +131,7 @@ main{padding:20px 0 60px}
   .nav a{color:var(--navy);padding:14px 16px;border-radius:10px;font-size:16px}
   .nav a:hover{background:var(--tint);color:var(--navy)}
   .burger{display:grid}
+  .acct-t{display:inline}
 }
 @media(max-width:640px){
   .search-band .wrap{padding-top:24px;padding-bottom:28px}
@@ -187,7 +189,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
       <a href="employers/index.html">Employers</a>
       <a href="guide-index.html">Guides</a>
       <a href="about.html">About</a>
-      <a href="account.html">My account</a>
+      <a href="account.html" aria-label="My account" title="My account" style="display:inline-flex;align-items:center;vertical-align:middle;gap:10px"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3.2"/><path d="M6.3 18.6c1.3-2.3 3.3-3.5 5.7-3.5s4.4 1.2 5.7 3.5"/></svg><span class="acct-t">My account</span></a>
     </nav>
   </div>
 </header>
