@@ -109,12 +109,6 @@ select:disabled{background-color:#F4F6FA;cursor:default}
   </form>
 </section>
 
-<section id="vMatches" hidden>
-  <div class="top"><div><h1>Jobs for you</h1><p id="mSub"></p></div><button type="button" class="sec" id="editBtn">Edit profile</button></div>
-  <ul class="jl" id="mList"></ul>
-  <p class="empty" id="mEmpty" hidden></p>
-</section>
-
 <section id="vProfile" hidden>
   <div class="top"><div><h1>My profile</h1><p id="who"></p></div><button class="link" type="button" id="outBtn">Sign out</button></div>
   <form id="pForm" novalidate>
@@ -211,13 +205,12 @@ let roles = [];
 const roleSel = $("roleAdd");
 function buildRoleSel() {
   roleSel.innerHTML = "";
-  roleSel.add(new Option(roles.length >= 10 ? "10 job titles chosen" : "Add a job title", ""));
+  roleSel.add(new Option("Add a job title", ""));
   for (const [g, list] of Object.entries(ROLES)) {
     const og = document.createElement("optgroup"); og.label = g;
     list.forEach(r => { const o = new Option(r, r); o.disabled = roles.includes(r); og.appendChild(o); });
     roleSel.appendChild(og);
   }
-  roleSel.disabled = roles.length >= 10;
   const box = $("pills"); box.innerHTML = "";
   roles.forEach(r => {
     const s = document.createElement("span"); s.className = "pill"; s.textContent = r;
@@ -226,11 +219,11 @@ function buildRoleSel() {
     s.appendChild(x); box.appendChild(s);
   });
 }
-roleSel.addEventListener("change", () => { const v = roleSel.value; if (v && !roles.includes(v) && roles.length < 10) roles.push(v); buildRoleSel(); });
+roleSel.addEventListener("change", () => { const v = roleSel.value; if (v && !roles.includes(v)) roles.push(v); buildRoleSel(); });
 buildRoleSel();
 
 // views
-function show(v) { ["vLoading","vAuth","vProfile","vMatches"].forEach(x => $(x).hidden = x !== v); }
+function show(v) { ["vLoading","vAuth","vProfile"].forEach(x => $(x).hidden = x !== v); }
 let mode = "in";
 function setMode(m) {
   mode = m;
@@ -291,7 +284,7 @@ let user = null, pendingName = "", saved = {};
 function setForm(d) {
   FIELDS_IDS.forEach(id => { if (id !== "town") $(id).value = d[id] || ""; });
   setTowns(d.province || "", d.town || "");
-  roles = Array.isArray(d.roles) ? d.roles.slice(0, 10) : [];
+  roles = Array.isArray(d.roles) ? d.roles.slice() : [];
   buildRoleSel();
   $("alerts").checked = !!d.alerts;
 }
@@ -313,10 +306,11 @@ onAuthStateChanged(auth, async u => {
   $("who").textContent = u.email;
   show("vLoading");
   await loadProfile();
-  if (saved.roles && saved.roles.length && location.hash !== "#profile") await showMatches(""); else show("vProfile");
+  if (saved.roles && saved.roles.length && location.hash !== "#profile") { location.replace("index.html#for-you"); return; }
+  show("vProfile");
 });
 $("outBtn").onclick = () => { $("aPass").value = ""; signOut(auth); };
-$("cancelBtn").onclick = () => { setForm(saved); if (saved.roles && saved.roles.length) { history.replaceState(null, "", location.pathname); showMatches(""); } };
+$("cancelBtn").onclick = () => { setForm(saved); if (saved.roles && saved.roles.length) location.href = "index.html#for-you"; };
 $("pForm").addEventListener("submit", async e => {
   e.preventDefault();
   const d = {};
@@ -329,61 +323,16 @@ $("pForm").addEventListener("submit", async e => {
     await setDoc(doc(db, "profiles", user.uid), d, { merge: true });
     saved = { ...saved, ...d, createdAt: saved.createdAt || true };
     if (d.fullName && d.fullName !== user.displayName) updateProfile(user, { displayName: d.fullName }).then(() => window.dispatchEvent(new Event("osa-name"))).catch(() => {});
-    window.scrollTo(0, 0);
-    history.replaceState(null, "", location.pathname);
-    await showMatches("Profile saved. ");
+    try { sessionStorage.setItem("osa_saved", "1"); } catch (e) {}
+    location.href = "index.html#for-you";
+    return;
   } catch (x) {
     $("saveErr").textContent = "Your profile was not saved. Try again."; $("saveErr").hidden = false;
   }
   b.disabled = false;
 });
 
-// matching jobs
-let JOBS = null;
-const safeId = id => String(id).replace(/[^A-Za-z0-9_\-]/g, "-");
-const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9+#]+/g, " ").trim();
-function fits(j, p, today) {
-  if (j.closing_date && j.closing_date < today) return false;
-  const t = " " + norm(j.job_title) + " ";
-  const hit = (p.roles || []).some(r => {
-    const w = norm(r).split(" ").filter(x => x.length > 1);
-    return w.length && w.every(x => t.includes(" " + x + " ") || t.includes(" " + x + "s "));
-  });
-  if (!hit) return false;
-  if (p.province && p.relocate !== "Yes, anywhere in South Africa") {
-    const jp = norm(j.province);
-    if (jp && !jp.includes("national") && !jp.includes("various") && jp !== norm(p.province)) return false;
-  }
-  return true;
-}
-const fmtDate = d => { try { return new Date(d + "T00:00:00").toLocaleDateString("en-ZA", { day: "numeric", month: "short" }); } catch (e) { return d; } };
-async function showMatches(prefix) {
-  show("vLoading");
-  if (!JOBS) { try { JOBS = await (await fetch("jobs-lite.json", { cache: "no-cache" })).json(); } catch (e) { JOBS = []; } }
-  const today = new Date().toISOString().slice(0, 10);
-  const m = JOBS.filter(j => fits(j, saved, today)).sort((a, b) => String(b.posted_date).localeCompare(String(a.posted_date)));
-  const list = $("mList"); list.innerHTML = "";
-  m.slice(0, 50).forEach(j => {
-    const li = document.createElement("li"), a = document.createElement("a");
-    a.href = "jobs/" + safeId(j.id) + ".html";
-    const L = document.createElement("span"), t = document.createElement("span"), meta = document.createElement("span"), c = document.createElement("span");
-    t.className = "jt"; t.textContent = j.job_title;
-    meta.className = "jm"; meta.textContent = [j.employer, j.location || j.province].filter(Boolean).join(" · ");
-    c.className = "jc"; c.textContent = j.closing_date ? "Closes " + fmtDate(j.closing_date) : "";
-    L.append(t, meta); a.append(L, c); li.append(a); list.append(li);
-  });
-  const n = m.length;
-  $("mSub").textContent = prefix + (n === 1 ? "1 open job matches your profile." : n + " open jobs match your profile.");
-  $("mEmpty").hidden = n > 0;
-  $("mEmpty").textContent = "No open jobs match your job titles right now." + (saved.alerts ? " We'll email you when one is posted." : "");
-  show("vMatches");
-}
-$("editBtn").onclick = () => { if (location.hash === "#profile") { setForm(saved); show("vProfile"); window.scrollTo(0, 0); } else location.hash = "profile"; };
-window.addEventListener("hashchange", () => {
-  if (!user) return;
-  if (location.hash === "#profile") { setForm(saved); show("vProfile"); window.scrollTo(0, 0); }
-  else if (saved.roles && saved.roles.length) showMatches("");
-});
+window.addEventListener("hashchange", () => { if (user && location.hash === "#profile") { setForm(saved); show("vProfile"); window.scrollTo(0, 0); } });
 </script>
 <script type="module" src="acct.js"></script>
 </body>

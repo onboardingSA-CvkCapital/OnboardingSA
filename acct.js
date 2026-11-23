@@ -60,7 +60,8 @@ const wraps = links.map(a => {
   w.appendChild(a);
   const menu = document.createElement("div"); menu.className = "acct-menu"; menu.hidden = true;
   const h = a.getAttribute("href");
-  menu.innerHTML = `<a href="${h}">Jobs for you</a><a href="${h}#profile">My profile</a><button type="button">Sign out</button>`;
+  const home = h.replace("account.html", "index.html#for-you");
+  menu.innerHTML = `<a href="${home}">Jobs for you</a><a href="${h}#profile">My profile</a><button type="button">Sign out</button>`;
   menu.querySelectorAll("a").forEach(x => x.addEventListener("click", () => { menu.hidden = true; }));
   menu.querySelector("button").onclick = async () => { menu.hidden = true; try { localStorage.removeItem("osa_acct"); } catch (e) {} await signOut(auth); };
   w.appendChild(menu);
