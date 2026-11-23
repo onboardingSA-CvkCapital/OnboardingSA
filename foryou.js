@@ -40,6 +40,16 @@ function fits(j, p, today) {
   }
   return true;
 }
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function card(j) {
+  const g = window;
+  const dl = g.daysLeft ? g.daysLeft(j.closing_date) : null, soon = dl !== null && dl <= 7;
+  const fd = d => g.fmtDate ? g.fmtDate(d) : d;
+  const closeTxt = j.closing_date ? `Closes ${fd(j.closing_date)}${soon ? ` · ${dl < 0 ? "closed" : dl === 0 ? "closes today" : dl + (dl === 1 ? " day left" : " days left")}` : ""}` : "Open until filled";
+  const av = g.avatarHTML ? g.avatarHTML(j) : `<div class="avatar">${esc((j.employer || "?")[0])}</div>`;
+  const loc = g.locLine ? g.locLine(j) : [j.location, j.province].filter(Boolean).join(", ");
+  return `<a class="jobcard" href="jobs/${String(j.id).replace(/[^A-Za-z0-9_-]/g, "-")}.html" aria-label="${esc(j.job_title)} at ${esc(j.employer)}"><div class="card-head">${av}<div class="card-head-txt"><h3>${esc(j.job_title)}</h3><div class="emp">${esc(j.employer)}</div><div class="loc">${esc(loc)}</div></div></div><div class="chips">${j.employment_type ? `<span class="chip">${esc(j.employment_type)}</span>` : ""}${j.salary ? `<span class="chip">${esc(j.salary)}</span>` : ""}<span class="chip ${soon ? "close-soon" : ""}">${esc(closeTxt)}</span></div></a>`;
+}
 const PEN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
 const $ = id => document.getElementById(id);
 const main = document.querySelector("main .wrap"), filters = main && main.querySelector(".filters");
@@ -59,18 +69,17 @@ function tabs() {
     bar.addEventListener("click", e => { const b = e.target.closest("button[data-m]"); if (b) setMode(b.dataset.m, true); });
   }
   const all = allJobs();
-  const nAll = all ? all.length.toLocaleString("en-ZA").replace(/\u00a0/g, ",") : "";
   const hasRoles = profile && profile.roles && profile.roles.length;
-  bar.innerHTML = `<div class="tabs"><button type="button" data-m="fy" class="${mode === "fy" ? "on" : ""}">Jobs for you${hasRoles && all ? `<b>${matches.length}</b>` : ""}</button><button type="button" data-m="all" class="${mode === "all" ? "on" : ""}">All jobs${nAll ? `<b>${nAll}</b>` : ""}</button></div><a class="fy-edit" href="account.html#profile">${PEN}Change preferences</a>`;
+  bar.innerHTML = `<div class="tabs"><button type="button" data-m="fy" class="${mode === "fy" ? "on" : ""}">Jobs for you</button><button type="button" data-m="all" class="${mode === "all" ? "on" : ""}">All jobs</button></div><a class="fy-edit" href="account.html#profile">${PEN}Change preferences</a>`;
 }
 function showFy() {
   if (!allJobs()) return;
   busy = true;
   const hasRoles = profile.roles && profile.roles.length;
   if (hasRoles && matches.length) {
-    try { PAGE = 1; } catch (e) {}
-    render(matches);
-    $("count").innerHTML = (savedMsg ? "Profile saved. " : "") + `<b>${matches.length}</b> open job${matches.length === 1 ? "" : "s"} match your profile`;
+    $("list").innerHTML = matches.map(card).join("");
+    $("count").innerHTML = savedMsg ? "Profile saved." : "";
+    $("pager").innerHTML = "";
   } else {
     $("list").innerHTML = hasRoles
       ? `<div class="empty"><h3>No open jobs match your job titles right now</h3><p>${profile.alerts ? "We'll email you when one is posted." : "Add more job titles to see more jobs."}</p><a class="fy-go" href="account.html#profile">Change preferences</a></div>`
