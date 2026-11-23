@@ -37,6 +37,7 @@ header.site{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px s
 .nav{display:flex;gap:22px}
 .nav a{font-family:Inter,system-ui,sans-serif;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}
 .nav a:hover,.nav a.on{color:var(--navy)}
+.nav a{white-space:nowrap}@media(max-width:480px){.brand>svg{height:28px}.nav{gap:14px}.nav a{font-size:14px}.nav a[href="about.html"]{display:none}}
 .hero{background:var(--sand);border-bottom:1px solid var(--line)}
 .hero .wrap{padding-top:40px;padding-bottom:36px;max-width:860px}
 .crumbs{font-family:Inter,system-ui,sans-serif;font-size:13px;color:var(--muted);margin-bottom:18px}
@@ -139,7 +140,7 @@ HEAD = """<!DOCTYPE html>
     <a class="brand" href="index.html" aria-label="OnboardingSA home">
       {logo}
     </a>
-    <nav class="nav"><a href="employers/index.html">Employers</a><a class="on" href="guide-index.html">Guides</a><a href="about.html">About</a></nav>
+    <nav class="nav"><a href="employers/index.html">Employers</a><a class="on" href="guide-index.html">Guides</a><a href="about.html">About</a><a href="account.html">My account</a></nav>
   </div>
 </header>
 """

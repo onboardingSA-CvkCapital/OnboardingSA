@@ -125,6 +125,7 @@ header.site{{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px 
 .nav{{display:flex;gap:22px}}
 .nav a{{font-family:Inter;font-weight:500;font-size:15px;color:var(--muted);text-decoration:none}}
 .nav a:hover{{color:var(--navy)}}
+.nav a{{white-space:nowrap}}@media(max-width:480px){{.brand>svg{{height:28px}}.nav{{gap:14px}}.nav a{{font-size:14px}}}}
 main{{padding:22px 0 60px}}
 .back-link{{display:inline-flex;align-items:center;gap:6px;font-family:Poppins;font-weight:600;font-size:14px;color:var(--navy);text-decoration:none;margin-bottom:16px}}
 .back-link:hover{{text-decoration:underline}}
@@ -176,7 +177,7 @@ footer.site a{{color:var(--navy);text-decoration:none;font-weight:500}}
         <text x="150" y="101" font-family="Poppins,Arial,sans-serif" font-size="60" font-weight="600" letter-spacing="-0.5"><tspan fill="#12294D">Onboarding</tspan><tspan fill="#E8A33D">SA</tspan></text>
       </svg>
     </a>
-    <nav class="nav"><a href="../employers/index.html">Employers</a><a href="../about.html">About</a></nav>
+    <nav class="nav"><a href="../employers/index.html">Employers</a><a href="../about.html">About</a><a href="../account.html">My account</a></nav>
   </div>
 </header>
 <main>
