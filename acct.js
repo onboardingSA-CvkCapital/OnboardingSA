@@ -21,14 +21,17 @@ const css = `
 .acct-ini{width:28px;height:28px;border-radius:50%;background:#E8A33D;color:#12294D;font:700 12px Inter,system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .acct-name{max-width:130px;overflow:hidden;text-overflow:ellipsis}
 .acct-short{display:none}
+.acct-who{display:none;padding:10px 12px 8px;font:600 15px Inter,system-ui,sans-serif;color:#12294D;border-bottom:1px solid #E4E9F1;margin-bottom:4px}
 .acct-menu{position:absolute;right:0;top:calc(100% + 8px);background:#fff;border:1px solid #E4E9F1;border-radius:10px;box-shadow:0 12px 30px rgba(18,41,77,.18);padding:6px;min-width:170px;z-index:60;display:flex;flex-direction:column}
 .acct-menu[hidden]{display:none}
 .acct-wrap .acct-menu a,.acct-wrap .acct-menu button{display:block;margin:0;padding:10px 12px;border-radius:7px;color:#12294D;font:500 14.5px Inter,system-ui,sans-serif;text-align:left;text-decoration:none;background:none;border:0;cursor:pointer;white-space:nowrap}
 .acct-wrap .acct-menu a:hover,.acct-wrap .acct-menu button:hover{background:#F0F4FB;color:#12294D}
 @media(max-width:480px){
   .acct-wrap a.acct-pill{font-size:13.5px;padding:5px 11px;gap:6px}
-  .acct-wrap a.acct-pill.in{padding:2px 10px 2px 2px}
-  .acct-ini{width:26px;height:26px;font-size:11px}
+  .acct-wrap a.acct-pill.in{padding:0;border:0;background:none}
+  .acct-wrap a.acct-pill.in .acct-name,.acct-wrap a.acct-pill.in .acct-caret{display:none}
+  .acct-pill.in .acct-ini{width:36px;height:36px;font-size:13px}
+  .acct-who{display:block}
   .acct-long,.acct-caret{display:none}.acct-short{display:inline}
   .acct-name{max-width:76px}
   .acct-lighthdr .nav>a[href$="about.html"]{display:none}
@@ -61,7 +64,7 @@ const wraps = links.map(a => {
   const menu = document.createElement("div"); menu.className = "acct-menu"; menu.hidden = true;
   const h = a.getAttribute("href");
   const home = h.replace("account.html", "index.html#for-you");
-  menu.innerHTML = `<a href="${home}">Jobs for you</a><a href="${h}#profile">My profile</a><button type="button">Sign out</button>`;
+  menu.innerHTML = `<div class="acct-who"></div><a href="${home}">Jobs for you</a><a href="${h}#profile">My profile</a><button type="button">Sign out</button>`;
   menu.querySelectorAll("a").forEach(x => x.addEventListener("click", () => { menu.hidden = true; }));
   menu.querySelector("button").onclick = async () => { menu.hidden = true; try { localStorage.removeItem("osa_acct"); } catch (e) {} await signOut(auth); };
   w.appendChild(menu);
@@ -76,6 +79,7 @@ function render(who) {
       a.classList.add("in");
       a.setAttribute("aria-label", "My account: " + who.first);
       a.innerHTML = `<span class="acct-ini">${esc(who.ini)}</span><span class="acct-name">${esc(who.first)}</span>${CARET}`;
+      menu.querySelector(".acct-who").textContent = who.first;
     } else {
       a.classList.remove("in"); menu.hidden = true;
       a.setAttribute("aria-label", "Sign in or sign up");
