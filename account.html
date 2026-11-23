@@ -70,6 +70,16 @@ select:disabled{background-color:#F4F6FA;cursor:default}
 @media (max-width:680px){.blk{grid-template-columns:1fr;gap:14px}.f{grid-template-columns:1fr}.top h1{font-size:26px}}
 .gbtn{width:100%;height:46px;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #CBD2DC;border-radius:6px;font:500 15px Inter,system-ui,sans-serif;color:var(--text);cursor:pointer}.gbtn:hover{background:#F7F9FC}
 .or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;margin:18px 0}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.top .sec{align-self:flex-end}
+.jl{list-style:none;margin:0;padding:0}
+.jl li{border-bottom:1px solid var(--line)}
+.jl a{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;text-decoration:none;color:var(--text)}
+.jl a:hover .jt{text-decoration:underline}
+.jt{display:block;font:600 16px Inter,system-ui,sans-serif;color:var(--navy)}
+.jm{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.jc{flex:none;font-size:13.5px;color:var(--muted);white-space:nowrap}
+.empty{color:var(--muted);padding:30px 0}
+.mmore{display:inline-block;margin-top:18px}
 </style>
 </head>
 <body>
@@ -97,6 +107,12 @@ select:disabled{background-color:#F4F6FA;cursor:default}
     <button class="btn wide" id="authBtn" type="submit">Sign in</button>
     <button class="link" type="button" id="forgotBtn">Forgot password?</button>
   </form>
+</section>
+
+<section id="vMatches" hidden>
+  <div class="top"><div><h1>Jobs for you</h1><p id="mSub"></p></div><button type="button" class="sec" id="editBtn">Edit profile</button></div>
+  <ul class="jl" id="mList"></ul>
+  <p class="empty" id="mEmpty" hidden></p>
 </section>
 
 <section id="vProfile" hidden>
@@ -142,11 +158,11 @@ const TOWNS={"Eastern Cape": ["Gqeberha (Port Elizabeth)", "East London", "Mthat
 const FIELDS=["None", "Accounting", "Agriculture", "Architecture", "Banking and Finance", "Business Management", "Chemical Engineering", "Chemistry", "Civil Engineering", "Computer Science", "Construction Management", "Data Science", "Economics", "Education", "Electrical Engineering", "Electronic Engineering", "Environmental Science", "Graphic Design", "Health Sciences", "Hospitality", "Human Resources", "Industrial Engineering", "Information Technology", "Journalism and Media", "Law", "Logistics and Supply Chain", "Marketing", "Mathematics and Statistics", "Mechanical Engineering", "Mechatronics", "Medicine", "Metallurgical Engineering", "Mining Engineering", "Nursing", "Occupational Health and Safety", "Pharmacy", "Physics", "Project Management", "Psychology", "Public Administration", "Quantity Surveying", "Social Work", "Tourism", "Trade (artisan)", "Other"];
 const ROLES={"Admin & Office": ["Administration Clerk", "Administrative Officer", "Office Manager", "Personal Assistant", "Executive Assistant", "Receptionist", "Secretary", "Data Capturer", "Registry Clerk", "Records Management Clerk", "Switchboard Operator", "Driver / Messenger"], "Finance & Accounting": ["Accountant", "Bookkeeper", "Creditors Clerk", "Debtors Clerk", "Payroll Administrator", "Finance Clerk", "Internal Auditor", "External Auditor", "Financial Analyst", "Financial Manager", "Tax Consultant", "State Accountant", "Budget Analyst", "Credit Controller", "Cost Accountant"], "Banking & Insurance": ["Bank Teller", "Banking Advisor", "Financial Advisor", "Wealth Advisor", "Insurance Broker", "Claims Assessor", "Underwriter", "Collections Agent"], "Engineering": ["Mechanical Engineer", "Electrical Engineer", "Civil Engineer", "Chemical Engineer", "Process Engineer", "Project Engineer", "Production Engineer", "Maintenance Engineer", "Reliability Engineer", "Mining Engineer", "Industrial Engineer", "Engineer in Training (EIT)", "Engineering Technician", "Engineering Technologist", "Draughtsperson", "Quality Engineer"], "Trades & Artisans": ["Electrician", "Fitter and Turner", "Millwright", "Boilermaker", "Welder", "Plumber", "Diesel Mechanic", "Motor Mechanic", "Instrument Technician", "Refrigeration Technician", "Carpenter", "Painter", "Rigger", "Maintenance Technician"], "Manufacturing & Production": ["Production Manager", "Production Supervisor", "Production Planner", "Machine Operator", "Quality Controller", "Process Controller", "Plant Manager", "Packer", "Shift Supervisor"], "IT & Data": ["Software Developer", "Full Stack Developer", "Front End Developer", "Back End Developer", "Data Analyst", "Data Engineer", "Data Scientist", "Business Intelligence Developer", "Power BI Developer", "Power Platform Developer", "Business Analyst", "Systems Analyst", "Network Engineer", "IT Support Technician", "Help Desk Agent", "Cloud Engineer", "Cyber Security Analyst", "Database Administrator", "Test Analyst", "Project Manager (IT)", "Analytics Engineer"], "Medical & Health": ["Professional Nurse", "Enrolled Nurse", "Nursing Assistant", "Medical Officer", "Medical Specialist", "Pharmacist", "Pharmacist Assistant", "Physiotherapist", "Occupational Therapist", "Radiographer", "Dentist", "Dental Assistant", "Paramedic", "Clinical Associate", "Medical Technologist", "Dietitian", "Psychologist", "Community Health Worker"], "Education & Training": ["Teacher", "Foundation Phase Teacher", "Lecturer", "Tutor", "Early Childhood Development Practitioner", "Training Facilitator", "Librarian", "School Administrator"], "Government & Public Service": ["Police Trainee", "Correctional Officer", "Traffic Officer", "Firefighter", "State Advocate", "Public Prosecutor", "Court Interpreter", "Social Worker", "Social Auxiliary Worker", "Community Development Worker", "Environmental Officer", "Labour Inspector", "Supply Chain Practitioner", "Human Settlements Officer"], "Human Resources": ["HR Officer", "HR Administrator", "HR Business Partner", "Recruiter", "Payroll Officer", "Training and Development Officer", "Employee Relations Consultant"], "Legal": ["Attorney", "Candidate Attorney", "Paralegal", "Legal Advisor", "Legal Secretary", "Conveyancer", "Compliance Officer"], "Sales & Marketing": ["Sales Representative", "Sales Consultant", "Sales Manager", "Telesales Agent", "Business Development Manager", "Account Manager", "Marketing Coordinator", "Marketing Manager", "Digital Marketer", "Social Media Manager", "Copywriter"], "Retail": ["Cashier", "Store Manager", "Assistant Store Manager", "Sales Assistant", "Merchandiser", "Visual Merchandiser", "Stock Controller", "Beauty Advisor", "Butchery Manager"], "Customer Service": ["Call Centre Agent", "Customer Service Agent", "Customer Service Manager", "Client Relationship Consultant"], "Logistics & Supply Chain": ["Warehouse Supervisor", "Warehouse Assistant", "Forklift Driver", "Truck Driver", "Code 10 Driver", "Dispatch Clerk", "Buyer", "Procurement Officer", "Logistics Coordinator", "Supply Chain Clerk", "Fleet Controller"], "Building & Construction": ["Site Manager", "Construction Project Manager", "Quantity Surveyor", "Site Engineer", "Architect", "Building Inspector", "Construction Worker"], "Mining": ["Mine Overseer", "Shift Boss", "Geologist", "Surveyor", "Metallurgist", "Mine Worker", "Ventilation Officer"], "Health & Safety": ["Health and Safety Officer", "SHEQ Officer", "Safety Representative", "Environmental Health Practitioner"], "Hospitality & Tourism": ["Chef", "Cook", "Waiter", "Barista", "Hotel Receptionist", "Housekeeper", "Front Office Manager", "Tour Guide"], "Agriculture": ["Farm Manager", "Agricultural Advisor", "Farm Worker", "Agronomist", "Veterinary Assistant"], "Security": ["Security Officer", "Security Supervisor", "Armed Response Officer", "CCTV Operator"], "Cleaning & General Work": ["Cleaner", "General Worker", "Gardener", "Domestic Worker", "Groundsman"], "Design & Media": ["Graphic Designer", "Video Editor", "Photographer", "Journalist", "UX / UI Designer"], "Science & Research": ["Laboratory Technician", "Laboratory Analyst", "Research Assistant", "Scientist", "Statistician", "Environmental Scientist"], "Entry Level": ["Internship", "Learnership", "Graduate Programme", "Bursary", "Apprenticeship", "Youth Programme"]};</script>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const app = initializeApp({
+const app = getApps()[0] || initializeApp({
   apiKey: "AIzaSyAurWdE99jLpAX0Gvi93DcX4jOXE2ls8Ig",
   authDomain: "onboardingsa-23692.firebaseapp.com",
   projectId: "onboardingsa-23692",
@@ -214,7 +230,7 @@ roleSel.addEventListener("change", () => { const v = roleSel.value; if (v && !ro
 buildRoleSel();
 
 // views
-function show(v) { ["vLoading","vAuth","vProfile"].forEach(x => $(x).hidden = x !== v); }
+function show(v) { ["vLoading","vAuth","vProfile","vMatches"].forEach(x => $(x).hidden = x !== v); }
 let mode = "in";
 function setMode(m) {
   mode = m;
@@ -258,7 +274,7 @@ $("authForm").addEventListener("submit", async e => {
     } else if (mode === "up") {
       pendingName = name;
       const c = await createUserWithEmailAndPassword(auth, email, pass);
-      await updateProfile(c.user, { displayName: name });
+      await updateProfile(c.user, { displayName: name }); window.dispatchEvent(new Event("osa-name"));
     } else {
       await signInWithEmailAndPassword(auth, email, pass);
     }
@@ -297,10 +313,10 @@ onAuthStateChanged(auth, async u => {
   $("who").textContent = u.email;
   show("vLoading");
   await loadProfile();
-  show("vProfile");
+  if (saved.roles && saved.roles.length && location.hash !== "#profile") await showMatches(""); else show("vProfile");
 });
 $("outBtn").onclick = () => { $("aPass").value = ""; signOut(auth); };
-$("cancelBtn").onclick = () => setForm(saved);
+$("cancelBtn").onclick = () => { setForm(saved); if (saved.roles && saved.roles.length) { history.replaceState(null, "", location.pathname); showMatches(""); } };
 $("pForm").addEventListener("submit", async e => {
   e.preventDefault();
   const d = {};
@@ -312,13 +328,63 @@ $("pForm").addEventListener("submit", async e => {
   try {
     await setDoc(doc(db, "profiles", user.uid), d, { merge: true });
     saved = { ...saved, ...d, createdAt: saved.createdAt || true };
-    if (d.fullName && d.fullName !== user.displayName) updateProfile(user, { displayName: d.fullName }).catch(() => {});
-    b.textContent = "Saved"; setTimeout(() => b.textContent = "Save profile", 2000);
+    if (d.fullName && d.fullName !== user.displayName) updateProfile(user, { displayName: d.fullName }).then(() => window.dispatchEvent(new Event("osa-name"))).catch(() => {});
+    window.scrollTo(0, 0);
+    history.replaceState(null, "", location.pathname);
+    await showMatches("Profile saved. ");
   } catch (x) {
     $("saveErr").textContent = "Your profile was not saved. Try again."; $("saveErr").hidden = false;
   }
   b.disabled = false;
 });
+
+// matching jobs
+let JOBS = null;
+const safeId = id => String(id).replace(/[^A-Za-z0-9_\-]/g, "-");
+const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9+#]+/g, " ").trim();
+function fits(j, p, today) {
+  if (j.closing_date && j.closing_date < today) return false;
+  const t = " " + norm(j.job_title) + " ";
+  const hit = (p.roles || []).some(r => {
+    const w = norm(r).split(" ").filter(x => x.length > 1);
+    return w.length && w.every(x => t.includes(" " + x + " ") || t.includes(" " + x + "s "));
+  });
+  if (!hit) return false;
+  if (p.province && p.relocate !== "Yes, anywhere in South Africa") {
+    const jp = norm(j.province);
+    if (jp && !jp.includes("national") && !jp.includes("various") && jp !== norm(p.province)) return false;
+  }
+  return true;
+}
+const fmtDate = d => { try { return new Date(d + "T00:00:00").toLocaleDateString("en-ZA", { day: "numeric", month: "short" }); } catch (e) { return d; } };
+async function showMatches(prefix) {
+  show("vLoading");
+  if (!JOBS) { try { JOBS = await (await fetch("jobs-lite.json", { cache: "no-cache" })).json(); } catch (e) { JOBS = []; } }
+  const today = new Date().toISOString().slice(0, 10);
+  const m = JOBS.filter(j => fits(j, saved, today)).sort((a, b) => String(b.posted_date).localeCompare(String(a.posted_date)));
+  const list = $("mList"); list.innerHTML = "";
+  m.slice(0, 50).forEach(j => {
+    const li = document.createElement("li"), a = document.createElement("a");
+    a.href = "jobs/" + safeId(j.id) + ".html";
+    const L = document.createElement("span"), t = document.createElement("span"), meta = document.createElement("span"), c = document.createElement("span");
+    t.className = "jt"; t.textContent = j.job_title;
+    meta.className = "jm"; meta.textContent = [j.employer, j.location || j.province].filter(Boolean).join(" · ");
+    c.className = "jc"; c.textContent = j.closing_date ? "Closes " + fmtDate(j.closing_date) : "";
+    L.append(t, meta); a.append(L, c); li.append(a); list.append(li);
+  });
+  const n = m.length;
+  $("mSub").textContent = prefix + (n === 1 ? "1 open job matches your profile." : n + " open jobs match your profile.");
+  $("mEmpty").hidden = n > 0;
+  $("mEmpty").textContent = "No open jobs match your job titles right now." + (saved.alerts ? " We'll email you when one is posted." : "");
+  show("vMatches");
+}
+$("editBtn").onclick = () => { if (location.hash === "#profile") { setForm(saved); show("vProfile"); window.scrollTo(0, 0); } else location.hash = "profile"; };
+window.addEventListener("hashchange", () => {
+  if (!user) return;
+  if (location.hash === "#profile") { setForm(saved); show("vProfile"); window.scrollTo(0, 0); }
+  else if (saved.roles && saved.roles.length) showMatches("");
+});
 </script>
+<script type="module" src="acct.js"></script>
 </body>
 </html>

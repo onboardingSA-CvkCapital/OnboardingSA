@@ -151,6 +151,7 @@ FOOT = """<footer class="site">
     <span><a href="about.html">About</a> &nbsp;&middot;&nbsp; <a href="contact.html">Contact</a> &nbsp;&middot;&nbsp; <a href="privacy.html">Privacy</a> &nbsp;&middot;&nbsp; <a href="terms.html">Terms</a></span>
   </div>
 </footer>
+<script type="module" src="acct.js"></script>
 </body>
 </html>
 """

@@ -210,6 +210,7 @@ FOOT = """    </div>
   }});
 }})();
 </script>
+<script type="module" src="../acct.js"></script>
 </body>
 </html>
 """

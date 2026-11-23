@@ -35,6 +35,7 @@ header.site{position:sticky;top:0;z-index:40;background:var(--navy);border-botto
 .nav a{font-family:Inter;font-weight:500;font-size:15px;color:#C9D4E8;text-decoration:none}
 .nav a:hover{color:#fff}
 .acct-t{display:none}
+header .wrap>.acct-wrap,header .wrap>.acct-m{display:none}
 .burger{display:none;width:42px;height:42px;border:1px solid rgba(255,255,255,.25);border-radius:10px;background:transparent;cursor:pointer;place-items:center;padding:0}
 .burger span{display:block;width:18px;height:2px;background:#fff;box-shadow:0 6px 0 #fff,0 -6px 0 #fff}
 .search-band{background:var(--navy);color:#fff}
@@ -132,6 +133,9 @@ main{padding:20px 0 60px}
   .nav a:hover{background:var(--tint);color:var(--navy)}
   .burger{display:grid}
   .acct-t{display:inline}
+  header .wrap>.acct-wrap{display:inline-flex;margin-left:auto;margin-right:10px}
+  header .wrap .acct-m{display:inline-flex}
+  .nav .acct-wrap{display:none}
 }
 @media(max-width:640px){
   .search-band .wrap{padding-top:24px;padding-bottom:28px}
@@ -184,6 +188,7 @@ footer.site a{color:var(--navy);text-decoration:none;font-weight:500}
         <text x="150" y="101" font-family="Poppins,Arial,sans-serif" font-size="60" font-weight="600" letter-spacing="-0.5"><tspan fill="#FFFFFF">Onboarding</tspan><tspan fill="#E8A33D">SA</tspan></text>
       </svg>
     </a>
+    <a href="account.html" class="acct-m">My account</a>
     <button class="burger" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="siteNav"><span></span></button>
     <nav class="nav" id="siteNav">
       <a href="employers/index.html">Employers</a>
@@ -661,5 +666,6 @@ loadJobs();
   update();
 })();
 </script>
+<script type="module" src="acct.js"></script>
 </body>
 </html>
