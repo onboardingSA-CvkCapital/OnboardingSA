@@ -467,7 +467,7 @@ function render(list){
   const start=(PAGE-1)*PER_PAGE;
   const slice=list.slice(start,start+PER_PAGE);
   const el=document.getElementById('list');
-  document.getElementById('count').innerHTML=`<b>${total}</b> job${total!==1?'s':''} found`;
+  document.getElementById('count').innerHTML='';
   if(!total){
     el.innerHTML=`<div class="empty"><h3>No jobs match that</h3><p>Try clearing filters or searching a broader term.</p></div>`;
     document.getElementById('pager').innerHTML='';
@@ -501,6 +501,7 @@ function renderPager(pages){
   if(pages<=1){ bar.innerHTML=''; return; }
   bar.innerHTML=
     `<button id="pgPrev" ${PAGE<=1?'disabled':''}>‹ Previous</button>`+
+    `<span class="pinfo">Page <b>${PAGE}</b> of ${pages}</span>`+
     `<button id="pgNext" ${PAGE>=pages?'disabled':''}>Next ›</button>`;
   const prev=document.getElementById('pgPrev'), next=document.getElementById('pgNext');
   if(prev) prev.addEventListener('click',()=>{ if(PAGE>1){ PAGE--; render(LAST); window.scrollTo({top:0,behavior:'smooth'}); } });

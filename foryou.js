@@ -71,7 +71,7 @@ function tabs() {
   const all = allJobs();
   const hasRoles = profile && profile.roles && profile.roles.length;
   const nAll = all ? all.length.toLocaleString("en-ZA").replace(/\s/g, ",") : "";
-  bar.innerHTML = `<div class="tabs"><button type="button" data-m="fy" class="${mode === "fy" ? "on" : ""}">Jobs for you${hasRoles && all ? `<b>${matches.length}</b>` : ""}</button><button type="button" data-m="all" class="${mode === "all" ? "on" : ""}">All jobs${nAll ? `<b>${nAll}</b>` : ""}</button></div><a class="fy-edit" href="account.html#profile">${PEN}Change preferences</a>`;
+  bar.innerHTML = `<div class="tabs"><button type="button" data-m="fy" class="${mode === "fy" ? "on" : ""}">Jobs for you</button><button type="button" data-m="all" class="${mode === "all" ? "on" : ""}">All jobs</button></div><a class="fy-edit" href="account.html#profile">${PEN}Change preferences</a>`;
 }
 function showFy() {
   if (!allJobs()) return;
@@ -106,7 +106,7 @@ new MutationObserver(() => {
   if (busy || !profile) return;
   compute(); tabs();
   if (mode === "fy") showFy();
-}).observe($("count"), { childList: true, characterData: true, subtree: true });
+}).observe($("list"), { childList: true });
 
 onAuthStateChanged(auth, async u => {
   if (!u || !main) { profile = null; if (bar) { bar.remove(); bar = null; } document.body.classList.remove("fy-mode"); mode = "all"; return; }
