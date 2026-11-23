@@ -501,7 +501,6 @@ function renderPager(pages){
   if(pages<=1){ bar.innerHTML=''; return; }
   bar.innerHTML=
     `<button id="pgPrev" ${PAGE<=1?'disabled':''}>‹ Previous</button>`+
-    `<span class="pinfo">Page <b>${PAGE}</b> of ${pages}</span>`+
     `<button id="pgNext" ${PAGE>=pages?'disabled':''}>Next ›</button>`;
   const prev=document.getElementById('pgPrev'), next=document.getElementById('pgNext');
   if(prev) prev.addEventListener('click',()=>{ if(PAGE>1){ PAGE--; render(LAST); window.scrollTo({top:0,behavior:'smooth'}); } });

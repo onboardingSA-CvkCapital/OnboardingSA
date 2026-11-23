@@ -70,7 +70,8 @@ function tabs() {
   }
   const all = allJobs();
   const hasRoles = profile && profile.roles && profile.roles.length;
-  bar.innerHTML = `<div class="tabs"><button type="button" data-m="fy" class="${mode === "fy" ? "on" : ""}">Jobs for you</button><button type="button" data-m="all" class="${mode === "all" ? "on" : ""}">All jobs</button></div><a class="fy-edit" href="account.html#profile">${PEN}Change preferences</a>`;
+  const nAll = all ? all.length.toLocaleString("en-ZA").replace(/\s/g, ",") : "";
+  bar.innerHTML = `<div class="tabs"><button type="button" data-m="fy" class="${mode === "fy" ? "on" : ""}">Jobs for you${hasRoles && all ? `<b>${matches.length}</b>` : ""}</button><button type="button" data-m="all" class="${mode === "all" ? "on" : ""}">All jobs${nAll ? `<b>${nAll}</b>` : ""}</button></div><a class="fy-edit" href="account.html#profile">${PEN}Change preferences</a>`;
 }
 function showFy() {
   if (!allJobs()) return;
