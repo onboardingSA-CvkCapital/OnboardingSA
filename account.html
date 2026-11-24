@@ -304,6 +304,8 @@ onAuthStateChanged(auth, async u => {
   user = u;
   if (!u) { setMode("in"); show("vAuth"); return; }
   $("who").textContent = u.email;
+  const nx = new URLSearchParams(location.search).get("next");
+  if (nx && /^[a-z0-9-]+\.html$/.test(nx)) { location.replace(nx); return; }
   show("vLoading");
   await loadProfile();
   if (saved.roles && saved.roles.length && location.hash !== "#profile") { location.replace("index.html#for-you"); return; }

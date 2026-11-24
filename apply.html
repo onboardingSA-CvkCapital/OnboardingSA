@@ -70,10 +70,15 @@ select{width:100%;font:inherit;padding:11px 34px 11px 13px;border:1px solid var(
   <div class="card steps">
     <div><b>1</b><span>Make sure your CV is uploaded on <a href="https://www.pnet.co.za" target="_blank" rel="noopener">PNet</a> and set as your default CV.</span></div>
     <div><b>2</b><span>Fill in the form below with your PNet login and the job titles you want.</span></div>
-    <div><b>3</b><span>From the next morning, we apply to up to 10 new jobs per job title each day.</span></div>
+    <div><b>3</b><span>From the next morning, we apply for you every day.</span></div>
   </div>
 
-  <form id="f" class="card" novalidate>
+  <div id="needSign" class="card" hidden>
+    <p style="margin:0 0 14px">Sign in to your OnboardingSA account to set this up.</p>
+    <a class="go" href="account.html?next=apply.html" style="display:block;text-align:center;text-decoration:none">Sign in / Sign up</a>
+  </div>
+
+  <form id="f" class="card" novalidate hidden>
     <label for="name">Full name</label>
     <input type="text" id="name" autocomplete="name" required>
 
@@ -149,28 +154,71 @@ async function lock(data){
 }
 function say(text,ok){document.getElementById('out').innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+text+'</div>';}
 
+let saved=null;            // what is already on this account (no password or ID number kept here)
+window.fillSaved=(s,fallback)=>{
+  saved=s||null;
+  const set=(id,val)=>{ if(val) document.getElementById(id).value=val; };
+  set('name',(s&&s.name)||fallback.name); set('report',(s&&s.report_email)||fallback.email); set('pe',s&&s.pnet_email);
+  if(s){
+    roles=(s.titles||[]).slice(); drawRoles();
+    if(s.has_password) document.getElementById('pp').placeholder='Saved';
+    if(s.has_id) document.getElementById('idn').placeholder='Saved';
+    ['c1','c2','c3'].forEach(id=>document.getElementById(id).checked=true);
+    document.getElementById('go').textContent='Save changes';
+  }
+};
 document.getElementById('f').onsubmit=async e=>{
   e.preventDefault();
   const v=id=>document.getElementById(id).value.trim();
   const luhn=n=>{let s=0;for(let i=0;i<n.length;i++){let d=+n[n.length-1-i];if(i%2){d*=2;if(d>9)d-=9}s+=d}return s%10===0};
   const t=roles.slice();
   const email=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const pw=document.getElementById('pp').value, idn=v('idn').replace(/\s/g,'');
   if(!v('name')) return say('Please enter your full name.');
   if(!email.test(v('report'))) return say('Please enter a valid email for your daily report.');
-  if(!email.test(v('pe'))||!document.getElementById('pp').value) return say('Please enter your PNet email and password.');
-  const idn=v('idn').replace(/\s/g,'');
-  if(!/^\d{13}$/.test(idn)||!luhn(idn)) return say('Please enter a valid 13-digit South African ID number.');
+  if(!email.test(v('pe'))) return say('Please enter your PNet email.');
+  if(!pw && !(saved&&saved.has_password)) return say('Please enter your PNet password.');
+  if((idn || !(saved&&saved.has_id)) && (!/^\d{13}$/.test(idn)||!luhn(idn))) return say('Please enter a valid 13-digit South African ID number.');
   if(!t.length) return say('Please add at least one job title.');
   if(!['c1','c2','c3'].every(id=>document.getElementById(id).checked)) return say('Please tick all three boxes to continue.');
-  if(!FORM_ACTION) return say('Sign-ups open soon. Please check back later.');
-  const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='Sending…';
+  if(!window.acctUid) return say('Please sign in first.');
+  const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const blob=await lock({name:v('name'),report_email:v('report'),pnet_email:v('pe'),pnet_password:document.getElementById('pp').value,id_number:idn,titles:t,signed_up:new Date().toISOString()});
-    const body=new URLSearchParams(); body.append(FORM_ENTRY,blob);
+    const d={uid:window.acctUid,name:v('name'),report_email:v('report'),pnet_email:v('pe'),titles:t,signed_up:new Date().toISOString()};
+    if(pw) d.pnet_password=pw;
+    if(idn) d.id_number=idn;
+    const body=new URLSearchParams(); body.append(FORM_ENTRY,await lock(d));
     await fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body});
-    document.getElementById('f').innerHTML='<div class="msg ok"><b>You\'re signed up.</b><br>From tomorrow morning we apply for you and email your report to '+v('report').replace(/</g,'')+'.</div>';
-  }catch(err){ say('Something went wrong. Please try again.'); btn.disabled=false; btn.textContent='Start applying for me'; }
+    const keep={name:d.name,report_email:d.report_email,pnet_email:d.pnet_email,titles:t,
+      has_password:!!(pw||(saved&&saved.has_password)),has_id:!!(idn||(saved&&saved.has_id)),updated:d.signed_up};
+    await window.saveAuto(keep);
+    document.getElementById('pp').value=''; document.getElementById('idn').value='';
+    window.fillSaved(keep,{});
+    say('<b>Saved.</b> We apply for you every morning and email your report to '+d.report_email.replace(/</g,'')+'.',true);
+  }catch(err){ say('Something went wrong. Please try again.'); }
+  btn.disabled=false; btn.textContent=saved?'Save changes':'Start applying for me';
 };
+</script>
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const app = getApps()[0] || initializeApp({
+  apiKey: "AIzaSyAurWdE99jLpAX0Gvi93DcX4jOXE2ls8Ig", authDomain: "onboardingsa-23692.firebaseapp.com",
+  projectId: "onboardingsa-23692", storageBucket: "onboardingsa-23692.firebasestorage.app",
+  messagingSenderId: "988104656716", appId: "1:988104656716:web:14f7e5be18304640a431e9"
+});
+const auth = getAuth(app), db = getFirestore(app);
+onAuthStateChanged(auth, async u => {
+  document.getElementById('needSign').hidden = !!u;
+  document.getElementById('f').hidden = !u;
+  window.acctUid = u ? u.uid : null;
+  if (!u) return;
+  let p = {};
+  try { const s = await getDoc(doc(db, "profiles", u.uid)); p = s.exists() ? s.data() : {}; } catch (e) {}
+  window.saveAuto = keep => setDoc(doc(db, "profiles", u.uid), { autoApply: keep }, { merge: true });
+  window.fillSaved(p.autoApply || null, { name: p.fullName || u.displayName || "", email: u.email || "" });
+});
 </script>
 <script type="module" src="acct.js"></script>
 </body>
