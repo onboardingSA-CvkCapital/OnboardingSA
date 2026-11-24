@@ -83,6 +83,9 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transp
     <label for="pp">PNet password</label>
     <div class="row"><input type="password" id="pp" autocomplete="off" required><button type="button" class="ghost" id="show">Show</button></div>
 
+    <label for="idn">ID number</label>
+    <input type="text" id="idn" inputmode="numeric" maxlength="13" autocomplete="off" required>
+
     <label>Job titles</label>
     <p class="hint">Exact titles as employers write them, e.g. "Data Analyst", "Process Engineer". Up to 10.</p>
     <div class="titles" id="titles"></div>
@@ -137,17 +140,20 @@ function say(text,ok){document.getElementById('out').innerHTML='<div class="msg 
 document.getElementById('f').onsubmit=async e=>{
   e.preventDefault();
   const v=id=>document.getElementById(id).value.trim();
+  const luhn=n=>{let s=0;for(let i=0;i<n.length;i++){let d=+n[n.length-1-i];if(i%2){d*=2;if(d>9)d-=9}s+=d}return s%10===0};
   const t=[...titles.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean);
   const email=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   if(!v('name')) return say('Please enter your full name.');
   if(!email.test(v('report'))) return say('Please enter a valid email for your daily report.');
   if(!email.test(v('pe'))||!document.getElementById('pp').value) return say('Please enter your PNet email and password.');
+  const idn=v('idn').replace(/\s/g,'');
+  if(!/^\d{13}$/.test(idn)||!luhn(idn)) return say('Please enter a valid 13-digit South African ID number.');
   if(!t.length) return say('Please add at least one job title.');
   if(!['c1','c2','c3'].every(id=>document.getElementById(id).checked)) return say('Please tick all three boxes to continue.');
   if(!FORM_ACTION) return say('Sign-ups open soon. Please check back later.');
   const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='Sending…';
   try{
-    const blob=await lock({name:v('name'),report_email:v('report'),pnet_email:v('pe'),pnet_password:document.getElementById('pp').value,titles:t,signed_up:new Date().toISOString()});
+    const blob=await lock({name:v('name'),report_email:v('report'),pnet_email:v('pe'),pnet_password:document.getElementById('pp').value,id_number:idn,titles:t,signed_up:new Date().toISOString()});
     const body=new URLSearchParams(); body.append(FORM_ENTRY,blob);
     await fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body});
     document.getElementById('f').innerHTML='<div class="msg ok"><b>You\'re signed up.</b><br>From tomorrow morning we apply for you and email your report to '+v('report').replace(/</g,'')+'.</div>';
