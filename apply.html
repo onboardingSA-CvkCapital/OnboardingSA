@@ -37,7 +37,11 @@ label{display:block;font-weight:600;color:var(--navy);font-size:14px;margin:16px
 .hint{font-size:13px;color:var(--muted);margin:-2px 0 6px}
 input[type=text],input[type=email],input[type=password]{width:100%;font:inherit;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--text)}
 input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
-.titles{display:grid;gap:8px}
+select{width:100%;font:inherit;padding:11px 34px 11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='%237A8394'/%3E%3C/svg%3E") no-repeat right 14px center;color:var(--text);appearance:none;-webkit-appearance:none;cursor:pointer}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.pills:empty{display:none}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#EEF2F8;border:1px solid #D5DEEB;color:var(--navy);border-radius:999px;padding:5px 6px 5px 14px;font-size:14px;font-weight:500}
+.pill button{border:0;background:#fff;color:#5B6B85;width:22px;height:22px;border-radius:50%;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.pill button:hover{background:var(--navy);color:#fff}
 .row{display:flex;gap:8px}.row input{flex:1;min-width:0}
 .ghost{font:inherit;font-size:14px;font-weight:600;color:var(--navy);background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer}
 .x{width:42px;flex:none}
@@ -65,7 +69,7 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transp
   <p>Every morning we search PNet for new jobs matching the job titles you choose, and apply for you with the CV on your PNet profile. You get an email each day with every job we applied for.</p>
   <div class="card steps">
     <div><b>1</b><span>Make sure your CV is uploaded on <a href="https://www.pnet.co.za" target="_blank" rel="noopener">PNet</a> and set as your default CV.</span></div>
-    <div><b>2</b><span>Fill in the form below with your PNet login and up to 10 job titles.</span></div>
+    <div><b>2</b><span>Fill in the form below with your PNet login and the job titles you want.</span></div>
     <div><b>3</b><span>From the next morning, we apply to up to 10 new jobs per job title each day.</span></div>
   </div>
 
@@ -87,9 +91,8 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transp
     <input type="text" id="idn" inputmode="numeric" maxlength="13" autocomplete="off" required>
 
     <label>Job titles</label>
-    <p class="hint">Exact titles as employers write them, e.g. "Data Analyst", "Process Engineer". Up to 10.</p>
-    <div class="titles" id="titles"></div>
-    <button type="button" class="ghost" id="add" style="margin-top:8px">+ Add another job title</button>
+    <select id="roleAdd"></select>
+    <div class="pills" id="pills"></div>
 
     <label class="check"><input type="checkbox" id="c1" required><span>I allow OnboardingSA to sign in to my PNet account and apply for jobs for me with my default PNet CV.</span></label>
     <label class="check"><input type="checkbox" id="c2" required><span>I understand PNet may not allow automated applications, and I accept any risk to my PNet account.</span></label>
@@ -111,18 +114,27 @@ const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScaDYfAVw-IsyX09tO
 const FORM_ENTRY  = "entry.874348083";
 const PUBLIC_KEY  = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu71tA+PSLBQq7j+BrnyBJjew3tL/157tYaE/A6dD5L7+ohRhFiadt8qVmiyshqdmRzAZEexsPe/XKZhppn0d/23tUiu+IkH6mOU/GyESmoOvdQ2YBjdrIrMzIrqZhQ3Urk1rNU42AeTPInO9OYb0ZVZHP8yYXzgTdahUNjwKtdk/sG+17Hqej+OnRhpE2x0PRUshYa5rtJBO1wtxVMB0YQoJfX7CvK8XWe7UnZo+j4BqrAxNnLTuKASl8YOLrBoTfWY3TfupiZM8QEiTjyNGfq7hF8dkbx5aHuU+6iYMGMI+/fl00KyTfnlFTSrvAIeBLaIlpnpJ1U1i/UFa18Nj5QIDAQAB";
 
-const titles=document.getElementById('titles');
-function addTitle(v=''){
-  if(titles.children.length>=10) return;
-  const r=document.createElement('div'); r.className='row';
-  r.innerHTML='<input type="text" maxlength="60" placeholder="e.g. Data Analyst"><button type="button" class="ghost x" aria-label="Remove">✕</button>';
-  r.querySelector('input').value=v;
-  r.querySelector('button').onclick=()=>{ if(titles.children.length>1) r.remove(); };
-  titles.appendChild(r);
-  document.getElementById('add').hidden = titles.children.length>=10;
+const ROLES={"Admin & Office": ["Administration Clerk", "Administrative Officer", "Office Manager", "Personal Assistant", "Executive Assistant", "Receptionist", "Secretary", "Data Capturer", "Registry Clerk", "Records Management Clerk", "Switchboard Operator", "Driver / Messenger"], "Finance & Accounting": ["Accountant", "Bookkeeper", "Creditors Clerk", "Debtors Clerk", "Payroll Administrator", "Finance Clerk", "Internal Auditor", "External Auditor", "Financial Analyst", "Financial Manager", "Tax Consultant", "State Accountant", "Budget Analyst", "Credit Controller", "Cost Accountant"], "Banking & Insurance": ["Bank Teller", "Banking Advisor", "Financial Advisor", "Wealth Advisor", "Insurance Broker", "Claims Assessor", "Underwriter", "Collections Agent"], "Engineering": ["Mechanical Engineer", "Electrical Engineer", "Civil Engineer", "Chemical Engineer", "Process Engineer", "Project Engineer", "Production Engineer", "Maintenance Engineer", "Reliability Engineer", "Mining Engineer", "Industrial Engineer", "Engineer in Training (EIT)", "Engineering Technician", "Engineering Technologist", "Draughtsperson", "Quality Engineer"], "Trades & Artisans": ["Electrician", "Fitter and Turner", "Millwright", "Boilermaker", "Welder", "Plumber", "Diesel Mechanic", "Motor Mechanic", "Instrument Technician", "Refrigeration Technician", "Carpenter", "Painter", "Rigger", "Maintenance Technician"], "Manufacturing & Production": ["Production Manager", "Production Supervisor", "Production Planner", "Machine Operator", "Quality Controller", "Process Controller", "Plant Manager", "Packer", "Shift Supervisor"], "IT & Data": ["Software Developer", "Full Stack Developer", "Front End Developer", "Back End Developer", "Data Analyst", "Data Engineer", "Data Scientist", "Business Intelligence Developer", "Power BI Developer", "Power Platform Developer", "Business Analyst", "Systems Analyst", "Network Engineer", "IT Support Technician", "Help Desk Agent", "Cloud Engineer", "Cyber Security Analyst", "Database Administrator", "Test Analyst", "Project Manager (IT)", "Analytics Engineer"], "Medical & Health": ["Professional Nurse", "Enrolled Nurse", "Nursing Assistant", "Medical Officer", "Medical Specialist", "Pharmacist", "Pharmacist Assistant", "Physiotherapist", "Occupational Therapist", "Radiographer", "Dentist", "Dental Assistant", "Paramedic", "Clinical Associate", "Medical Technologist", "Dietitian", "Psychologist", "Community Health Worker"], "Education & Training": ["Teacher", "Foundation Phase Teacher", "Lecturer", "Tutor", "Early Childhood Development Practitioner", "Training Facilitator", "Librarian", "School Administrator"], "Government & Public Service": ["Police Trainee", "Correctional Officer", "Traffic Officer", "Firefighter", "State Advocate", "Public Prosecutor", "Court Interpreter", "Social Worker", "Social Auxiliary Worker", "Community Development Worker", "Environmental Officer", "Labour Inspector", "Supply Chain Practitioner", "Human Settlements Officer"], "Human Resources": ["HR Officer", "HR Administrator", "HR Business Partner", "Recruiter", "Payroll Officer", "Training and Development Officer", "Employee Relations Consultant"], "Legal": ["Attorney", "Candidate Attorney", "Paralegal", "Legal Advisor", "Legal Secretary", "Conveyancer", "Compliance Officer"], "Sales & Marketing": ["Sales Representative", "Sales Consultant", "Sales Manager", "Telesales Agent", "Business Development Manager", "Account Manager", "Marketing Coordinator", "Marketing Manager", "Digital Marketer", "Social Media Manager", "Copywriter"], "Retail": ["Cashier", "Store Manager", "Assistant Store Manager", "Sales Assistant", "Merchandiser", "Visual Merchandiser", "Stock Controller", "Beauty Advisor", "Butchery Manager"], "Customer Service": ["Call Centre Agent", "Customer Service Agent", "Customer Service Manager", "Client Relationship Consultant"], "Logistics & Supply Chain": ["Warehouse Supervisor", "Warehouse Assistant", "Forklift Driver", "Truck Driver", "Code 10 Driver", "Dispatch Clerk", "Buyer", "Procurement Officer", "Logistics Coordinator", "Supply Chain Clerk", "Fleet Controller"], "Building & Construction": ["Site Manager", "Construction Project Manager", "Quantity Surveyor", "Site Engineer", "Architect", "Building Inspector", "Construction Worker"], "Mining": ["Mine Overseer", "Shift Boss", "Geologist", "Surveyor", "Metallurgist", "Mine Worker", "Ventilation Officer"], "Health & Safety": ["Health and Safety Officer", "SHEQ Officer", "Safety Representative", "Environmental Health Practitioner"], "Hospitality & Tourism": ["Chef", "Cook", "Waiter", "Barista", "Hotel Receptionist", "Housekeeper", "Front Office Manager", "Tour Guide"], "Agriculture": ["Farm Manager", "Agricultural Advisor", "Farm Worker", "Agronomist", "Veterinary Assistant"], "Security": ["Security Officer", "Security Supervisor", "Armed Response Officer", "CCTV Operator"], "Cleaning & General Work": ["Cleaner", "General Worker", "Gardener", "Domestic Worker", "Groundsman"], "Design & Media": ["Graphic Designer", "Video Editor", "Photographer", "Journalist", "UX / UI Designer"], "Science & Research": ["Laboratory Technician", "Laboratory Analyst", "Research Assistant", "Scientist", "Statistician", "Environmental Scientist"], "Entry Level": ["Internship", "Learnership", "Graduate Programme", "Bursary", "Apprenticeship", "Youth Programme"]};
+let roles=[];
+const roleSel=document.getElementById('roleAdd');
+function drawRoles(){
+  roleSel.innerHTML='';
+  roleSel.add(new Option('Add a job title',''));
+  for(const [g,list] of Object.entries(ROLES)){
+    const og=document.createElement('optgroup'); og.label=g;
+    list.forEach(r=>{const o=new Option(r,r); o.disabled=roles.includes(r); og.appendChild(o);});
+    roleSel.appendChild(og);
+  }
+  const box=document.getElementById('pills'); box.innerHTML='';
+  roles.forEach(r=>{
+    const s=document.createElement('span'); s.className='pill'; s.textContent=r;
+    const x=document.createElement('button'); x.type='button'; x.textContent='✕'; x.setAttribute('aria-label','Remove '+r);
+    x.onclick=()=>{roles=roles.filter(t=>t!==r); drawRoles();};
+    s.appendChild(x); box.appendChild(s);
+  });
 }
-addTitle(); addTitle();
-document.getElementById('add').onclick=()=>addTitle();
+roleSel.onchange=()=>{const v=roleSel.value; if(v&&!roles.includes(v)) roles.push(v); drawRoles();};
+drawRoles();
 document.getElementById('show').onclick=e=>{const p=document.getElementById('pp');p.type=p.type==='password'?'text':'password';e.target.textContent=p.type==='password'?'Show':'Hide';};
 
 const b64=a=>btoa(String.fromCharCode(...new Uint8Array(a)));
@@ -141,7 +153,7 @@ document.getElementById('f').onsubmit=async e=>{
   e.preventDefault();
   const v=id=>document.getElementById(id).value.trim();
   const luhn=n=>{let s=0;for(let i=0;i<n.length;i++){let d=+n[n.length-1-i];if(i%2){d*=2;if(d>9)d-=9}s+=d}return s%10===0};
-  const t=[...titles.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean);
+  const t=roles.slice();
   const email=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   if(!v('name')) return say('Please enter your full name.');
   if(!email.test(v('report'))) return say('Please enter a valid email for your daily report.');
