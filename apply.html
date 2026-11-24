@@ -1,6 +1,223 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
-<title>Apply for me | OnboardingSA</title>
-<meta http-equiv="refresh" content="0;url=account.html#profile">
-<script>location.replace("account.html#profile");</script>
-</head><body><a href="account.html#profile">My profile</a></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Applications Service | OnboardingSA</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Let OnboardingSA apply for PNet jobs for you every morning.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+<link rel="icon" type="image/svg+xml" href="/onboardingsa-icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#12294D;--navy-700:#1B3A6B;--gold:#E8A33D;--bg:#F4F6FA;--text:#16213A;--muted:#5B6B85;--line:#E4E9F1;--tint:#F0F4FB}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65}
+.wrap{max-width:760px;margin:0 auto;padding:0 22px}
+header.site{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+header .wrap{max-width:1160px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand>svg{height:34px;display:block}
+.nav a{font-weight:500;color:var(--muted);text-decoration:none;margin-left:22px}.nav a{white-space:nowrap}@media(max-width:480px){.brand>svg{height:28px}.nav a{font-size:14px;margin-left:14px}}.nav a:hover{color:var(--navy)}
+h1{font-family:Poppins;font-weight:700;color:var(--navy);font-size:32px;margin:36px 0 8px}
+p{margin:0 0 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:10px 0}
+.card h2{font-family:Poppins;font-weight:600;color:var(--navy);font-size:17px;margin:0 0 4px}
+.card a{color:var(--navy);font-weight:600;text-decoration:none}
+.wa{display:inline-flex;align-items:center;gap:9px;font-family:Poppins;font-weight:600;font-size:15px;
+  background:#25D366;color:#fff;text-decoration:none;padding:12px 22px;border-radius:10px;margin-top:6px}
+.wa:hover{background:#1EBE5A}
+.wa svg{width:18px;height:18px;fill:#fff}
+footer.site{border-top:1px solid var(--line);background:#fff;padding:24px 0;font-size:13px;color:var(--muted);margin-top:40px}
+footer .wrap{max-width:1160px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+footer a{color:var(--navy);text-decoration:none;font-weight:500}
+
+label{display:block;font-weight:600;color:var(--navy);font-size:14px;margin:16px 0 6px}
+.hint{font-size:13px;color:var(--muted);margin:-2px 0 6px}
+input[type=text],input[type=email],input[type=password]{width:100%;font:inherit;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--text)}
+input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+select{width:100%;font:inherit;padding:11px 34px 11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='%237A8394'/%3E%3C/svg%3E") no-repeat right 14px center;color:var(--text);appearance:none;-webkit-appearance:none;cursor:pointer}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.pills:empty{display:none}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#EEF2F8;border:1px solid #D5DEEB;color:var(--navy);border-radius:999px;padding:5px 6px 5px 14px;font-size:14px;font-weight:500}
+.pill button{border:0;background:#fff;color:#5B6B85;width:22px;height:22px;border-radius:50%;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.pill button:hover{background:var(--navy);color:#fff}
+.row{display:flex;gap:8px}.row input{flex:1;min-width:0}
+.ghost{font:inherit;font-size:14px;font-weight:600;color:var(--navy);background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer}
+.x{width:42px;flex:none}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:12px 0;font-weight:400;color:var(--text)}
+.check input{margin-top:4px;flex:none;width:18px;height:18px;accent-color:var(--navy)}
+.go{font-family:Poppins;font-weight:600;font-size:16px;background:var(--navy);color:#fff;border:0;border-radius:12px;padding:14px 26px;cursor:pointer;margin-top:10px;width:100%}
+.go:disabled{opacity:.6;cursor:wait}
+.lock{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;margin-top:12px}
+.msg{border-radius:12px;padding:16px 18px;margin:16px 0;font-size:15px}
+.ok{background:#EAF7EF;color:#14532D}.err{background:#FDECEC;color:#7F1D1D}
+.steps{display:grid;gap:10px;margin:6px 0 4px}
+.steps div{display:flex;gap:12px;align-items:flex-start}
+.steps b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:Poppins;font-size:13px}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html" aria-label="OnboardingSA home">
+    <svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg"><svg viewBox="0 0 240 240" x="8" y="20" width="120" height="120"><rect x="20" y="20" width="200" height="200" rx="46" fill="#12294D"/><path d="M120 56 L160 112 L133 112 L133 168 L107 168 L107 112 L80 112 Z" fill="#E8A33D"/><rect x="76" y="176" width="88" height="14" rx="7" fill="#E8A33D"/></svg><text x="150" y="101" font-family="Poppins,Arial" font-size="60" font-weight="600" letter-spacing="-0.5"><tspan fill="#12294D">Onboarding</tspan><tspan fill="#E8A33D">SA</tspan></text></svg>
+  </a>
+  <nav class="nav"><a href="index.html">Jobs</a><a href="about.html">About</a><a href="account.html" aria-label="My account" title="My account" style="display:inline-flex;align-items:center;vertical-align:middle"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3.2"/><path d="M6.3 18.6c1.3-2.3 3.3-3.5 5.7-3.5s4.4 1.2 5.7 3.5"/></svg></a></nav>
+</div></header>
+<main class="wrap">
+  <h1>We apply for jobs for you</h1>
+  <p>Every morning we search PNet for new jobs matching the job titles you choose, and apply for you with the CV on your PNet profile. You get an email each day with every job we applied for.</p>
+  <div class="card steps">
+    <div><b>1</b><span>Make sure your CV is uploaded on <a href="https://www.pnet.co.za" target="_blank" rel="noopener">PNet</a> and set as your default CV.</span></div>
+    <div><b>2</b><span>Fill in the form below with your PNet login and the job titles you want.</span></div>
+    <div><b>3</b><span>From the next morning, we apply for you every day.</span></div>
+  </div>
+
+  <div id="needSign" class="card" hidden>
+    <p style="margin:0 0 14px">Sign in to your OnboardingSA account to set this up.</p>
+    <a class="go" href="account.html?next=apply.html" style="display:block;text-align:center;text-decoration:none">Sign in / Sign up</a>
+  </div>
+
+  <form id="f" class="card" novalidate hidden>
+    <label for="name">Full name</label>
+    <input type="text" id="name" autocomplete="name" required>
+
+    <label for="report">Email for your daily report</label>
+    <input type="email" id="report" autocomplete="email" required>
+
+    <label for="pe">PNet email</label>
+    <p class="hint">The email you sign in to PNet with.</p>
+    <input type="email" id="pe" autocomplete="off" required>
+
+    <label for="pp">PNet password</label>
+    <div class="row"><input type="password" id="pp" autocomplete="off" required><button type="button" class="ghost" id="show">Show</button></div>
+
+    <label for="idn">ID number</label>
+    <input type="text" id="idn" inputmode="numeric" maxlength="13" autocomplete="off" required>
+
+    <label>Job titles</label>
+    <select id="roleAdd"></select>
+    <div class="pills" id="pills"></div>
+
+    <label class="check"><input type="checkbox" id="c1" required><span>I allow OnboardingSA to sign in to my PNet account and apply for jobs for me with my default PNet CV.</span></label>
+    <label class="check"><input type="checkbox" id="c2" required><span>I understand PNet may not allow automated applications, and I accept any risk to my PNet account.</span></label>
+    <label class="check"><input type="checkbox" id="c3" required><span>I have read the <a href="privacy.html">privacy policy</a> and agree to OnboardingSA keeping my details to run this service.</span></label>
+
+    <div id="out"></div>
+    <button class="go" id="go" type="submit">Start applying for me</button>
+    <p class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Your details are locked on this device before they're sent. Only our application system can unlock them.</p>
+  </form>
+</main>
+<footer class="site"><div class="wrap">
+  <span>&copy; <span id="yr"></span> OnboardingSA &middot; onboardingsa.co.za</span>
+  <span><a href="index.html">Jobs</a> &middot; <a href="about.html">About</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></span>
+</div></footer>
+<script>
+document.getElementById('yr').textContent=new Date().getFullYear();
+// Sign-up sheet (Google Form). Filled in when the form is created.
+const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScaDYfAVw-IsyX09tOCux13n64wFPp5RH4opl4gYxZepkFSnw/formResponse";
+const FORM_ENTRY  = "entry.874348083";
+const PUBLIC_KEY  = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu71tA+PSLBQq7j+BrnyBJjew3tL/157tYaE/A6dD5L7+ohRhFiadt8qVmiyshqdmRzAZEexsPe/XKZhppn0d/23tUiu+IkH6mOU/GyESmoOvdQ2YBjdrIrMzIrqZhQ3Urk1rNU42AeTPInO9OYb0ZVZHP8yYXzgTdahUNjwKtdk/sG+17Hqej+OnRhpE2x0PRUshYa5rtJBO1wtxVMB0YQoJfX7CvK8XWe7UnZo+j4BqrAxNnLTuKASl8YOLrBoTfWY3TfupiZM8QEiTjyNGfq7hF8dkbx5aHuU+6iYMGMI+/fl00KyTfnlFTSrvAIeBLaIlpnpJ1U1i/UFa18Nj5QIDAQAB";
+
+const ROLES={"Admin & Office": ["Administration Clerk", "Administrative Officer", "Office Manager", "Personal Assistant", "Executive Assistant", "Receptionist", "Secretary", "Data Capturer", "Registry Clerk", "Records Management Clerk", "Switchboard Operator", "Driver / Messenger"], "Finance & Accounting": ["Accountant", "Bookkeeper", "Creditors Clerk", "Debtors Clerk", "Payroll Administrator", "Finance Clerk", "Internal Auditor", "External Auditor", "Financial Analyst", "Financial Manager", "Tax Consultant", "State Accountant", "Budget Analyst", "Credit Controller", "Cost Accountant"], "Banking & Insurance": ["Bank Teller", "Banking Advisor", "Financial Advisor", "Wealth Advisor", "Insurance Broker", "Claims Assessor", "Underwriter", "Collections Agent"], "Engineering": ["Mechanical Engineer", "Electrical Engineer", "Civil Engineer", "Chemical Engineer", "Process Engineer", "Project Engineer", "Production Engineer", "Maintenance Engineer", "Reliability Engineer", "Mining Engineer", "Industrial Engineer", "Engineer in Training (EIT)", "Engineering Technician", "Engineering Technologist", "Draughtsperson", "Quality Engineer"], "Trades & Artisans": ["Electrician", "Fitter and Turner", "Millwright", "Boilermaker", "Welder", "Plumber", "Diesel Mechanic", "Motor Mechanic", "Instrument Technician", "Refrigeration Technician", "Carpenter", "Painter", "Rigger", "Maintenance Technician"], "Manufacturing & Production": ["Production Manager", "Production Supervisor", "Production Planner", "Machine Operator", "Quality Controller", "Process Controller", "Plant Manager", "Packer", "Shift Supervisor"], "IT & Data": ["Software Developer", "Full Stack Developer", "Front End Developer", "Back End Developer", "Data Analyst", "Data Engineer", "Data Scientist", "Business Intelligence Developer", "Power BI Developer", "Power Platform Developer", "Business Analyst", "Systems Analyst", "Network Engineer", "IT Support Technician", "Help Desk Agent", "Cloud Engineer", "Cyber Security Analyst", "Database Administrator", "Test Analyst", "Project Manager (IT)", "Analytics Engineer"], "Medical & Health": ["Professional Nurse", "Enrolled Nurse", "Nursing Assistant", "Medical Officer", "Medical Specialist", "Pharmacist", "Pharmacist Assistant", "Physiotherapist", "Occupational Therapist", "Radiographer", "Dentist", "Dental Assistant", "Paramedic", "Clinical Associate", "Medical Technologist", "Dietitian", "Psychologist", "Community Health Worker"], "Education & Training": ["Teacher", "Foundation Phase Teacher", "Lecturer", "Tutor", "Early Childhood Development Practitioner", "Training Facilitator", "Librarian", "School Administrator"], "Government & Public Service": ["Police Trainee", "Correctional Officer", "Traffic Officer", "Firefighter", "State Advocate", "Public Prosecutor", "Court Interpreter", "Social Worker", "Social Auxiliary Worker", "Community Development Worker", "Environmental Officer", "Labour Inspector", "Supply Chain Practitioner", "Human Settlements Officer"], "Human Resources": ["HR Officer", "HR Administrator", "HR Business Partner", "Recruiter", "Payroll Officer", "Training and Development Officer", "Employee Relations Consultant"], "Legal": ["Attorney", "Candidate Attorney", "Paralegal", "Legal Advisor", "Legal Secretary", "Conveyancer", "Compliance Officer"], "Sales & Marketing": ["Sales Representative", "Sales Consultant", "Sales Manager", "Telesales Agent", "Business Development Manager", "Account Manager", "Marketing Coordinator", "Marketing Manager", "Digital Marketer", "Social Media Manager", "Copywriter"], "Retail": ["Cashier", "Store Manager", "Assistant Store Manager", "Sales Assistant", "Merchandiser", "Visual Merchandiser", "Stock Controller", "Beauty Advisor", "Butchery Manager"], "Customer Service": ["Call Centre Agent", "Customer Service Agent", "Customer Service Manager", "Client Relationship Consultant"], "Logistics & Supply Chain": ["Warehouse Supervisor", "Warehouse Assistant", "Forklift Driver", "Truck Driver", "Code 10 Driver", "Dispatch Clerk", "Buyer", "Procurement Officer", "Logistics Coordinator", "Supply Chain Clerk", "Fleet Controller"], "Building & Construction": ["Site Manager", "Construction Project Manager", "Quantity Surveyor", "Site Engineer", "Architect", "Building Inspector", "Construction Worker"], "Mining": ["Mine Overseer", "Shift Boss", "Geologist", "Surveyor", "Metallurgist", "Mine Worker", "Ventilation Officer"], "Health & Safety": ["Health and Safety Officer", "SHEQ Officer", "Safety Representative", "Environmental Health Practitioner"], "Hospitality & Tourism": ["Chef", "Cook", "Waiter", "Barista", "Hotel Receptionist", "Housekeeper", "Front Office Manager", "Tour Guide"], "Agriculture": ["Farm Manager", "Agricultural Advisor", "Farm Worker", "Agronomist", "Veterinary Assistant"], "Security": ["Security Officer", "Security Supervisor", "Armed Response Officer", "CCTV Operator"], "Cleaning & General Work": ["Cleaner", "General Worker", "Gardener", "Domestic Worker", "Groundsman"], "Design & Media": ["Graphic Designer", "Video Editor", "Photographer", "Journalist", "UX / UI Designer"], "Science & Research": ["Laboratory Technician", "Laboratory Analyst", "Research Assistant", "Scientist", "Statistician", "Environmental Scientist"], "Entry Level": ["Internship", "Learnership", "Graduate Programme", "Bursary", "Apprenticeship", "Youth Programme"]};
+let roles=[];
+const roleSel=document.getElementById('roleAdd');
+function drawRoles(){
+  roleSel.innerHTML='';
+  roleSel.add(new Option('Add a job title',''));
+  for(const [g,list] of Object.entries(ROLES)){
+    const og=document.createElement('optgroup'); og.label=g;
+    list.forEach(r=>{const o=new Option(r,r); o.disabled=roles.includes(r); og.appendChild(o);});
+    roleSel.appendChild(og);
+  }
+  const box=document.getElementById('pills'); box.innerHTML='';
+  roles.forEach(r=>{
+    const s=document.createElement('span'); s.className='pill'; s.textContent=r;
+    const x=document.createElement('button'); x.type='button'; x.textContent='✕'; x.setAttribute('aria-label','Remove '+r);
+    x.onclick=()=>{roles=roles.filter(t=>t!==r); drawRoles();};
+    s.appendChild(x); box.appendChild(s);
+  });
+}
+roleSel.onchange=()=>{const v=roleSel.value; if(v&&!roles.includes(v)) roles.push(v); drawRoles();};
+drawRoles();
+document.getElementById('show').onclick=e=>{const p=document.getElementById('pp');p.type=p.type==='password'?'text':'password';e.target.textContent=p.type==='password'?'Show':'Hide';};
+
+const b64=a=>btoa(String.fromCharCode(...new Uint8Array(a)));
+async function lock(data){
+  const der=Uint8Array.from(atob(PUBLIC_KEY),c=>c.charCodeAt(0));
+  const pub=await crypto.subtle.importKey('spki',der,{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
+  const aes=await crypto.subtle.generateKey({name:'AES-GCM',length:256},true,['encrypt']);
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const c=await crypto.subtle.encrypt({name:'AES-GCM',iv},aes,new TextEncoder().encode(JSON.stringify(data)));
+  const k=await crypto.subtle.encrypt({name:'RSA-OAEP'},pub,await crypto.subtle.exportKey('raw',aes));
+  return btoa(JSON.stringify({k:b64(k),iv:b64(iv),c:b64(c)}));
+}
+function say(text,ok){document.getElementById('out').innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+text+'</div>';}
+
+let saved=null;            // what is already saved on this account
+window.fillSaved=(s,fallback)=>{
+  saved=s||null;
+  const set=(id,val)=>{ if(val) document.getElementById(id).value=val; };
+  set('name',(s&&s.name)||fallback.name); set('report',(s&&s.report_email)||fallback.email); set('pe',s&&s.pnet_email);
+  set('pp',s&&s.pnet_password); set('idn',s&&s.id_number);
+  if(s){
+    roles=(s.titles||[]).slice(); drawRoles();
+    ['c1','c2','c3'].forEach(id=>document.getElementById(id).checked=true);
+    document.getElementById('go').textContent='Save changes';
+  }
+};
+document.getElementById('f').onsubmit=async e=>{
+  e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim();
+  const luhn=n=>{let s=0;for(let i=0;i<n.length;i++){let d=+n[n.length-1-i];if(i%2){d*=2;if(d>9)d-=9}s+=d}return s%10===0};
+  const t=roles.slice();
+  const email=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const pw=document.getElementById('pp').value, idn=v('idn').replace(/\s/g,'');
+  if(!v('name')) return say('Please enter your full name.');
+  if(!email.test(v('report'))) return say('Please enter a valid email for your daily report.');
+  if(!email.test(v('pe'))) return say('Please enter your PNet email.');
+  if(!pw) return say('Please enter your PNet password.');
+  if(!/^\d{13}$/.test(idn)||!luhn(idn)) return say('Please enter a valid 13-digit South African ID number.');
+  if(!t.length) return say('Please add at least one job title.');
+  if(!['c1','c2','c3'].every(id=>document.getElementById(id).checked)) return say('Please tick all three boxes to continue.');
+  if(!window.acctUid) return say('Please sign in first.');
+  const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='Saving…';
+  try{
+    const d={uid:window.acctUid,name:v('name'),report_email:v('report'),pnet_email:v('pe'),titles:t,signed_up:new Date().toISOString()};
+    d.pnet_password=pw; d.id_number=idn;
+    const body=new URLSearchParams(); body.append(FORM_ENTRY,await lock(d));
+    await fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body});
+    const keep={name:d.name,report_email:d.report_email,pnet_email:d.pnet_email,pnet_password:pw,id_number:idn,titles:t,updated:d.signed_up};
+    await window.saveAuto(keep);
+    window.fillSaved(keep,{});
+    try{ sessionStorage.setItem('osa_saved','1'); }catch(e){}
+    location.href='index.html#for-you';
+    return;
+  }catch(err){ say('Something went wrong. Please try again.'); }
+  btn.disabled=false; btn.textContent=saved?'Save changes':'Start applying for me';
+};
+</script>
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const app = getApps()[0] || initializeApp({
+  apiKey: "AIzaSyAurWdE99jLpAX0Gvi93DcX4jOXE2ls8Ig", authDomain: "onboardingsa-23692.firebaseapp.com",
+  projectId: "onboardingsa-23692", storageBucket: "onboardingsa-23692.firebasestorage.app",
+  messagingSenderId: "988104656716", appId: "1:988104656716:web:14f7e5be18304640a431e9"
+});
+const auth = getAuth(app), db = getFirestore(app);
+onAuthStateChanged(auth, async u => {
+  document.getElementById('needSign').hidden = !!u;
+  document.getElementById('f').hidden = !u;
+  window.acctUid = u ? u.uid : null;
+  if (!u) return;
+  let p = {};
+  try { const s = await getDoc(doc(db, "profiles", u.uid)); p = s.exists() ? s.data() : {}; } catch (e) {}
+  window.saveAuto = keep => setDoc(doc(db, "profiles", u.uid), { autoApply: keep }, { merge: true });
+  window.fillSaved(p.autoApply || null, { name: p.fullName || u.displayName || "", email: u.email || "" });
+});
+</script>
+<script type="module" src="acct.js"></script>
+</body>
+</html>
