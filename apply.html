@@ -154,15 +154,14 @@ async function lock(data){
 }
 function say(text,ok){document.getElementById('out').innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+text+'</div>';}
 
-let saved=null;            // what is already on this account (no password or ID number kept here)
+let saved=null;            // what is already saved on this account
 window.fillSaved=(s,fallback)=>{
   saved=s||null;
   const set=(id,val)=>{ if(val) document.getElementById(id).value=val; };
   set('name',(s&&s.name)||fallback.name); set('report',(s&&s.report_email)||fallback.email); set('pe',s&&s.pnet_email);
+  set('pp',s&&s.pnet_password); set('idn',s&&s.id_number);
   if(s){
     roles=(s.titles||[]).slice(); drawRoles();
-    if(s.has_password) document.getElementById('pp').placeholder='Saved';
-    if(s.has_id) document.getElementById('idn').placeholder='Saved';
     ['c1','c2','c3'].forEach(id=>document.getElementById(id).checked=true);
     document.getElementById('go').textContent='Save changes';
   }
@@ -177,22 +176,19 @@ document.getElementById('f').onsubmit=async e=>{
   if(!v('name')) return say('Please enter your full name.');
   if(!email.test(v('report'))) return say('Please enter a valid email for your daily report.');
   if(!email.test(v('pe'))) return say('Please enter your PNet email.');
-  if(!pw && !(saved&&saved.has_password)) return say('Please enter your PNet password.');
-  if((idn || !(saved&&saved.has_id)) && (!/^\d{13}$/.test(idn)||!luhn(idn))) return say('Please enter a valid 13-digit South African ID number.');
+  if(!pw) return say('Please enter your PNet password.');
+  if(!/^\d{13}$/.test(idn)||!luhn(idn)) return say('Please enter a valid 13-digit South African ID number.');
   if(!t.length) return say('Please add at least one job title.');
   if(!['c1','c2','c3'].every(id=>document.getElementById(id).checked)) return say('Please tick all three boxes to continue.');
   if(!window.acctUid) return say('Please sign in first.');
   const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='Saving…';
   try{
     const d={uid:window.acctUid,name:v('name'),report_email:v('report'),pnet_email:v('pe'),titles:t,signed_up:new Date().toISOString()};
-    if(pw) d.pnet_password=pw;
-    if(idn) d.id_number=idn;
+    d.pnet_password=pw; d.id_number=idn;
     const body=new URLSearchParams(); body.append(FORM_ENTRY,await lock(d));
     await fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body});
-    const keep={name:d.name,report_email:d.report_email,pnet_email:d.pnet_email,titles:t,
-      has_password:!!(pw||(saved&&saved.has_password)),has_id:!!(idn||(saved&&saved.has_id)),updated:d.signed_up};
+    const keep={name:d.name,report_email:d.report_email,pnet_email:d.pnet_email,pnet_password:pw,id_number:idn,titles:t,updated:d.signed_up};
     await window.saveAuto(keep);
-    document.getElementById('pp').value=''; document.getElementById('idn').value='';
     window.fillSaved(keep,{});
     say('<b>Saved.</b> We apply for you every morning and email your report to '+d.report_email.replace(/</g,'')+'.',true);
   }catch(err){ say('Something went wrong. Please try again.'); }
