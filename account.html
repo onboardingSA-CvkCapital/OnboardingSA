@@ -80,6 +80,9 @@ select:disabled{background-color:#F4F6FA;cursor:default}
 .jc{flex:none;font-size:13.5px;color:var(--muted);white-space:nowrap}
 .empty{color:var(--muted);padding:30px 0}
 .mmore{display:inline-block;margin-top:18px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.f2>*{min-width:0}
+.pw{display:flex;gap:8px}.pw input{flex:1;min-width:0}.sec.sm{padding:0 14px;height:44px}
+@media (max-width:680px){.f2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -134,6 +137,14 @@ select:disabled{background-color:#F4F6FA;cursor:default}
       <div><label for="jobType">Employment type</label><select id="jobType"></select></div>
       <div><label for="expectedSalary">Expected salary (per month)</label><select id="expectedSalary"></select></div>
     </div></div>
+    <div class="blk"><h2>Apply for me</h2><div class="f">
+      <label class="w tick"><input type="checkbox" id="auto"><span>Apply for jobs for me on PNet every morning</span></label>
+      <div class="w f2" id="autoBox" hidden>
+        <div><label for="pnetEmail">PNet email</label><input id="pnetEmail" type="email" autocomplete="off"></div>
+        <div><label for="pnetPass">PNet password</label><div class="pw"><input id="pnetPass" type="password" autocomplete="off"><button type="button" class="sec sm" id="pnetShow">Show</button></div></div>
+        <div><label for="idNumber">ID number</label><input id="idNumber" inputmode="numeric" maxlength="13" autocomplete="off"></div>
+      </div>
+    </div></div>
     <div class="blk"><h2>Job alerts</h2><div class="f">
       <label class="w tick"><input type="checkbox" id="alerts"><span>Email me when new jobs match my profile</span></label>
     </div></div>
@@ -167,6 +178,20 @@ const app = getApps()[0] || initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = id => document.getElementById(id);
+const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScaDYfAVw-IsyX09tOCux13n64wFPp5RH4opl4gYxZepkFSnw/formResponse";
+const FORM_ENTRY = "entry.874348083";
+const PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu71tA+PSLBQq7j+BrnyBJjew3tL/157tYaE/A6dD5L7+ohRhFiadt8qVmiyshqdmRzAZEexsPe/XKZhppn0d/23tUiu+IkH6mOU/GyESmoOvdQ2YBjdrIrMzIrqZhQ3Urk1rNU42AeTPInO9OYb0ZVZHP8yYXzgTdahUNjwKtdk/sG+17Hqej+OnRhpE2x0PRUshYa5rtJBO1wtxVMB0YQoJfX7CvK8XWe7UnZo+j4BqrAxNnLTuKASl8YOLrBoTfWY3TfupiZM8QEiTjyNGfq7hF8dkbx5aHuU+6iYMGMI+/fl00KyTfnlFTSrvAIeBLaIlpnpJ1U1i/UFa18Nj5QIDAQAB";
+const b64 = a => btoa(String.fromCharCode(...new Uint8Array(a)));
+async function lock(data) {
+  const der = Uint8Array.from(atob(PUBLIC_KEY), c => c.charCodeAt(0));
+  const pub = await crypto.subtle.importKey("spki", der, { name: "RSA-OAEP", hash: "SHA-256" }, false, ["encrypt"]);
+  const aes = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const c = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, aes, new TextEncoder().encode(JSON.stringify(data)));
+  const k = await crypto.subtle.encrypt({ name: "RSA-OAEP" }, pub, await crypto.subtle.exportKey("raw", aes));
+  return btoa(JSON.stringify({ k: b64(k), iv: b64(iv), c: b64(c) }));
+}
+const luhn = n => { let s = 0; for (let i = 0; i < n.length; i++) { let d = +n[n.length - 1 - i]; if (i % 2) { d *= 2; if (d > 9) d -= 9; } s += d; } return s % 10 === 0; };
 
 const BANDS = ["Under R5 000","R5 000 – R9 999","R10 000 – R14 999","R15 000 – R19 999","R20 000 – R24 999","R25 000 – R29 999","R30 000 – R34 999","R35 000 – R39 999","R40 000 – R49 999","R50 000 – R59 999","R60 000 – R79 999","R80 000 – R99 999","R100 000 and above"];
 const OPTS = {
@@ -287,6 +312,10 @@ function setForm(d) {
   roles = Array.isArray(d.roles) ? d.roles.slice() : [];
   buildRoleSel();
   $("alerts").checked = !!d.alerts;
+  const a = d.autoApply || {};
+  $("auto").checked = a.active === undefined ? !!a.pnet_email : !!a.active;
+  $("pnetEmail").value = a.pnet_email || ""; $("pnetPass").value = a.pnet_password || ""; $("idNumber").value = a.id_number || "";
+  $("autoBox").hidden = !$("auto").checked;
 }
 async function loadProfile() {
   $("saveErr").hidden = true;
@@ -313,8 +342,19 @@ onAuthStateChanged(auth, async u => {
 });
 $("outBtn").onclick = () => { $("aPass").value = ""; signOut(auth); };
 $("cancelBtn").onclick = () => { setForm(saved); if (saved.roles && saved.roles.length) location.href = "index.html#for-you"; };
+$("auto").addEventListener("change", () => { $("autoBox").hidden = !$("auto").checked; });
+$("pnetShow").onclick = () => { const p = $("pnetPass"); p.type = p.type === "password" ? "text" : "password"; $("pnetShow").textContent = p.type === "password" ? "Show" : "Hide"; };
 $("pForm").addEventListener("submit", async e => {
   e.preventDefault();
+  const err = t => { $("saveErr").textContent = t; $("saveErr").hidden = false; };
+  const sa = saved.autoApply || {}; const on = $("auto").checked, was = sa.active === undefined ? !!sa.pnet_email : !!sa.active;
+  const pe = $("pnetEmail").value.trim(), pp = $("pnetPass").value, idn = $("idNumber").value.replace(/\s/g, "");
+  if (on) {
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pe)) return err("Enter your PNet email.");
+    if (!pp) return err("Enter your PNet password.");
+    if (!/^\d{13}$/.test(idn) || !luhn(idn)) return err("Enter a valid 13-digit South African ID number.");
+    if (!roles.length) return err("Add at least one job title.");
+  }
   const d = {};
   FIELDS_IDS.forEach(id => d[id] = $(id).value);
   d.roles = roles; d.alerts = $("alerts").checked; d.email = user.email;
@@ -322,6 +362,14 @@ $("pForm").addEventListener("submit", async e => {
   if (!saved.createdAt) d.createdAt = serverTimestamp();
   const b = $("saveBtn"); b.disabled = true; $("saveErr").hidden = true;
   try {
+    if (on || was) {
+      const send = on
+        ? { uid: user.uid, active: true, name: d.fullName || user.displayName || "", report_email: user.email, pnet_email: pe, pnet_password: pp, id_number: idn, titles: roles, signed_up: new Date().toISOString() }
+        : { uid: user.uid, active: false, pnet_email: (saved.autoApply || {}).pnet_email || pe, signed_up: new Date().toISOString() };
+      const body = new URLSearchParams(); body.append(FORM_ENTRY, await lock(send));
+      await fetch(FORM_ACTION, { method: "POST", mode: "no-cors", body });
+      d.autoApply = { active: on, pnet_email: pe, pnet_password: pp, id_number: idn, updated: send.signed_up };
+    }
     await setDoc(doc(db, "profiles", user.uid), d, { merge: true });
     saved = { ...saved, ...d, createdAt: saved.createdAt || true };
     if (d.fullName && d.fullName !== user.displayName) updateProfile(user, { displayName: d.fullName }).then(() => window.dispatchEvent(new Event("osa-name"))).catch(() => {});
