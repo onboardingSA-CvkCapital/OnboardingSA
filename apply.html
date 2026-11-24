@@ -152,6 +152,8 @@ window.fillSaved=(s,fallback)=>{
   const set=(id,val)=>{ if(val) document.getElementById(id).value=val; };
   set('name',(s&&s.name)||fallback.name); set('report',(s&&s.report_email)||fallback.email); set('pe',s&&s.pnet_email);
   set('pp',s&&s.pnet_password); set('idn',s&&s.id_number);
+  document.getElementById('pp').placeholder=(s&&s.has_password&&!s.pnet_password)?'Saved':'';
+  document.getElementById('idn').placeholder=(s&&s.has_id&&!s.id_number)?'Saved':'';
   if(s){
     roles=(s.titles||[]).slice(); drawRoles();
     ['c1','c2','c3'].forEach(id=>document.getElementById(id).checked=true);
@@ -168,18 +170,23 @@ document.getElementById('f').onsubmit=async e=>{
   if(!v('name')) return say('Please enter your full name.');
   if(!email.test(v('report'))) return say('Please enter a valid email for your daily report.');
   if(!email.test(v('pe'))) return say('Please enter your PNet email.');
-  if(!pw) return say('Please enter your PNet password.');
-  if(!/^\d{13}$/.test(idn)||!luhn(idn)) return say('Please enter a valid 13-digit South African ID number.');
+  const havePw=!!(saved&&(saved.pnet_password||saved.has_password)), haveId=!!(saved&&(saved.id_number||saved.has_id));
+  if(!pw&&!havePw) return say('Please enter your PNet password.');
+  if((idn||!haveId)&&(!/^\d{13}$/.test(idn)||!luhn(idn))) return say('Please enter a valid 13-digit South African ID number.');
   if(!t.length) return say('Please add at least one job title.');
   if(!['c1','c2','c3'].every(id=>document.getElementById(id).checked)) return say('Please tick all three boxes to continue.');
   if(!window.acctUid) return say('Please sign in first.');
   const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='Saving…';
   try{
     const d={uid:window.acctUid,name:v('name'),report_email:v('report'),pnet_email:v('pe'),titles:t,signed_up:new Date().toISOString()};
-    d.pnet_password=pw; d.id_number=idn;
+    if(pw) d.pnet_password=pw;
+    if(idn) d.id_number=idn;
     const body=new URLSearchParams(); body.append(FORM_ENTRY,await lock(d));
     await fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body});
-    const keep={name:d.name,report_email:d.report_email,pnet_email:d.pnet_email,pnet_password:pw,id_number:idn,titles:t,updated:d.signed_up};
+    const keep={name:d.name,report_email:d.report_email,pnet_email:d.pnet_email,titles:t,updated:d.signed_up,
+      has_password:!!(pw||havePw),has_id:!!(idn||haveId)};
+    if(pw) keep.pnet_password=pw; else if(saved&&saved.pnet_password) keep.pnet_password=saved.pnet_password;
+    if(idn) keep.id_number=idn; else if(saved&&saved.id_number) keep.id_number=saved.id_number;
     await window.saveAuto(keep);
     window.fillSaved(keep,{});
     try{ sessionStorage.setItem('osa_saved','1'); }catch(e){}
