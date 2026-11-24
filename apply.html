@@ -96,7 +96,7 @@ select{width:100%;font:inherit;padding:11px 34px 11px 13px;border:1px solid var(
     <input type="text" id="idn" inputmode="numeric" maxlength="13" autocomplete="off" required>
 
     <label>Job titles</label>
-    <select id="roleAdd"></select>
+    <input type="text" id="roleAdd" placeholder="Search job titles">
     <div class="pills" id="pills"></div>
 
     <label class="check"><input type="checkbox" id="c1" required><span>I allow OnboardingSA to sign in to my PNet account and apply for jobs for me with my default PNet CV.</span></label>
@@ -112,6 +112,7 @@ select{width:100%;font:inherit;padding:11px 34px 11px 13px;border:1px solid var(
   <span>&copy; <span id="yr"></span> OnboardingSA &middot; onboardingsa.co.za</span>
   <span><a href="index.html">Jobs</a> &middot; <a href="about.html">About</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></span>
 </div></footer>
+<script src="rolepicker.js"></script>
 <script>
 document.getElementById('yr').textContent=new Date().getFullYear();
 // Sign-up sheet (Google Form). Filled in when the form is created.
@@ -119,17 +120,8 @@ const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScaDYfAVw-IsyX09tO
 const FORM_ENTRY  = "entry.874348083";
 const PUBLIC_KEY  = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu71tA+PSLBQq7j+BrnyBJjew3tL/157tYaE/A6dD5L7+ohRhFiadt8qVmiyshqdmRzAZEexsPe/XKZhppn0d/23tUiu+IkH6mOU/GyESmoOvdQ2YBjdrIrMzIrqZhQ3Urk1rNU42AeTPInO9OYb0ZVZHP8yYXzgTdahUNjwKtdk/sG+17Hqej+OnRhpE2x0PRUshYa5rtJBO1wtxVMB0YQoJfX7CvK8XWe7UnZo+j4BqrAxNnLTuKASl8YOLrBoTfWY3TfupiZM8QEiTjyNGfq7hF8dkbx5aHuU+6iYMGMI+/fl00KyTfnlFTSrvAIeBLaIlpnpJ1U1i/UFa18Nj5QIDAQAB";
 
-const ROLES={"Admin & Office": ["Administration Clerk", "Administrative Officer", "Office Manager", "Personal Assistant", "Executive Assistant", "Receptionist", "Secretary", "Data Capturer", "Registry Clerk", "Records Management Clerk", "Switchboard Operator", "Driver / Messenger"], "Finance & Accounting": ["Accountant", "Bookkeeper", "Creditors Clerk", "Debtors Clerk", "Payroll Administrator", "Finance Clerk", "Internal Auditor", "External Auditor", "Financial Analyst", "Financial Manager", "Tax Consultant", "State Accountant", "Budget Analyst", "Credit Controller", "Cost Accountant"], "Banking & Insurance": ["Bank Teller", "Banking Advisor", "Financial Advisor", "Wealth Advisor", "Insurance Broker", "Claims Assessor", "Underwriter", "Collections Agent"], "Engineering": ["Mechanical Engineer", "Electrical Engineer", "Civil Engineer", "Chemical Engineer", "Process Engineer", "Project Engineer", "Production Engineer", "Maintenance Engineer", "Reliability Engineer", "Mining Engineer", "Industrial Engineer", "Engineer in Training (EIT)", "Engineering Technician", "Engineering Technologist", "Draughtsperson", "Quality Engineer"], "Trades & Artisans": ["Electrician", "Fitter and Turner", "Millwright", "Boilermaker", "Welder", "Plumber", "Diesel Mechanic", "Motor Mechanic", "Instrument Technician", "Refrigeration Technician", "Carpenter", "Painter", "Rigger", "Maintenance Technician"], "Manufacturing & Production": ["Production Manager", "Production Supervisor", "Production Planner", "Machine Operator", "Quality Controller", "Process Controller", "Plant Manager", "Packer", "Shift Supervisor"], "IT & Data": ["Software Developer", "Full Stack Developer", "Front End Developer", "Back End Developer", "Data Analyst", "Data Engineer", "Data Scientist", "Business Intelligence Developer", "Power BI Developer", "Power Platform Developer", "Business Analyst", "Systems Analyst", "Network Engineer", "IT Support Technician", "Help Desk Agent", "Cloud Engineer", "Cyber Security Analyst", "Database Administrator", "Test Analyst", "Project Manager (IT)", "Analytics Engineer"], "Medical & Health": ["Professional Nurse", "Enrolled Nurse", "Nursing Assistant", "Medical Officer", "Medical Specialist", "Pharmacist", "Pharmacist Assistant", "Physiotherapist", "Occupational Therapist", "Radiographer", "Dentist", "Dental Assistant", "Paramedic", "Clinical Associate", "Medical Technologist", "Dietitian", "Psychologist", "Community Health Worker"], "Education & Training": ["Teacher", "Foundation Phase Teacher", "Lecturer", "Tutor", "Early Childhood Development Practitioner", "Training Facilitator", "Librarian", "School Administrator"], "Government & Public Service": ["Police Trainee", "Correctional Officer", "Traffic Officer", "Firefighter", "State Advocate", "Public Prosecutor", "Court Interpreter", "Social Worker", "Social Auxiliary Worker", "Community Development Worker", "Environmental Officer", "Labour Inspector", "Supply Chain Practitioner", "Human Settlements Officer"], "Human Resources": ["HR Officer", "HR Administrator", "HR Business Partner", "Recruiter", "Payroll Officer", "Training and Development Officer", "Employee Relations Consultant"], "Legal": ["Attorney", "Candidate Attorney", "Paralegal", "Legal Advisor", "Legal Secretary", "Conveyancer", "Compliance Officer"], "Sales & Marketing": ["Sales Representative", "Sales Consultant", "Sales Manager", "Telesales Agent", "Business Development Manager", "Account Manager", "Marketing Coordinator", "Marketing Manager", "Digital Marketer", "Social Media Manager", "Copywriter"], "Retail": ["Cashier", "Store Manager", "Assistant Store Manager", "Sales Assistant", "Merchandiser", "Visual Merchandiser", "Stock Controller", "Beauty Advisor", "Butchery Manager"], "Customer Service": ["Call Centre Agent", "Customer Service Agent", "Customer Service Manager", "Client Relationship Consultant"], "Logistics & Supply Chain": ["Warehouse Supervisor", "Warehouse Assistant", "Forklift Driver", "Truck Driver", "Code 10 Driver", "Dispatch Clerk", "Buyer", "Procurement Officer", "Logistics Coordinator", "Supply Chain Clerk", "Fleet Controller"], "Building & Construction": ["Site Manager", "Construction Project Manager", "Quantity Surveyor", "Site Engineer", "Architect", "Building Inspector", "Construction Worker"], "Mining": ["Mine Overseer", "Shift Boss", "Geologist", "Surveyor", "Metallurgist", "Mine Worker", "Ventilation Officer"], "Health & Safety": ["Health and Safety Officer", "SHEQ Officer", "Safety Representative", "Environmental Health Practitioner"], "Hospitality & Tourism": ["Chef", "Cook", "Waiter", "Barista", "Hotel Receptionist", "Housekeeper", "Front Office Manager", "Tour Guide"], "Agriculture": ["Farm Manager", "Agricultural Advisor", "Farm Worker", "Agronomist", "Veterinary Assistant"], "Security": ["Security Officer", "Security Supervisor", "Armed Response Officer", "CCTV Operator"], "Cleaning & General Work": ["Cleaner", "General Worker", "Gardener", "Domestic Worker", "Groundsman"], "Design & Media": ["Graphic Designer", "Video Editor", "Photographer", "Journalist", "UX / UI Designer"], "Science & Research": ["Laboratory Technician", "Laboratory Analyst", "Research Assistant", "Scientist", "Statistician", "Environmental Scientist"], "Entry Level": ["Internship", "Learnership", "Graduate Programme", "Bursary", "Apprenticeship", "Youth Programme"]};
 let roles=[];
-const roleSel=document.getElementById('roleAdd');
 function drawRoles(){
-  roleSel.innerHTML='';
-  roleSel.add(new Option('Add a job title',''));
-  for(const [g,list] of Object.entries(ROLES)){
-    const og=document.createElement('optgroup'); og.label=g;
-    list.forEach(r=>{const o=new Option(r,r); o.disabled=roles.includes(r); og.appendChild(o);});
-    roleSel.appendChild(og);
-  }
   const box=document.getElementById('pills'); box.innerHTML='';
   roles.forEach(r=>{
     const s=document.createElement('span'); s.className='pill'; s.textContent=r;
@@ -138,7 +130,7 @@ function drawRoles(){
     s.appendChild(x); box.appendChild(s);
   });
 }
-roleSel.onchange=()=>{const v=roleSel.value; if(v&&!roles.includes(v)) roles.push(v); drawRoles();};
+RolePicker(document.getElementById('roleAdd'),()=>roles,v=>{roles=v; drawRoles();});
 drawRoles();
 document.getElementById('show').onclick=e=>{const p=document.getElementById('pp');p.type=p.type==='password'?'text':'password';e.target.textContent=p.type==='password'?'Show':'Hide';};
 
